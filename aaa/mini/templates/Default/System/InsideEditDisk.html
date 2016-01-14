@@ -1,0 +1,124 @@
+﻿{% extends "Default/Shared/ContentMaster.html"%}
+
+<!--标题-->
+{% block title %}
+<title>新建用户组 - MiniNas管理系统</title>
+{% endblock %}
+<!--css-->
+{% block css %}
+{% endblock %}
+<!--javascript-->
+{% block javascript %}
+{% endblock %}
+
+{% block body %}
+<div class="user_add">
+    <div class="add_disk">
+        <div class="user_add_lf user_add_bg"></div>
+        <div class="user_add_ct">
+            <a id="add_btn" class="add_btn" href="adddisk.html" ns="User">导入磁盘</a>
+        </div>
+        <div class="user_add_rt user_add_bg"></div>
+    </div>
+    <div class="diskHelp" id="diskHelp">
+        <span class="diskHelpIcon"></span>帮助
+    </div>
+</div>
+<div class="road">
+    <span class="suninfo_str">系统管理 > 存储设置 > 磁盘管理</span>
+</div>
+<div class="rtgy-box">
+    <h3>磁盘管理</h3>
+    <div class="rtgy-cont">
+        <div class="systemRt-cont6" id="systemRt-cont">
+            <div class="set pbt_50">
+                <h6><span class="icon-l"></span><span class="msg">基础设置</span></h6>
+                <div class="group clear postion_box">
+                    <label class="suninfo_cont_str">磁盘</label>
+                    <input id="drpDiskList" name="drpDiskList"  class=" w260 mlf_10" disabled="disabled" >
+                    <span class="msg"></span>
+                </div>
+                <div class="group clear">
+                    <label class="suninfo_cont_str">描述</label>
+                    <textarea class="txtRemark" id="txtRemark"></textarea>
+                    <span class="msg">【不超过100个字符】</span>
+                </div>
+                <div class="sure_btn mlf_180 mtp_48">
+                    <input type="submit" id="btnAdd" class="reboot mrt_20" value="保存">
+                    <a href="diskmanagement.html">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block popup %}
+
+{% endblock %}
+
+
+{% block footerJavascript %}
+<script type="text/javascript">
+    $(function() {
+
+        $("#diskHelp").click(function(){
+            window.parent.JumpInfo();
+        });
+
+        $('#systemRt-cont').niceScroll({
+            cursorcolor: "#999",
+            cursoropacitymax: 1,
+            touchbehavior: false,
+            cursorwidth: "5px",
+            cursorborder: "0",
+            cursorborderradius: "5px"
+        });
+
+        var id = getQueryString("id");
+        var datas= {id:id};
+        $.post("/default/system/getdiskdes",datas,function(data){
+            if(data.returncode=="100100000"){
+                $("#drpDiskList").val(data.data.name);
+                $("#txtRemark").val(data.data.description);
+            }
+            else if(data.returncode == "100102246"){
+                alert(data.message)
+                window.parent.location = "/";
+            }
+            else
+            {alert(data.message);}
+        })
+        $("#btnAdd").click(function() {
+            // var seno = $("#drpDiskList").val();
+            var remark = $("#txtRemark").val();
+//            if (seno == null || seno == "") {
+//                alert("请选择可用的磁盘");
+//                return false;
+//            }
+            if(remark.length>100){
+                alert("磁盘描述不超过100个字符!");
+                return false;
+            }
+            var datas = {
+                id: id,
+                description: remark
+            };
+            $.post("/default/system/editdisk", datas, function(data, status) {
+
+                if (data.returncode == "100100000")
+                {
+                    alert("更新成功!");
+                    window.location = "/default/system/diskmanagement.html";
+                }
+                else if(data.returncode == "100102246"){
+                    alert(data.message)
+                    window.parent.location = "/";
+                }
+                else
+                {alert(data.message);}
+            });
+        })
+    })
+</script>
+{% endblock %}

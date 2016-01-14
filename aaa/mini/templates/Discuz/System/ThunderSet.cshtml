@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "讯雷设置";
+    Layout = "~/Views/Templates/Discuz/Shared/_SystemLayout.cshtml";
+}
+
+ 
+<div class="road">
+    <span class="suninfo_str">系统管理 > 系统设置 > 讯雷设置</span>
+</div>
+<div class="rtgy-box">
+    <div class="rtgy-cont">
+
+        <h3>讯雷设置</h3>
+
+        <div class="rightCol">
+            <div class="tab_contBox">
+                <div class="set">
+                    <div class="Description_content">
+                        <p id ="code"></p>
+                    </div>
+                    <div class="btnBox">
+                        <a class="save" id="btnSub">获取激活码</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="popupLayer_StatusView" class="popup-layer">
+    <div id="popupLayerBox_StatusView" class="popup-layer-box StatusView" style="overflow:hidden;">
+        <i id="closePopupLayer_StatusView" class="close-popupLayer none"></i>
+        <div style="text-align:center;">
+            <img src="/Images/Default/public/loading.gif" style="vertical-align:middle; width:30px; height:30px;" />
+            <span id="viewText" style=" margin-left:10px;">正在获取激活码，请耐心等待，不要进行其它操作......</span>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#btnSub").click(function () {
+             
+            $.ajax({
+                url: '/System/GetThunderCode',
+                type: 'post', 
+                timeout: 150000,
+                beforeSend: function (XMLHttpRequest) {
+                    Popup.init('closePopupLayer_StatusView', 'popupLayer_StatusView', 'popupLayerBox_StatusView');
+                    Popup.popup();
+                },
+                success: function (data, textStatus) {
+
+                    $("#code").text(data.data);
+                    $("#closePopupLayer_StatusView").click();
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+                    $("#viewText").text("执行完成!!!");
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                    // alert("出错了.--txtStatus:"+textStatus +" xmlhttprequest:"+XMLHttpRequest.statusText +"  errorthrown:"+errorThrown);
+                    $("#closePopupLayer_StatusView").click();
+                    $("#code").text("获取讯雷激活码超时!请检查您的网络或重新获取!");
+                }
+            });
+        })
+    })
+</script>

@@ -1,0 +1,245 @@
+{% extends "Default/Shared/ContentMaster.html"%}
+
+<!--标题-->
+{% block title %}
+<title>新建用户组 - MiniNas管理系统</title>
+{% endblock %}
+<!--css-->
+{% block css %}
+{% endblock %}
+<!--javascript-->
+{% block javascript %}
+{% endblock %}
+
+{% block body %}
+<div class="user_add">
+    <div class="user_add_lf user_add_bg"></div>
+    <div class="user_add_ct">
+        <a id="add_btn" class="add_btn" ns="User" href="adduserlist.html">新建用户</a>
+    </div>
+    <div class="user_add_rt user_add_bg"></div>
+</div>
+<div class="road">
+    <span class="suninfo_str">系统管理 > 共享与权限 > 用户</span>
+</div>
+<div class="rtgy-box">
+    <h3>用户</h3>
+    <div class="systemRt-cont2" id="systemRt-cont">
+        <div class="tabBox mtp_10 userTab">
+            <table id="user_list" width="100%" border="0" cellspacing="0" cellpadding="0" class="tab01">
+                <thead>
+                <tr class="tab_mean">
+                    <td class="UserName">账户</td>
+                    <td class="RealName">真实姓名</td>
+                    <td class="Email">电子邮件</td>
+                    <td class="operation">
+                        <table class="i">
+                            <tr>
+                                <td class="tf">
+                                    <div class="txt_hidden">操作</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr style="height:16px;"></tr>
+                </thead>
+                <tbody>
+                {% for u in useerlist %}
+                <tr prv="{{ u.UserName }}">
+                    <td class="UserName" id="cusername">{{ u.UserName }}</td>
+                    <td class="RealName">{{ u.realname }}</td>
+                    <td class="Email">{{ u.email }}</td>
+                    <td class="operation">
+                        <table class="i">
+                            <tr>
+                                <td class="tf">
+                                    <a class="btn2 btnPwd" title="忘记密码" value="{{ u.UserName }}">忘记密码</a>
+                                    <a class="btn3" title="编辑" href="insideuseredit.html?username={{ u.UserName }}">编辑</a>
+                                    <!--<a class="btn4 btnGroup" title="设置群组" value="{{ u.UserName }}"  >设置群组</a>-->
+                                    <a class="btn5 btnDel" title="删除" value="{{ u.UserName }}">删除</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block popup %}
+<div id="popupLayer_UpdatePwdSys" class="popup-layer">
+    <div id="popupLayerBox_UpdatePwdSys" class="popup-layer-box UpdatePwdSys">
+        <i id="closePopupLayer_UpdatePwdSys" class="close-popupLayer"></i>
+        <div class="shoot-cont">
+            <div class="set">
+                <h3>忘记密码</h3>
+                <div class="group clear">
+                    <label class="suninfo_cont_str">登录密码</label>
+                    <input id="admin_pwd" type="password"  class="w260"  value="">
+                    <span class="msg">admin登录密码</span>
+                </div>
+                <div class="group clear">
+                    <label class="suninfo_cont_str">新密码</label>
+                    <input id="newpwd" class="w260" type="password" value="">
+                    <span class="msg"></span>
+                </div>
+                <div class="group clear">
+                    <label class="suninfo_cont_str">确认密码</label>
+                    <input id="newpwdagin" class="w260" type="password" value="">
+                    <span class="msg"></span>
+                </div>
+            </div>
+            <div class="sure_btn mtp_20">
+                <a class="reboot" id="btnPwd_sub">保存</a>
+                <a class="shutdown" id="btnPwd_Res">取消</a>
+            </div>
+        </div>
+        <input type="hidden" id="hidPwd_name" value="" />
+    </div>
+</div>
+<div id="popupLayer_StatusView" class="popup-layer">
+    <div id="popupLayerBox_StatusView" class="popup-layer-box StatusView" style="overflow:hidden;">
+        <i id="closePopupLayer_StatusView" class="close-popupLayer none"></i>
+        <div style="text-align:center;">
+            <img src="/static/images/Default/public/loading.gif" style="vertical-align:middle; width:30px; height:30px;" />
+            <span id="viewText" style=" margin-left:10px;">正在删除用户，请耐心等待，不要进行其它操作......</span>
+        </div>
+    </div>
+</div>
+<div id="popupLayer_Del" class="popup-layer popupLayer_WhetherDel">
+    <div id="popupLayerBox_Del" class="popup-layer-box del-popup-layer" style="overflow:hidden;">
+        <i id="closePopupLayer_Del" class="close-popupLayer"></i>
+        <h3 class="shoot-tit">删除用户</h3>
+        <div class="shoot-cont">
+            <p class="WhetherTip"><i class="WhetherTipIcon"></i>您确定要删除此用户？</p>
+            <div class="WhetherBtn">
+                <a id="sureDel_Btn">确定</a>
+                <a id="cancelDel_Btn">取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block footerJavascript %}
+<script type="text/javascript">
+    $(function(){
+        $('#systemRt-cont').niceScroll({
+            cursorcolor: "#999",
+            cursoropacitymax: 1,
+            touchbehavior: false,
+            cursorwidth: "5px",
+            cursorborder: "0",
+            cursorborderradius: "5px"
+        });
+        $(".btnGroup").click(function() {
+            var UserName =$(this).attr("value");
+            $("#grouppage").html("<iframe src=\"usergrouplist.html?UserName="+UserName+"\" frameborder=\"0\" scrolling=\"no\" style=\"width:100%; height:200px; overflow:hidden; border:0px;\"></iframe>");
+            Popup.init('closePopupLayer_GroupInfo', 'popupLayer_GroupInfo', 'popupLayerBox_GroupInfo');
+            Popup.popup();
+        })
+        //修改密码-------------------------------------------------------------------------------------------------------------------------
+        $("#user_list .btnPwd").click(function() {
+            Popup.init('closePopupLayer_UpdatePwdSys', 'popupLayer_UpdatePwdSys', 'popupLayerBox_UpdatePwdSys');
+            Popup.popup();
+            var name = $(this).attr("value")
+            $("#hidPwd_name").val(name); //用户名
+            $("#admin_pwd").val("");//登录密码
+            $("#newpwd").val("");//新密码
+            $("#newpwdagin").val("");//确认密码
+        });
+        //修改密码 点击保存
+        $("#btnPwd_sub").click(function() {
+            var uname =  $("#hidPwd_name").val();
+            var admin_pwd = $("#admin_pwd").val();
+            var newpwd = $("#newpwd").val();
+            var newpwdagin = $("#newpwdagin").val();
+            if(newpwd.length<5)
+            {
+                alert("密码不能少于5个字符！");
+                $("#newpwd").focus();
+                return false;
+            }
+            if(newpwd != newpwdagin)
+            {
+                alert("新密码和确认密码不相同，请重新输入！");
+                return false;
+            }
+            var datas = {uname:uname,admin_pwd:admin_pwd,newpwd:newpwd};
+
+            $.post("/default/accountc/resetpwduser/", datas, function(data, status) {
+                if (data.returncode=="100100000") {
+                    alert("提交成功！")
+                    $("#closePopupLayer_UpdatePwdSys").click();
+                } else if(data.returncode == "100102246"){
+                    alert(data.message)
+                    window.parent.location = "/";
+                }
+                else
+                {alert(data.message);}
+            },'json');
+        });
+
+        //修改密码 点击取消
+        $("#btnPwd_Res").click(function() {
+            $("#txtNewPwd").val("");
+            $("#txtComNewPwd").val("");
+            $("#closePopupLayer_UpdatePwdSys").click();
+        });
+
+        //删除用户
+        $("#user_list .btnDel").click(function() { //删除用户
+            var name = $(this).attr("value")
+            var datas = {
+                username: name
+            };
+            if (confirm("您确定要删除用户 '" + name + "' 吗?")) {
+                $.ajax({
+                    url: '/default/system/deluser',
+                    type: 'post',
+                    data: datas,
+                    timeout: 15000,
+                    beforeSend: function(XMLHttpRequest) {
+
+                        Popup.init('closePopupLayer_StatusView', 'popupLayer_StatusView', 'popupLayerBox_StatusView');
+                        Popup.popup();
+
+                    },
+                    success: function(data, textStatus) {
+                        if (data.returncode == "100100000") {
+                            alert("删除成功!");
+                            window.location = "userlist.html";
+                        }
+                        else if(data.returncode == "100102246"){
+                            alert(data.message)
+                            window.parent.location = "/";
+                        }
+                        else {
+                            alert(data.message);
+                        }
+                    },
+                    complete: function(XMLHttpRequest, textStatus) {
+                        $("#viewText").text("执行完成!!!");
+                        $("#closePopupLayer_StatusView").click();
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        //  alert("出错了.--txtStatus:" + textStatus + " xmlhttprequest:" + XMLHttpRequest.statusText + "  errorthrown:" + errorThrown);
+                        $("#closePopupLayer_StatusView").click();
+                    }
+                });
+            }
+        })
+        function parentClick() {
+            Popup.closepopup();
+        }
+
+    })
+</script>
+{% endblock %}
+

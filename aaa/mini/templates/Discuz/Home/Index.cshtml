@@ -1,0 +1,147 @@
+﻿@{
+    ViewBag.Title = "MiniNas管理系统";
+    Layout =null;
+}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="shortcut icon" href="/Images/Discuz/Home/ico/index.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/Content/Discuz/home.css">
+    <link rel="stylesheet" href="/Content/public/home.css">
+    <script type="text/javascript" src="/Scripts/jquery-1.8.2.js"></script>
+    <script type="text/javascript" src="/Scripts/Discuz/js/base.js"></script>
+    <script type="text/javascript" src="/Scripts/popup.mini.js"></script>
+    <script src="~/Scripts/PluginJavascript.js"></script>
+    <title>系统主页</title>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".linfo").mouseover(function () {
+                $(".llist").slideDown(500);
+            });
+            $(".llist").mouseleave(function () {
+                $(this).slideUp(500);
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        //弹出隐藏层
+        function ShowDiv(show_div, bg_div) {
+            document.getElementById(show_div).style.display = 'block';
+            document.getElementById(bg_div).style.display = 'block';
+            var bgdiv = document.getElementById(bg_div);
+            bgdiv.style.width = document.body.scrollWidth;
+            $("#" + bg_div).height($(document).height());
+        };
+        //关闭弹出层
+        function CloseDiv(show_div, bg_div) {
+            document.getElementById(show_div).style.display = 'none';
+            document.getElementById(bg_div).style.display = 'none';
+        };
+
+        $(function () {
+            $("input[id^='txt']").get(0).focus();
+
+            //-----
+            var trs = $("#tb1 tr:gt(0):not(:last):not(:last)");
+            console.log(trs);
+            var total = $("#tb1 tr:last");
+            console.log(total);
+        })
+    </script>
+</head>
+
+<body>
+    <div class="nasmain">
+        <div class="indexHead clear">
+            <div id="fade" class="black_overlay">
+            </div>
+            <!--about-->
+            <div id="MyDiv" class="white_content">
+                <div class="pop-case-close" style="text-align: right; cursor: default; height: 40px;">
+                    <li>关于系统</li>
+                    <li onclick="CloseDiv('MyDiv','fade')"><a href="#">×</a></li>
+                </div>
+                <ul class="pop-case-content">
+                    <li><img src="/Images/Discuz/home-main/qnap-logo-b.png"></li>
+                    <li>Version 1.1.266</li>
+                    <li>www.winsuntech.cn</li>
+                    <li>版权所有©2014上海闻上信息科技有限公司</li>
+                    <li id="pop-about-button" onclick="CloseDiv('MyDiv','fade')"><a href="#">确定</a></li>
+                </ul>
+            </div>
+            <!-- about end -->
+            <!--change password-->
+            <div id="MyDiv1" class="white_content">
+                <div class="pop-case-close" style="text-align: right; cursor: default; height: 40px;">
+                    <li>更改密码</li>
+                    <li id="close" onclick="CloseDiv('MyDiv1','fade')"><a href="#">×</a></li>
+                </div>
+                <ul class="pop-case-content">
+                    <li class="code-commen">
+                        <label for="male">旧密码:</label>
+                        <input type="text" name="old">
+                    </li>
+                    <li class="code-commen">
+                        <label for="male">新密码:</label>
+                        <input type="text" name="new">
+                    </li>
+                    <li>
+                        <label for="male">确认密码:</label>
+                        <input type="text" name="confirm">
+                    </li>
+                    <li id="pop-about-button1" onclick="CloseDiv('MyDiv1','fade')"><a href="#">保存</a></li>
+                </ul>
+            </div>
+            <!-- change password end -->
+            <div class="ilogo fl"></div>
+            <div class="ilogin rt">
+                <div class="linfo">
+                    <span id="cur_user_name">admin</span><i></i>
+                </div>
+                <div class="llist">
+                    <ul>
+                        <li id="liPwd" class="fun" onclick="ShowDiv('MyDiv1','fade')">
+                            <i class="i1"></i><span class="text suninfo_str" >变更密码</span>
+                        </li>
+                        <li id="chout" class="fun" href="">
+                            <i class="i2"></i><span class="text suninfo_str">注销</span>
+                        </li>
+                        <li id="liInfo" class="fun help" onclick="ShowDiv('MyDiv','fade')">
+                            <i class="i3"></i><span class="text suninfo_str">关于</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="indexMain">
+            <ul>
+                <li class="li01">
+                    <a href="@Url.Action("Index","Photo")"><span class="icon"><img src="/Images/Discuz/home-main/icon_photo.png" width="140" height="140" /></span><p class="text suninfo_str" ns="Index">照片中心</p></a>
+                </li>
+                <li class="li02">
+                    <a href="@Url.Action("Index", "Music")"><span class="icon"><img src="/Images/Discuz/home-main/icon_music.png" width="140" height="140" /></span><p class="text suninfo_str" ns="Index">音频中心</p></a>
+                </li>
+                <li class="li02">
+                    <a href="@Url.Action("Index", "Video")"><span class="icon"><img src="/Images/Discuz/home-main/icon_video.png" width="140" height="140" /></span><p class="text suninfo_str" ns="Index">视频中心</p></a>
+                </li>
+                <li class="li02">
+                    <a href="@Url.Action("Index", "Download")"><span class="icon"><img src="/Images/Discuz/home-main/icon_download.png" width="140" height="140" /></span><p class="text suninfo_str" ns="Index">下载中心</p></a>
+                </li>
+                <li class="li01">
+                    <a href="@Url.Action("Index", "BTDownload")"><span class="icon"><img src="/Images/Discuz/home-main/icon_bt.png" width="140" height="140" /></span><p class="text suninfo_str" ns="Index">BT中心</p></a>
+                </li>
+                <li class="li03">
+                    <a href="@Url.Action("Index", "FileCenter")"><span class="icon"><img src="/Images/Discuz/home-main/icon_doc.png" width="140" height="140" /></span><p class="text suninfo_str" ns="Index">文件中心</p></a>
+                </li>
+                <li id="systemmanage" class="li03" >
+                    <a href="@Url.Action("Index", "System")"><span class="icon"><img src="/Images/Discuz/home-main/icon_set.png" width="140" height="140" /></span><p class="text suninfo_str" ns="Index">系统管理</p></a>
+                </li>
+                <li id="systemmanage" class="li03">
+                    <a href="@Url.Action("Index", "ThunderDownload")"><span class="icon"><img src="/Images/Discuz/home-main/icon_set.png" width="140" height="140" /></span><p class="text suninfo_str" ns="Index">迅雷远程</p></a>
+                </li>
+            </ul> 
+        </div>
+    </div>
+</body>

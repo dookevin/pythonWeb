@@ -1,0 +1,86 @@
+﻿{% extends "Default/Shared/ContentMaster.html"%}
+
+<!--标题-->
+{% block title %}
+<title>新建用户组 - MiniNas管理系统</title>
+{% endblock %}
+<!--css-->
+{% block css %}
+{% endblock %}
+<!--javascript-->
+{% block javascript %}
+{% endblock %}
+
+{% block body %}
+<div class="road">
+    <span class="suninfo_str">系统管理 > 系统设置 > 恢复默认设置</span>
+</div>
+<div class="rtgy-box">
+    <h3>恢复默认设置</h3>
+    <div class="systemRt-cont4" id="systemRt-cont">
+        <div class="set pbt_50">
+            <div class="Description_content">
+                <p><span>温馨提示：重置之前，请重启您的NAS机再进行操作。</span></p><br>
+                <p>若要恢复设定，请按下 '重置' 以恢复出厂设定值。</p>
+                <p><span>警告：若按 [重置] ，所有硬盘数据、用户账号、网络磁盘及系统设定等会全部删除并回复至默认值。请先备份系统内的数据及设定，再进行重置。</span></p>
+            </div>
+            <div class="sure_btn mlf_180"><a id="resetBtn">重置</a></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block popup %}
+<div id="popupLayer_Reset" class="popup-layer popupLayer_Whether">
+    <div id="popupLayerBox_Reset" class="popup-layer-box" style="overflow:hidden;">
+        <i id="closePopupLayer_Reset" class="close-popupLayer none"></i>
+        <div class="Whether-BombBox">
+            <p class="WhetherTit">是否<span>重置</span></p>
+            <p class="WhetherTip">重置成功，将在5秒后重新启动！</p>
+            <a id="ResetYes">是</a>
+            <a id="resetNo">否</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block footerJavascript %}
+<script type="text/javascript">
+    $(function(){
+        $('#systemRt-cont').niceScroll({
+            cursorcolor: "#999",
+            cursoropacitymax: 1,
+            touchbehavior: false,
+            cursorwidth: "5px",
+            cursorborder: "0",
+            cursorborderradius: "5px"
+        });
+        $('#resetBtn').click(function(){
+            Popup.init('closePopupLayer_Reset', 'popupLayer_Reset', 'popupLayerBox_Reset');
+            Popup.popup();
+        });
+
+        $("#resetYes").click(function(){
+            $.post("/default/system/dorestore", function (data) {
+                if (data.returncode == "100100000") {
+                    window.parent.location = "/";
+                }
+                else if(data.returncode == "100102246"){
+                    alert(data.message)
+                    window.parent.location = "/";
+                }
+                else
+                {alert(data.message);}
+            })
+        });
+        //升级弹框 否
+        $('#resetNo').click(function(){
+            $("#closePopupLayer_Reset").click();
+        });
+
+    })
+
+</script>
+{% endblock %}
+

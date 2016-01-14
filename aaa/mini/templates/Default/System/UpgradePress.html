@@ -1,0 +1,111 @@
+<!--{% extends "Default/Shared/ContentMaster.html"%}-->
+
+<!--&lt;!&ndash;标题&ndash;&gt;-->
+<!--{% block title %}-->
+<!--<title>新建用户组 - MiniNas管理系统</title>-->
+<!--{% endblock %}-->
+<!--&lt;!&ndash;css&ndash;&gt;-->
+<!--{% block css %}-->
+<!--{% endblock %}-->
+<!--&lt;!&ndash;javascript&ndash;&gt;-->
+<!--{% block javascript %}-->
+<!--{% endblock %}-->
+
+<!--{% block body %}-->
+
+<!--{% endblock %}-->
+
+<!--{% block popup %}-->
+
+<!--{% endblock %}-->
+
+
+<!--{% block footerJavascript %}-->
+
+<!--{% endblock %}-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <script src="/static/js/jquery-1.8.2.min.js"></script>
+    <script src="/static/js/public.js"></script>
+    <!--[if IE]><script type="text/javascript" src="/static/js/UpgradePress/excanvas.js"></script><![endif]-->
+
+    <script src="/static/js/UpgradePress/jquery.knob.js"></script>
+    <!--[if lt IE 10]>
+    <script type="text/javascript" src="/static/js/UpgradePress/PIE.js"></script>
+    <![endif]-->
+    <script src="/static/js/CrossDomain/jquery.xdomainajax.js"></script>
+    <script src="/static/js/CrossDomain/qunit.js"></script>
+
+    <link href="/static/css/public.css" rel="stylesheet" />
+
+</head>
+<body>
+<div class="Upgradepopup-layer">
+    <div class="Upgradepopup-layer-box">
+        <span class="bfbTex">0%</span>
+        <span class="upgradeTip">更新过程中请不要关机</span>
+        <div class="loadbox">
+            <input type="text" value="0" class="dial" >
+            <div class="loadCont">
+                <span class="Nowjz-cont">操作系统</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="diviframe">
+    <iframe  id="iframe" name="iframe" width="0" height="0" src="" onload="getData()"  ></iframe>
+</div>
+</body>
+</html>
+<script>
+
+    var ip = getQueryString("ip");
+    var press = 0;
+    function getData(){
+            var iframe = document.getElementById("iframe");
+            iframe.onload=function(){
+                var data = iframe.contentWindow.name;
+              //  alert(data)
+                var strobj = eval("("+data+")");
+                press = strobj.PROCCESE ;
+            }
+            iframe.src = "about:blank";
+    }
+
+$(function() {
+    getPress();
+});
+
+function clock() {
+
+    $(".dial").val(press).trigger("change");
+    $(".bfbTex").text(press+"%");
+
+    $("#diviframe").html("<iframe  id=\"iframe\" name=\"iframe\" width=\"0\" height=\"0\" src=\"http://"+ip+":51234\" onload=\"getData()\"  ></iframe>")
+
+    setTimeout("clock()", 1000);
+}
+clock();
+function getPress()
+{
+    $(".dial").knob({
+        change : function (value) {
+            //console.log("change : " + value);
+        },
+        width:210,//宽度
+        height:210,
+        thickness:0.07,//厚度按百分几计算
+        fgColor:'#fec524',//前景色
+        //displayInput:false,//不显示input
+        bgColor:'#fff'//背景色
+        //readOnly:true,//只读
+        //linecap:'round',
+        //inputColor:'#f60', //数字的颜色
+    });
+}
+</script>
+</html>

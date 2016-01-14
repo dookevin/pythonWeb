@@ -1,0 +1,101 @@
+﻿@{
+    ViewBag.Title = "UserGroup";
+    Layout = "~/Views/Templates/Discuz/Shared/_SystemLayout.cshtml";
+}
+
+
+<div class="road">
+    <span class="suninfo_str">首页 > 共享与权限 > 用户群组</span>
+</div>
+<div class="rtgy-box">
+    <div class="rtgy-cont">
+        <h3>用户群组</h3>
+        <div class="add_list">
+            <a class="add_btn" href="AddUsergroup"><i>+</i>新建用户群组</a>
+        </div>
+        <div class="tabBox">
+            <table id="user_list" width="100%" border="0" cellspacing="0" cellpadding="0" class="tab01">
+                <thead>
+                    <tr class="tab_mean">
+                        <td width="25%">名称</td>
+                        <td width="30%">描述</td>
+                        <td class="text-center" width="35%">动作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>hehe</td>
+                        <td>hehe</td>
+                        <td class="text-center"><p><a class="btn1" title="详细信息" id="folderInfo">详细信息</a><a class="btn3" title="编辑" href="InsideUserGroupEdit">编辑</a><a class="btn5" title="删除">删除</a></p></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!--  弹框 用户群组 - 详细信息    -->
+<div id="popupLayer_FolderInfo" class="popup-layer">
+    <div id="popupLayerBox_FolderInfo" class="popup-layer-box folderInfo">
+        <i id="closePopupLayer_FolderInfo" class="close-popupLayer"></i>
+        <h2 class="shoot-tit">用户群组 - 详细信息</h2>
+        <div class="shoot-cont">
+            <h3>用户群组 - 详细信息</h3>
+            <h4>基础设置</h4>
+            <div class="set">
+                <div class="group clear">
+                    <label class="suninfo_cont_str">名称</label>
+                    <input type="text" class="w200" value="estor">
+                    <span class="msg"><font>*</font></span>
+                </div>
+                <div class="group clear">
+                    <label class="suninfo_cont_str">描述</label>
+                    <textarea class="text_box w200"></textarea>
+                    <span class="msg msg_bottom"> </span>
+                </div>               
+            </div>
+        </div>
+    </div>
+</div>
+<!--  弹框 用户群组 - 编辑    -->
+
+
+<div id="popupLayer_EditInfo" class="popup-layer">
+    <div id="popupLayerBox_EditInfo" class="popup-layer-box folderInfo">
+        <i id="closePopupLayer_EditInfo" class="close-popupLayer"></i>
+        <h3 class="shoot-tit">用户群组 - 编辑</h3>
+        <div class="shoot-cont">
+            <h4>基础设置</h4>
+            <div class="set">
+                <div class="group clear">
+                    <label class="suninfo_cont_str">名称</label>
+                    <input type="text" class="w260" value="estor">
+                    <span class="msg"><font>*</font></span>
+                </div>
+                <div class="group clear">
+                    <label class="suninfo_cont_str">描述</label>
+                    <textarea class="w260 sext_w260"></textarea>
+                    <span class="msg msg_bottom"> </span>
+                </div>
+                <div class="sure_btn mlf_180">
+                    <a class="reboot mrt_20">保存</a>
+                    <a class="shutdown">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $("#folderInfo").click(function () {
+        Popup.init('closePopupLayer_FolderInfo', 'popupLayer_FolderInfo', 'popupLayerBox_FolderInfo');
+        Popup.popup();
+    })
+
+    $("#EditInfo").click(function () {
+        Popup.init('closePopupLayer_EditInfo', 'popupLayer_EditInfo', 'popupLayerBox_EditInfo');
+        Popup.popup();
+    })
+</script>

@@ -1,0 +1,584 @@
+﻿
+a {
+    cursor: pointer;
+}
+.ztree_ul li.ztree_li{}
+.ztree_ul li.ztree_li a.ztree_a{line-height:36px; color:#686f76; display:block; height:36px; padding-left:40px;}
+.ztree_ul li.ztree_li a.ztree_a:hover{color:#ff7b2c;}
+.ztree_ul li.ztree_li a h4{line-height:40px; font-weight:bold; color:#4a4545;}
+.ztree_ul li.ztree_li a i.ztree_icon{width:10px; height:10px; background-image: url(/Images/Discuz/public/arrows.png); background-repeat: no-repeat; margin-top:13px;float: left;}
+    .ztree_ul li.ztree_li a i.roots_close {background-position:0 0;}
+    .ztree_ul li.ztree_li a.ztree_a:hover i.roots_close {background-position:-10px 0;}
+    .ztree_ul li.ztree_li a i.roots_open {background-position:-20px 0;}
+    .ztree_ul li.ztree_li a.ztree_a:hover i.roots_open {background-position:-30px 0;}
+.ztree_ul li.ztree_li a .ztree_span {float:left; margin-left:5px;}
+.ztree_ul li.ztree_li ul.ztree_in_ul {display: none;}
+.ztree_ul li.ztree_li ul li a{padding-left:55px;background: #fff; border-top: 1px #fff solid;  border-bottom: 1px #fff solid; height:34px; line-height:34px; display:block;}
+.ztree_ul li.ztree_li ul li a:hover {background: #fff7f2; border-top: 1px #ffb88e solid;  border-bottom: 1px #ffb88e solid; height:34px; line-height:34px;}
+.ztree_ul li.ztree_li ul li a.ztree1_a_cur {background: #fff7f2; border-top: 1px #ffb88e solid;  border-bottom: 1px #ffb88e solid; height:34px; line-height:34px;}
+.ztree_ul li.ztree_li ul li span.ztree_in_span {float:left;margin-left:5px;}
+.ztree_in_li .ztree_in_ico {
+    background-image: url(/Images/Discuz/public/sys_Icon_all.png);
+    background-repeat: no-repeat;
+    float:left;
+    width:20px;
+    height:20px;
+    margin-top:7px;
+}
+.ztree_in_li .ztree1_in_ico {
+    background-position: 0 0;
+}
+.ztree_in_li .ztree2_in_ico {
+    background-position: -20px 0;
+}
+.ztree_in_li .ztree3_in_ico {
+    background-position: -40px 0;
+}
+.ztree_in_li .ztree4_in_ico {
+    background-position: -60px 0;
+}
+.ztree_in_li .ztree5_in_ico {
+    background-position: -80px 0;
+}
+.ztree_in_li .ztree6_in_ico {
+    background-position: 0 -20px;
+}
+.ztree_in_li .ztree7_in_ico {
+    background-position: -20px -20px;
+}
+.ztree_in_li .ztree8_in_ico {
+    background-position: -40px -20px;
+}
+.ztree_in_li .ztree9_in_ico {
+    background-position: -60px -20px;
+}
+.ztree_in_li .ztree10_in_ico {
+    background-position: -80px -20px;
+}
+.ztree_in_li .ztree11_in_ico {
+    background-position: 0px -40px;
+}
+.ztree_in_li .ztree12_in_ico {
+    background-position: -20px -40px;
+}
+.ztree_in_li .ztree13_in_ico {
+    background-position: -40px -40px;
+}
+.ztree_in_li .ztree14_in_ico {
+    background-position: -60px -40px;
+}
+.ztree_in_li .ztree15_in_ico {
+    background-position: -80px -40px;
+}
+.ztree_in_li .ztree16_in_ico {
+    background-position: 0px -60px;
+}
+.ztree_in_li .ztree17_in_ico {
+    background-position: -20px -60px;
+}
+.ztree_in_li .ztree18_in_ico {
+    background-position: -40px -60px;
+}
+.ztree_in_li .ztree19_in_ico {
+    background-position: -60px -60px;
+}
+.ztree_in_li .ztree20_in_ico {
+    background-position: -80px -60px;
+}
+
+/*right style*/
+.road {
+    padding:35px 0 0 25px;
+
+}
+.road .suninfo_str {
+    line-height: 14px;
+    font-size: 12px;
+    font-family: Arial;
+    display:block;
+    font-weight:bold;
+}
+.zl_content {
+    overflow: hidden;
+    display:none;
+}
+.rtgy-box {
+    padding:0 0 10px 25px;
+    overflow-y:auto;
+    height:100%;
+}
+ h3 {
+    background:url(/Images/Discuz/public/sys_Icon_all.png) no-repeat -25px -80px;
+    line-height:20px;
+    text-indent:15px;
+    font-family:"微软雅黑"；
+}
+.funlist {
+    clear: both;
+    overflow: hidden;
+    margin: 10px 0 20px;
+    border-top: 1px dashed #ddd;
+    padding: 20px 0px;
+}
+    .funlist li {
+        float: left;
+        margin-right: 20px;
+        display: inline;
+        width: 128px;
+        text-align: center;
+    }
+        .funlist li a {
+            display: block;
+        }
+            .funlist li a .span_img {
+                display: inline-block;
+                width: 98px;
+                height: 100px;
+                background-image: url(/Images/Discuz/public/sys_mean_Icon_rt_big.png);
+                background-repeat: no-repeat;
+            }
+            .funlist li a .span_txt {
+                display: block;
+                font-size: 12px;
+                color: #000;
+                line-height: 26px;
+                font-family:"微软雅黑";
+            }
+                .funlist li a:hover span {
+                    color: #be4406;
+                }
+            .funlist li a .span_img1{
+                background-position: 0 0;
+            }
+            .funlist li a .span_img2 {
+                background-position: -98px 0;
+            }
+            .funlist li a .span_img3 {
+                background-position: -196px 0;
+                ;
+            }
+            .funlist li a .span_img4 {
+                background-position: -294px 0;
+            }
+            .funlist li a .span_img5 {
+                background-position: -392px 0;
+            }
+            .funlist li a .span_img6 {
+                background-position: 0px -100px;
+            }
+            .funlist li a .span_img7 {
+                background-position: -98px -100px;
+            }
+            .funlist li a .span_img8 {
+                background-position: -196px -100px;
+            }
+            .funlist li a .span_img9 {
+                background-position: -294px -100px;
+            }
+            .funlist li a .span_img10 {
+                background-position: -392px -100px;
+            }
+            .funlist li a .span_img11 {
+                background-position: 0 -200px;
+            }
+            .funlist li a .span_img12 {
+                background-position: -98px -200px;
+            }
+            .funlist li a .span_img13 {
+                background-position: -196px -200px;
+            }
+            .funlist li a .span_img14 {
+                background-position: -294px -200px;
+            }
+            .funlist li a .span_img15 {
+                background-position: -392px -200px;
+            }
+            .funlist li a .span_img16 {
+                background-position: 0 -300px;
+            }
+            .funlist li a .span_img17 {
+                background-position: -98px -300px;
+            }
+            .funlist li a .span_img18 {
+                background-position: -196px -300px;
+            }
+            .funlist li a .span_img19 {
+                background-position: -294px -300px;
+            }
+            .funlist li a .span_img20 {
+                background-position: -392px -300px;
+            }
+
+/*-- Win FtpView 访问设置 start --*/
+
+.contentLine {
+        width: 100%;
+        border-top: 1px dashed #ddd;
+        margin: 10px 0px;
+        padding: 20px 0px;
+    }
+.set {
+    margin-bottom: 30px;
+}
+    .set h5{
+        color:#fff;
+        font-weight:bold;
+        line-height: 30px;
+        background:#f88d2d;
+        padding-left:13px;
+        margin:5px 0 20px;
+    }
+        .set h5.mtp_2, .tab_cont .mtp_2 {
+            margin-top: 2px;
+        }
+.m_4 {
+    margin: 4px 0 0 5px;
+    width:200px;
+}
+    .set .group {
+        margin-top: 10px;
+        line-height: 24px;
+    }
+        .set .group label.suninfo_cont_str {
+            width: 155px;
+            height:24px;
+            display: block;
+            text-align: right;
+            float: left;
+        }
+        .set .group #securitylist {
+            margin-left: 5px;
+            height:22px;
+            border: 1px solid #c6c6c6;
+            float:left;
+        }
+        .set .group .msg {
+            margin-left:8px;
+            color:#807e7e;
+            float:left;
+        }
+            .set .group .msg font {
+                color: #ce0404;
+                margin-right:8px;
+            }
+            .set .group span.txt_lf{
+                margin-right:5px;
+                color:#333;
+            }
+        .set .group input, .set select, .set textarea  {
+            height:22px;
+            line-height:22px;
+            float:left;
+            font-family:Arial;
+            color:#333;
+        }
+    .set .checkbox_group {
+        margin: 12px 0;
+        padding-left: 80px;
+    }
+    .set .w200 {
+        width: 200px;
+        border: 1px solid #c6c6c6;
+        background: #fff;
+        margin-left:5px;
+        padding:0 5px;
+    }
+    .set .text_box {
+        height: 50px;
+        padding:5px;
+        float:left;
+    }
+/*页面button样式*/
+.btnBox {
+    padding: 40px 0 0 160px;
+}
+    .btnBox a {
+        height: 30px;
+        display:inline-block;
+        background: #393f4d;
+        line-height: 30px;
+        font-family: "微软雅黑";
+        font-size: 14px;
+        color: #fff;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        border-radius: 5px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        margin-right:10px;
+        padding:0 30px;
+    }
+    .btnBox a:hover {
+        background: #535763;
+    }
+    .btnBox a:active {
+        background: #535763;
+    }    
+.mrt_10 {
+    margin-right: 10px;
+}
+.mtp_36 {
+    margin-top: 36px;
+}
+/*-- Win FtpView访问设置 End --*/
+/*--- 用户 ---*/
+.add_list {
+    height:24px;
+    padding:5px 20px 5px 0 ;
+    background: #f88d2d;
+    margin:8px 0 0;
+}
+    .add_list a {
+        background: #fff;
+        float: right;
+        height: 22px;
+        padding: 0 10px;
+        line-height: 22px;
+        margin-left:10px;
+        border: 1px solid #eee;
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        border-radius: 3px;
+    }
+        .add_list a i {
+            font-style: normal;
+            font-weight:bold;
+            margin-right:5px;
+        }
+        .add_list a:hover {
+            color: #fff;
+            background-color: #393f4d;
+        }
+.tabBox {
+    padding-bottom: 3px;
+    border-bottom: 2px solid #b2b1b2;
+    margin-top:5px;
+}
+    .tabBox table tr.tab_mean {
+        background: #dbdfe2;
+        font-weight: bold;
+    }
+            .tabBox table td {
+                height: 40px;
+                line-height: 40px;
+                padding-left: 15px;
+                text-align:left;
+            }
+                .tabBox table td.text-right {
+                    text-align: right;
+                }
+                .tabBox table td.text-center {
+                    text-align: center;
+                }
+                .tabBox table td p {
+                    padding-top: 10px;
+                    height:30px;
+                    text-align:center;
+                }
+                .tabBox table td p a {
+                    background-image: url(/Images/Discuz/public/sys_Icon_all.png);
+                    background-repeat:no-repeat;
+                    width:24px;
+                    height:20px;
+                    display:inline-block;
+                    text-indent:-99999px;
+                    font-style:normal;
+                    cursor: pointer;
+                    margin-right:5px;   
+                }
+                    .tabBox table td p a.btn1 {
+                        background-position: 0 -112px;
+                    }
+                    .tabBox table td p a.btn2 {
+                        background-position: -24px -112px;
+                    }
+                    .tabBox table td p a.btn3 {
+                        background-position: -48px -112px;
+                    }
+                    .tabBox table td p a.btn4 {
+                        background-position: -72px -112px;
+                    }
+                    .tabBox table td p a.btn5 {
+                        background-position: -96px -112px;
+                    }
+.text_red {
+    color: #f00;
+    padding-left: 80px;
+}
+.set select.w200 {
+    width: 212px;
+}
+.set select.w400, .set textarea.w400 {
+    width: 400px;
+}
+.set textarea.w400 {
+    height: 110px;
+}
+/*-- 磁盘管理 --*/
+.add_mtp {
+    margin-top: 2px;
+}
+.set h5.add_mtp {
+    margin-top: 2px;
+}
+.rightCol {
+    margin-top: 10px;
+}
+    .tab_nav ul li {
+        width: 117px;
+        float: left;
+    }
+        .tab_nav ul li a {
+            text-align: center;
+            line-height: 30px;
+            cursor: pointer;
+            font-size: 12px;
+            color: #333;
+            border: 1px solid #393f4d;
+            border-bottom: 0px;
+            border-radius: 5px 5px 0px 0px;
+            -moz-border-radius: 5px 5px 0px 0px;
+            -webkit-border-radius: 5px 5px 0px 0px;
+            color: #fff;
+            background: #393f4d;
+            font-family: Arial;
+            margin-right: 2px;
+            display:block;
+        }
+        .tab_nav ul li a:hover {
+            background: #746e6e;
+            border: 1px solid #746e6e;
+            border-bottom: 0px;
+        }
+        .tab_nav ul li.cur a {
+            background: #f88d2d;
+            border: 1px solid #f88d2d;
+            border-bottom: 0px;
+        }
+.tabBox table tr.tdbg {
+    background: #e3e3e3;
+}
+.tab_cont {
+    display:none;
+}
+.mlf-text {
+    margin-left: 100px;
+}
+/*-- 磁盘卷管理 --*/
+
+/*-- 时间区域设置 --*/
+.h120 {
+    height: 120px;
+}
+.nowTime {
+    padding-left: 80px;
+}
+.checkbox_group .suninfo_cont_str {
+    line-height:16px;
+    display:block;
+    float:left;
+}
+.checkbox_group .str {
+    line-height:13px;
+    display:block;
+    float:left;
+    margin-left:10px;
+}
+.checkbox_group input.inpBtn {
+    float: left;
+    margin-left:10px;
+}
+
+/* 电源设置 */
+.Description_content {
+    padding-left: 80px;
+}
+    .Description_content p {
+        margin-top: 12px;
+    }
+        .Description_content p span {
+            color: red;
+        }
+/*-- 升级系统 --*/
+.set .group .file-box {
+    float: left;
+    margin-left: 10px;
+    
+}
+    .set .group .file-box input {
+        width: 240px;
+        height: 20px;
+        line-height: 20px;
+        border: 1px solid #cdcdcd;
+        background: #fff;
+        padding: 2px;
+    }
+
+
+/*****弹框style******/
+.popup-layer .folderInfo {
+    width: 826px;
+    box-shadow: 0 0 10px rgb(150,150,150);
+    -webkit-box-shadow: 0 0 10px rgb(150,150,150);
+    -moz-box-shadow: 0 0 10px rgb(150,150,150);
+}
+.popup-layer .shoot-tit {
+    background: #000;
+    font-size: 14px;
+    padding-left: 5px;
+    display: block;
+    font-weight: bold;
+    height: 24px;
+    line-height: 24px;
+    color: #e77f38;
+    font-size: 12px;
+    font-family: 微软雅黑;
+    border-radius: 3px 3px 0 0; 
+    -webkit-border-radius: 3px 3px 0 0;
+    -moz-border-radius: 3px 3px 0 0; 
+}
+.popup-layer .shoot-cont {
+    overflow-y: auto;
+    padding-bottom: 20px;
+    padding:0 5px;
+    height:410px;
+    margin-top:10px;
+}
+    .popup-layer .shoot-cont h4 {
+        background: #f88d2d;
+        height: 30px;
+        line-height: 30px;
+        padding-left: 15px;
+        color: #fff;
+        font-weight: bold;
+        margin-top: 5px;
+        margin-bottom: 20px;
+    }
+    .popup-layer .shoot-cont ul {
+        padding:0 0 30px 0;
+    }
+        .popup-layer .shoot-cont ul li {
+            line-height: 30px;
+        }
+            .popup-layer .shoot-cont ul li span {
+                display:inline-block;
+                width: 155px;
+                text-align: right;
+                margin-right: 5px;
+            }
+    .popup-layer .shoot-cont table {
+        width: 100%;
+    }
+        .popup-layer .shoot-cont table td {
+            padding-left: 20px;
+            line-height:30px;
+        }
+        .popup-layer .shoot-cont table .tab-tit {
+            background: #f3f3f3;
+        }
+.yy-box {
+    text-align: center;
+    margin-top: 20px;
+    height:300px;
+}

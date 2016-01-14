@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+        <title>@ViewBag.Title - MiniNas管理系统</title>
+        <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" /> 
+        <link href="/Content/public.css" rel="stylesheet" />
+        <link href="/Content/Default/PluginCss.css" rel="stylesheet" />
+        <script src="/Scripts/jquery-1.8.2.min.js"></script>
+        <script src="/Scripts/popup.mini.js"></script>
+        <script src="/Scripts/public.js"></script>
+        <script src="/Scripts/PluginJavascript.js"></script>
+        <script src="/Scripts/base.js"></script>
+        <script src="~/Scripts/PhotoPlay/js/baguettebox.min.js"></script>
+        <script src="~/Scripts/scrollbar.js"></script>
+        <script language=javascript>
+            @*<!--
+            window.onerror=function(){return true;}
+            // -->*@
+
+            //window.onload = function () {
+            //    alert("a");
+            //    if (event.clientX > document.body.clientWidth && event.clientY < 0 || event.altKey) {
+            //        alert("你关闭了浏览器");
+            //    } else {
+            //        alert("你正在刷新页面");
+            //    }
+            //}
+
+
+        </script> 
+        @RenderSection("header", required: false)  
+    </head>
+<body onresize="ReSet()" onload="ReSet()">
+    <div class="tal_box">
+        <div class="tal_bg"></div>
+        <div class="smain">
+            <div class="indexMain">
+                <i id="close_tal_btn" class="close_tal_btn"></i>
+                <ul class="indexicon clear">
+                    <li class="li01"><a href="/Photo/Index"><span class="icon"><img src="/Images/Default/Home/nav-photo.png" width="130" height="130"></span><p class="text ">照片中心</p></a></li>
+                    <li class="li02"><a href="/Music/Index"><span class="icon"><img src="/Images/Default/Home/nav-music.png" width="130" height="130"></span><p class="text ">音频中心</p></a></li>
+                    <li class="li02"><a href="/Video/Index"><span class="icon"><img src="/Images/Default/Home/nav-video.png" width="130" height="130"></span><p class="text ">视频中心</p></a></li>
+                    <li class="li02"><a href="/Download/Index"><span class="icon"><img src="/Images/Default/Home/nav-download.png" width="130" height="130"></span><p class="text ">下载中心</p></a></li>
+                    <li class="li01"><a href="/BTDownload/Index"><span class="icon"><img src="/Images/Default/Home/nav-bt.png" width="130" height="130"></span><p class="text ">BT下载</p></a></li>
+                    <li class="li03"><a href="/FileCenter/Index"><span class="icon"><img src="/Images/Default/Home/nav-filecenter.png" width="130" height="130"></span><p class="text ">文件中心</p></a></li>
+                    <li class="li03"><a href="/System/Index"><span class="icon"><img src="/Images/Default/Home/nav-system.png" width="130" height="130"></span><p class="text ">系统管理</p></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="header">
+        <div class="header-wrapper clear">
+            <div class="ilogo fl">
+                <p class="site-title"><a href="/Home" id="logoBtn" title="回到首页"><img src="/Images/Default/Home/public-logo.png" /></a> </p>
+            </div>
+            <div class="to-Direction fl none">
+                <i class="to-Forward fl"></i>
+                <i class="to-Backward rt"></i>
+            </div>
+            <div class="rt">
+                <div id="iconstatus">
+                    @Html.Partial("~/Views/Templates/Default/Home/_LoginInfoPartial.cshtml")
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="body">
+        @RenderSection("featured", required: false)
+        <div class="main-content clear">
+            @RenderBody()
+        </div>
+    </div>
+    @RenderSection("scripts", required: false)
+    <script type="text/javascript">
+       
+        
+       
+        $().ready(function () {
+
+            
+
+            // Logo hover
+            //$("#logoBtn").hover(function (event) {
+            //    $(".tal_box").show();
+            //    $("#close_tal_btn").click(function () {
+            //        $(".tal_box").hide();
+            //    });
+            //    event.stopPropagation();
+            //});
+            //$(document).click(function () {
+            //    $(".tal_box").hide();
+            //});
+
+            // Logo hover Jump
+            $(".indexMain img").each(function (k, img) {
+                new JumpObj(img, 10);
+                $(img).hover(function () { this.parentNode.parentNode.className = "hover" });
+
+            });
+            $(".ilogin .llist ul li").each(function () {
+
+            })
+
+            $(".ilogin .linfo").mouseover(function () {
+                $(".ilogin .llist").slideDown(300);
+
+            })
+            $(".ilogin .llist").mouseleave(function () {
+                $(".ilogin .llist").slideUp(300);
+            })
+
+        });
+    </script>
+</body>
+</html>

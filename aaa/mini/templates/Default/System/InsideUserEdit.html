@@ -1,0 +1,131 @@
+{% extends "Default/Shared/ContentMaster.html"%}
+
+<!--标题-->
+{% block title %}
+<title>新建用户组 - MiniNas管理系统</title>
+{% endblock %}
+<!--css-->
+{% block css %}
+{% endblock %}
+<!--javascript-->
+{% block javascript %}
+{% endblock %}
+
+{% block body %}
+<div class="road">
+    <span class="suninfo_str">系统管理 > 共享与权限 > 用户</span>
+</div>
+<div class="rtgy-box">
+    <h3>用户 - 编辑</h3>
+    <div class="systemRt-cont4" id="systemRt-cont">
+        <div class="set pbt_50">
+            <h6><span class="icon-l"></span><span class="msg">基础设置</span></h6>
+            <div class="group clear">
+                <label class="suninfo_cont_str">账户</label>
+                <input class="w260" id="UserName" maxlength="15" name="UserName" type="text" disabled="disabled" value="{{ User.UserName }}" />
+                <span class="msg br"> <font>*</font>登录用户名。【中文、英文、数字、下划线、4-16个字符】</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">真实姓名</label>
+                <input class="w260" id="RealName" maxlength="15" name="RealName" type="text" value="{{ User.realname }}" />
+                <span class="msg"> <font>*</font>用户全名。【中文, 英文】</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">电子邮件</label>
+                <input class="w260" id="Email" maxlength="55" name="Email" type="text" value="{{ User.email }}" />
+                <span class="msg"></span>
+            </div>
+
+            <h6 class="none" ><span class="icon-l"></span><span class="msg">高级设置</span></h6>
+            <div class="group clear none">
+                <label class="suninfo_cont_str">配额</label>
+                <input type="text" class="w260" maxlength="15" value="0">
+                <span class="msg">GB</span><span class="msg"><font>*</font>用户磁盘空间配额</span>
+            </div>
+            <div class="sure_btn mlf_180 mtp_48">
+                <input type="submit" id="btnSub" class="reboot mrt_20" value="保存" />
+                <a href="/default/system/userlist">取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block popup %}
+
+{% endblock %}
+
+
+{% block footerJavascript %}
+<script>
+    $(function(){
+        $('#systemRt-cont').niceScroll({
+            cursorcolor: "#999",
+            cursoropacitymax: 1,
+            touchbehavior: false,
+            cursorwidth: "5px",
+            cursorborder: "0",
+            cursorborderradius: "5px"
+        });
+
+        //数据提交
+        $("#btnSub").click(function(){
+            //验证
+            var username = $("#UserName").val();
+            var realname = $("#RealName").val();
+            var email = $("#Email").val();
+            if(username.length<1){
+                alert("账户不能为空!");
+                $("#UserName").focus();
+                return false;
+            }
+            var patternUsername = /^[\u4e00-\u9fa50-9a-zA-Z_]{4,16}$/;    //中文、英文、数字、下划线、4-16个字符
+            var flagUsername = patternUsername.test(username);
+            if(!flagUsername)
+            {
+                alert("输入的账户名称格式有误，请重新输入！");
+                return false;
+            }
+            if(realname.length<1)
+            {
+                alert("真实姓名不能为空!");
+                $("#RealName").focus();
+                return false;
+            }
+            var patternRealname = /^[\u4e00-\u9fa5a-zA-Z]{2,}$/;      //中英文
+            var flagRealName= patternRealname.test(realname);
+            if(!flagRealName)
+            {
+                alert("输入的真实姓名格式有误!");
+                return false;
+            }
+            if(email.length<1)
+            {
+                alert("Email不能为空!");
+                $("#Email").focus();
+                return false;
+            }
+            var pattern = /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/;      //email
+            var bol= pattern.test(email);
+            if(!bol)
+            {
+                alert("输入的Email格式有误!");
+                return false;
+            }
+            var datas = {username:username,realname:realname,email:email}; //后台的参数
+            $.post("/default/system/edituser",datas,function( data){
+                if(data.returncode=="100100000")
+                {
+                    alert("保存成功!");
+                    window.location = "/default/system/userlist";
+                }else
+                {
+                    alert(data.message);
+                }
+            },'json')
+        })
+
+    })
+
+</script>
+{% endblock %}

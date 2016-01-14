@@ -1,0 +1,425 @@
+﻿
+body {
+    height: 100%;
+    width: 100%;
+    background-color: #f6f7f8;
+}
+html { overflow: hidden; }
+
+/***----------中间主框架------------****/
+.main-content {
+    padding-left:280px;
+}
+    .main-content .main-left {
+        width: 280px;
+        margin-left:-280px;
+        border-right: #eee 1px solid;
+        background: #fff;
+        color: #333;
+        filter: progid:DXImageTransform.Microsoft.Shadow(color=#eeeeee,direction=120,strength=4);
+        -moz-box-shadow: 3px 0px 3px #eeeeee;
+        -webkit-box-shadow: 3px 0px 3px #eeeeee;
+        box-shadow: 3px 0px 3px #eeeeee;
+        overflow-y: auto;
+    }
+    /* left 分类样式 start  */
+        .main-content .main-left .lhead {
+            width: 280px;
+            position:relative;
+            margin-top: 10px;
+        }
+            .main-content .main-left .lhead .vhead {
+                width: 280px;
+                height: 70px;
+                background-image: url(/Images/Discuz/public/list.png);
+                background-repeat: no-repeat;
+                cursor:pointer;
+            }
+            .main-content .main-left .lhead .vhead1 {
+                background-position: 0 0;
+            }
+            .main-content .main-left .lhead .vhead2 {
+                background-position: 0 -70px;
+            }
+            .main-content .main-left .lhead .vhead3 {
+                background-position: 0 -140px;
+            }
+            .main-content .main-left .lhead .vhead4 {
+                background-position: 0 -210px;
+            }
+            .main-content .main-left .lhead .vhead5 {
+                background-position: 0 -280px;
+            }
+            .main-content .main-left .lhead .vhead6 {
+                background-position: 0 -350px;
+            }
+            .main-content .main-left .lhead .vhead7 {
+                background-position: 0 -420px;
+            }
+            .main-content .main-left .lhead .indexUrl {
+                width: 36px;
+                height: 70px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                display:block;
+            }
+            .main-content .main-left .lhead .stationList {
+                width: 244px;
+                position:absolute;
+                right:0; 
+                top:70px;
+                z-index:100;
+                display:none;
+            }
+                .main-content .main-left .lhead .stationList li {
+                    width: 244px;
+                    height:70px;
+                    background-image: url(/Images/Discuz/public/list.png);
+                    background-repeat: no-repeat;
+                    background-position:-36px -560px;
+                    cursor:pointer;
+                }
+                    .main-content .main-left .lhead .stationList li:hover {
+                        background-position:-36px -490px;
+                    }
+                    .main-content .main-left .lhead .stationList li i {
+                        display: block;
+                        background-image: url(/Images/Discuz/public/icons.png);
+                        background-repeat: no-repeat;
+                        width:32px;
+                        height:32px;
+                        float:left;
+                        margin:17px 0 0 40px;
+                    }
+                    .main-content .main-left .lhead .stationList li.li1 i {
+                        background-position:0 0;
+                    }
+                    .main-content .main-left .lhead .stationList li.li2 i {
+                        background-position:0 -32px;
+                    }
+                    .main-content .main-left .lhead .stationList li.li3 i {
+                        background-position:0 -64px;
+                    }
+                    .main-content .main-left .lhead .stationList li.li4 i {
+                        background-position:0 -96px;
+                    }
+                    .main-content .main-left .lhead .stationList li.li5 i {
+                        background-position:0 -128px;
+                    }
+                    .main-content .main-left .lhead .stationList li.li6 i {
+                        background-position:0 -160px;
+                    }
+                    .main-content .main-left .lhead .stationList li.li7 i {
+                        background-position:0 -192px;
+                    }
+                    .main-content .main-left .lhead .stationList li.li8 i {
+                        background-position:0 -224px;
+                    }
+                    .main-content .main-left .lhead .stationList li span {
+                        line-height: 70px;
+                        margin-left: 10px;
+                        color: #fff;
+                        font-size: 14px;
+                        font-weight: bold;
+                        font-family: "微软雅黑";
+                    }
+                    .main-content .main-left .lhead .stationList li a{display:block;}
+
+ /* left 分类样式 end  */
+
+  /* left 搜索框 style  */
+        .main-content .main-left .lsearch {
+            width:100%;
+            height:32px;
+             position:relative;
+            text-align: center;
+            margin-top: 15px;
+        }
+            .main-content .main-left .lsearch input {
+                width: 215px;
+                height: 30px;
+                line-height: 30px;
+                border: 1px solid #ccc;
+                padding: 0 25px 0 10px;
+                color: #999;
+                font-family:Arial;
+            }
+            .main-content .main-left .lsearch i {
+                background: url(/Images/Discuz/public/search.png) no-repeat;
+                cursor: pointer;
+                width:19px;
+                height:19px;
+                position:absolute;
+                right:18px;
+                top:6px;
+            }
+        .main-content .main-left .lcontent {
+            border-top: 1px dashed #ccc;
+            width: auto;
+            height: auto;
+        }
+            .main-content .main-left .lcontent h5.suninfo_str {
+                line-height: 40px;
+                margin-left: 40px;
+                font-weight:bold;
+                font-size:12px;
+            }
+/*  left style End  */
+/*  right style start  */
+    .main-content .main-right {
+        width: 100%;
+    }
+        .main-content .main-right .rt-content {
+            padding-left: 25px;
+            overflow:hidden;
+        }
+/* 照片中心 style start  */
+        .main-content .main-right .rhead {
+            margin-top: 36px;
+            margin-left: 20px;
+        }
+        .main-content .main-right .rhead .rLists{
+            margin-right:50px;
+            position:relative;
+            line-height:33px;
+            cursor: pointer;
+        }
+            .main-content .main-right .rhead .rLists .menu-hd {
+                cursor: pointer;
+            }
+        .main-content .main-right .rhead .rLists span{
+            line-height:20px;
+            margin-right:8px;
+        }
+        .main-content .main-right .rhead .rLists .menu-hd:hover span{
+            color: #ff7b2c;
+        }
+            .main-content .main-right .rhead .rLists i {
+                display: block;
+                width: 10px;
+                height: 10px;
+                background: url(/Images/Discuz/public/arrow.png) no-repeat 0 -41px;
+                float: right;
+                margin-top: 11px;
+            }
+            .main-content .main-right .rhead .rLists .photo_upload i{background-position:0 0;}
+            .main-content .main-right .rhead .rLists .photo_upload:hover i{background-position:0 -13px;}
+            .main-content .main-right .rhead .rLists .menu-hd:hover i {
+                background-position: 0 -28px;
+            }
+            .main-content .main-right .rhead .rLists ul {
+                position: absolute;
+                top: 30px;
+                left: 0px;
+                background: #fff;
+                border: 1px solid #ccc;
+                cursor: pointer;
+                display: none;
+                z-index: 99;
+            }
+                .main-content .main-right .rhead .rLists ul li {
+                    width:70px;
+                    text-align: center;
+                    line-height:24px;
+                    cursor: pointer;
+                }
+                    .main-content .main-right .rhead .rLists ul li a {
+                        display:block;
+                        color: #000;
+                    }
+                        .main-content .main-right .rhead .rLists ul li#album_add a:hover {
+                            color:#fff;
+                        }
+                        .main-content .main-right .rhead .rLists ul li a:hover {
+                            background: #000;
+                            color:#fff;
+                        }
+                    .main-content .main-right .rhead .rLists ul li.disabled a {
+                        color: #939393;
+                    }
+                        .main-content .main-right .rhead .rLists ul li.disabled a:hover {
+                            color: #939393;
+                        }
+            .main-content .main-right .rhead .rhead_ul li {
+                float: left;
+                line-height: 33px;
+                margin-right: 30px;
+                cursor:pointer;
+                border:1px solid #ddd;
+                padding:0 20px; 
+            }
+            .main-content .main-right .rhead .rhead_ul li:hover{background:#fff; color:#ff7c2c;}
+        .main-content .main-right .ulopertion li {
+            float: left;
+            margin-left: 20px;
+            cursor: pointer;
+            height: 33px;
+            line-height: 33px;
+        }
+        .main-content .main-right .ulopertion li:hover{
+            color: #ff7b2c;
+        }
+            .main-content .main-right .ulopertion li span {
+                margin-left: 10px;
+            }
+            .main-content .main-right .ulopertion li i {
+                background-image: url(/Images/Discuz/public/btn_mode.png);
+                background-repeat:no-repeat;
+                float:left;
+                width:16px;
+                height:14px;
+                margin-top:10px;
+            }
+            .main-content .main-right .ulopertion li#list i {
+                background-position: 0 -51px;
+            }
+            .main-content .main-right .ulopertion li#thumbnail i {
+                background-position: 0 0;
+            }
+            
+            .main-content .main-right .ulopertion li#list:hover i{
+                background-position: 0 -34px;
+            }
+            .main-content .main-right .ulopertion li#thumbnail:hover i{
+                background-position: 0 -17px;
+            }
+            .main-content .main-right .ulopertion li#play i {
+                width: 92px;
+                height:33px;
+                background:url(/Images/Discuz/public/play.png) no-repeat 0 0;
+                margin-top:0;
+            }
+            .main-content .main-right .ulopertion li#play:hover i{
+                background-position: 0 -66px;
+            }
+        .main-content .main-right .hrhead {
+            line-height: 35px;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            padding:0 5px 0 20px;
+            margin-top:10px;
+        }
+            .main-content .main-right .hrhead i {
+                margin: 0 10px;
+            }
+        .main-content .main-right .table_list {
+            table-layout: fixed;
+            margin-right: 50px;
+        }
+            .main-content .main-right .table_list tr.title {
+                background: #dbdfe2;
+            }
+            .main-content .main-right .table_list tbody tr:hover {
+                background: #fff;
+            }
+            .main-content .main-right .table_list tr td {
+                height: 36px;
+                border-bottom: 1px solid #dbdfe2;
+                color: #333;
+                font-family: arial;
+                padding: 0 10px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+            .list_checkAll{width:60px; position:relative; display:none;}
+            .list_checkAll .checkbox{position:absolute; top:9px; right:5px; line-height:16px; }
+           .main-content .main-right .Thumbnail_list{display:none;}
+           .main-content .main-right .Thumbnail_list li{width:150px; float:left; margin-right:20px; margin-top:20px; background:#fff; padding:10px 10px 0; text-align:center; position:relative; cursor:pointer;}
+           .main-content .main-right .Thumbnail_list li:hover{background:#dbdfe2;}
+           .main-content .main-right .Thumbnail_list li img{width:150px; height:150px;}
+           .main-content .main-right .Thumbnail_list li b{font-weight:normal; line-height:32px; display:block;}
+           .main-content .main-right .Thumbnail_list li .checkbox{position:absolute; left:15px;  top:138px;}
+/* 照片中心 style end  */
+/* 音频中心 style start  */
+    .main-content .main-left .fun_list li {
+        height: 36px;
+        line-height: 36px;
+        cursor: pointer;
+        padding-left: 40px;
+    }
+        .main-content .main-left .fun_list li i {
+            width: 18px;
+            height: 12px;
+            background: url(/Images/Discuz/public/icons16.png) -22px -79px no-repeat;
+            float: left;
+            margin-top:12px;
+        }
+
+        .main-content .main-left .fun_list li span {
+            float: left;
+            margin-left:10px;
+        }
+        .main-content .main-left .fun_list li:hover{   background-color: #eeeeee;}
+.color_ye {
+    color: #ff7c2c;
+}
+/* 音频中心 style end  */
+/* 下载中心 style start  */
+.main-content .main-left .fun_list li i.Task_icon {
+    background: url(/Images/Discuz/public/zTreeStandard.png) 0 -85px no-repeat;
+    width: 13px;
+    height: 12px;
+}
+
+.cleartask {
+    background-image: url(/Images/Discuz/public/dnowload_btn.png);
+    background-repeat: no-repeat;
+    display: block;
+    width: 14px;
+    height: 14px;
+    margin-right: 10px;
+    float: left;
+    cursor:pointer;
+}
+.icon-pause {
+    background-position: -2px -43px;  
+}
+.icon-play {
+    background-position: -21px -43px;  
+}
+.icon-delete {
+    background-position: -41px -43px;  
+}
+.icon-pause:hover{ background-position: -2px -23px;}
+.icon-play:hover{background-position: -21px -23px;}
+.icon-delete:hover{background-position: -41px -23px;}
+/* 下载中心 style end  */
+
+/*滚动设置 style*/
+.rtgy-box{
+    padding: 0 0 30px 42px;
+    overflow-y: auto;
+    overflow-x: auto;
+    scrollbar-face-color: #bcbcbc;/*滚动——按钮颜色*/
+    scrollbar-arrow-color: #f1f1f1; /*箭头颜色*/
+    scrollbar-track-color: #f1f1f1; /*背景颜色*/
+    scrollbar-highlight-color: #a8a8a8; /*亮边颜色*/
+    scrollbar-shadow-color: #a8a8a8; /*暗边颜色*/
+    margin-top:15px;
+}
+.rtgy-box-center{
+    overflow-y: auto;
+    overflow-x: auto;
+    scrollbar-face-color: #bcbcbc;/*滚动——按钮颜色*/
+    scrollbar-arrow-color: #f1f1f1; /*箭头颜色*/
+    scrollbar-track-color: #f1f1f1; /*背景颜色*/
+    scrollbar-highlight-color: #a8a8a8; /*亮边颜色*/
+    scrollbar-shadow-color: #a8a8a8; /*暗边颜色*/
+}
+.rtgy-cont{
+           min-width:1024px;
+           max-width:2000px;
+           padding-bottom:50px;
+           overflow:hidden;
+}
+.left-panel, .treelist {
+    overflow-y: auto;
+}
+.treelist {
+    margin-top: 20px;
+}
+.left-panel {
+    margin-top: 14px;
+}

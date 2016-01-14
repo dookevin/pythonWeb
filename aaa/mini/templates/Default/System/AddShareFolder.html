@@ -1,0 +1,314 @@
+﻿{% extends "Default/Shared/ContentMaster.html"%}
+
+<!--标题-->
+{% block title %}
+<title>新建共享文件夹 - MiniNas管理系统</title>
+{% endblock %}
+<!--css-->
+{% block css %}
+{% endblock %}
+<!--javascript-->
+{% block javascript %}
+{% endblock %}
+
+{% block body %}
+<div class="road">
+    <span class="suninfo_str">首页 > 共享与权限 > 共享文件夹</span>
+</div>
+<div class="rtgy-box">
+    <h3>共享文件夹 - 新建</h3>
+    <div class="systemRt-cont" id="systemRt-cont">
+        <div class="set">
+            <h6><span class="icon-l"></span><span class="msg">基础设置</span></h6>
+            <div class="group clear">
+                <label class="suninfo_cont_str">名称</label>
+                <input type="text" class="w260" value="" id="txtName">
+                <span class="msg br"><font>*</font>文件夹名称。【中文、英文、数字、下划线、4-16个字符】</span>
+            </div>
+            <!-- 读写权限 -->
+            <div class="rw">
+                <!-- 所有人可读写部分 -->
+                <ul class="all-rw pubre">
+                    <li>
+                        <span>所有人可读写</span>
+                        <span class="rwonoff rw-on"></span>
+                    </li>
+                    <ul class="all-rw-list" id="rwName">
+                        <li><span>以下人可读写</span></li>
+
+                    </ul>
+                </ul>
+                <!-- 所有其他人只读部分 -->
+                <ul class="other-r pubre">
+                    <li>
+                        <span>所有其他人可只读</span>
+                        <span class="ronoff rw-on"></span>
+                    </li>
+                    <ul class="all-rw-list" id="rName">
+                        <li><span>以下人可读</span></li>
+
+                    </ul>
+                </ul>
+            </div>
+
+            <div class="group clear" id="available">
+                <label class="suninfo_cont_str">文件夹是否可见</label>
+                <input type="checkbox" name="isview" id="isview" ><label for="isview"></label>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">描述</label>
+                <textarea class="txtRemark" id="txtRemark"></textarea>
+                <span class="msg"></span>
+            </div>
+        </div>
+        <div class="sure_btn mlf_180 pbt_50 mtp_48">
+            <a class="reboot mrt_20" id="btnSub">新建</a>
+            <a class="shutdown" href="sharefolder.html">取消</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block popup %}
+<div id="popupLayer_StatusView" class="popup-layer">
+    <div id="popupLayerBox_StatusView" class="popup-layer-box StatusView" style="overflow:hidden;">
+        <i id="closePopupLayer_StatusView" class="close-popupLayer none"></i>
+        <div style="text-align:center;">
+            <img src="/static/images/Default/public/loading.gif" style="vertical-align:middle; width:30px; height:30px;" />
+            <span id="viewText" style=" margin-left:10px;">数据处理中，请耐心等待，不要进行其它操作......</span>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block footerJavascript %}
+<script type="text/javascript">
+    $(function() {
+        $('#systemRt-cont').niceScroll({
+            cursorcolor: "#999",
+            cursoropacitymax: 1,
+            touchbehavior: false,
+            cursorwidth: "5px",
+            cursorborder: "0",
+            cursorborderradius: "5px"
+        });
+
+        $(".rw .pubre .rwonoff").click(function(){
+            if($(this).hasClass("rw-on"))
+            {
+                $(this).removeClass("rw-on");
+                $(this).addClass("rw-on-off");
+
+
+                $.post("/default/system/getsfuname", function(data) {
+                    var str="";
+                    if (data.returncode=="100100000")
+                    {
+                        var jsonObj = data.data;
+
+                        str +="  <li><span>以下人可读写</span></li>";
+                        $.each(jsonObj, function (idx, item) {
+                            str +='<li><input type="checkbox" name="rw-name" id="rw-list-'+item.id +'" prv="'+item.name+'"><label for="rw-list-'+item.id +'"></label>'+item.name+'</li>';
+                        });
+                    }else
+                    {
+                        alert(data.message);
+                    }
+                    $("#rwName").html("");
+                    $("#rwName").append(str);
+                })
+
+
+                $("#rwName").animate({opacity: "1", right: "+=400"}, 500)
+                        .slideDown("slow")
+                        .animate({top: "20"}, "fast")
+
+
+                $(".other-r").animate({opacity: "0.1", left: "+=400"}, 500)
+                        .slideDown("slow")
+                        .animate({opacity: "1", right: "+=400"}, 500)
+
+            }else{
+                $(this).removeClass("rw-on-off");
+                $(this).addClass("rw-on");
+
+                $("#rwName").animate({opacity: "0.1", left: "+=400"}, 500)
+                        .slideToggle("slow")
+
+                $(".other-r").slideToggle("slow");
+
+                if($(".rw .pubre .ronoff").hasClass("rw-on-off"))
+                {
+                    $(".rw .pubre .ronoff").click();
+                }
+            }
+        })
+
+        $(".rw .pubre .ronoff").click(function(){
+            if($(this).hasClass("rw-on"))
+            {
+                $(this).removeClass("rw-on");
+                $(this).addClass("rw-on-off");
+
+                $("#rName") .slideDown("slow")
+                        .animate({top: "0"}, "fast")
+
+
+                $.post("/default/system/getsfuname", function(data) {
+                    var str="";
+                    if (data.returncode=="100100000")
+                    {
+                        var jsonObj = data.data;
+
+                        str +="  <li><span>以下人只读</span></li>";
+                        $.each(jsonObj, function (idx, item) {
+                            str +='<li><input type="checkbox" name="r-name" id="r-list-'+item.id +'"  prv="'+item.name+'"><label for="r-list-'+item.id +'"></label>'+item.name+'</li>';
+                        });
+                    }else
+                    {
+                        alert(data.message);
+                    }
+                    $("#rName").html("");
+                    $("#rName").append(str);
+                })
+
+            }else{
+                $(this).removeClass("rw-on-off");
+                $(this).addClass("rw-on")
+
+                $("#rName").slideUp("slow")
+                        .animate({top: "0"}, "fast")
+            }
+        })
+
+//        $.post("/default/system/getsfuname", function(data) {
+//
+//            if (data.returncode=="100100000")
+//            {
+//                var jsonObj = data.data;
+//                var str="";
+//                var c = jsonObj.length+1;
+//
+//                str +=" <tr class='userRow'>";
+//                str +=" <td rowspan='"+c+"' width='10%'>用户</td>";
+//                $.each(jsonObj, function (idx, item) {
+//                    str +=" <td class='uName' prv='"+item.id+"'>"+item.name+"</td><td>";
+//                    str +=" <div class='checkbox mlf_52'>";
+//                    str +=" <input id='chk_u_"+item.id+"r' type='radio' class='checkAll' value='2' name='checkone_"+item.name+"'>";
+//                    str +=" <label for='chk_u_"+item.id+"r'></label></div></td>";
+//                    str +=" <td><div class='checkbox mlf_52'>";
+//                    str +=" <input id='chk_u_"+item.id+"w' type='radio' class='checkAll' value='1' name='checkone_"+item.name+"'>";
+//                    str +=" <label for='chk_u_"+item.id+"w'></label> </div></td>";
+//
+//                    str +=" </tr>";
+//                });
+//            }else
+//            {
+//                alert(data.message);
+//            }
+//            $("#userList").append(str);
+//        })
+
+        $("#btnSub").click(function() {
+            var name =  $("#txtName").val();
+          //  var quota =  $("#txtQuota").val();
+            var description =  $("#txtRemark").val();
+            if(name.length<1)
+            {
+                alert("共享文件夹名称不能为空!");
+                return false;
+            }
+//            if(quota.length<1)
+//            {
+//                alert("容量不能为空!");
+//                return false;
+//            }
+            var available="no";
+
+            if($("#isview").attr("checked")=="checked")
+                available="yes";
+
+            var patternUsername = /^[\u4e00-\u9fa50-9a-zA-Z_]{4,16}$/;    //中文、英文、数字、下划线、4-16个字符-->
+            var flagUserName = patternUsername.test(name);
+            if(!flagUserName)
+            {
+                alert("输入的共享文件夹名称格式有误，请重新输入！")
+                return false;
+            }
+            if(description.length>100)
+            {
+                alert("共享文件夹描述不超过100个字符!");
+                return false;
+            }
+            var group="";
+            var rogroup = "";
+            var option=0;
+
+
+
+                $("input[type='checkbox'][name='rw-name']").each( function () {
+if($(this).is(":checked"))
+                group+=$(this).attr("prv")+" ";
+            })
+            $("input[type='checkbox'][name='r-name']").each( function () {
+                if($(this).is(":checked"))
+                    rogroup+=$(this).attr("prv")+" ";
+            })
+
+            var rw= $(".rwonoff").hasClass("rw-on");
+            var r = $(".ronoff").hasClass("rw-on");
+            if(rw&&r)
+                option=0;
+            if(!rw&&r)
+                option=1;
+            if(!rw&&!r)
+                option=2;
+
+
+            var datas = {name:name,available:available,description:description,allowguest:1,option:option,group : group,rogroup:rogroup}
+ //alert(JSON.stringify(datas))
+            $.ajax({
+                url: '/default/system/setsharefolder',
+                type: 'post',
+                data: datas,
+                timeout: 15000,
+                beforeSend: function(XMLHttpRequest) {
+                    Popup.init('closePopupLayer_StatusView', 'popupLayer_StatusView', 'popupLayerBox_StatusView');
+                    Popup.popup();
+                },
+                success: function(data, textStatus) {
+                    if (data.returncode=="100100000")
+                    {
+                        window.location = "sharefolder.html";
+                    }else
+                    {
+                        alert(data.message);
+                    }
+                },
+                complete: function(XMLHttpRequest, textStatus) {
+                    $("#viewText").text("执行完成!!!");
+                    $("#closePopupLayer_StatusView").click();
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    //  alert("出错了.--txtStatus:" + textStatus + " xmlhttprequest:" + XMLHttpRequest.statusText + "  errorthrown:" + errorThrown);
+                    $("#closePopupLayer_StatusView").click();
+                    window.location = "sharefolder.html";
+                }
+            });
+//            $.post("/default/system/setsharefolder", datas, function(data) {
+//
+//                if (data.returncode=="100100000")
+//                {
+//                    alert("保存成功!");
+//                    window.location = "sharefolder.html";
+//                }else
+//                {
+//                    alert(data.message);
+//                }
+//            })
+        })
+
+    })
+</script>
+{% endblock %}

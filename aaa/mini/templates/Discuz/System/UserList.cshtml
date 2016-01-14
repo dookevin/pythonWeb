@@ -1,0 +1,96 @@
+﻿@{
+    ViewBag.Title = "UserList";
+    Layout = "~/Views/Templates/Discuz/Shared/_SystemLayout.cshtml";
+}
+
+<div class="road">
+    <span class="suninfo_str">首页 > 共享与权限 > 用户</span>
+</div>
+<div class="rtgy-box">
+    <div class="rtgy-cont">
+        <h3>用户</h3>
+        <div class="add_list">
+            <a class="add_btn" href="AddUserlist"><i>+</i>新建用户</a>
+        </div>
+        <div class="tabBox">
+            <table id="user_list" width="100%" border="0" cellspacing="0" cellpadding="0" class="tab01">
+                <thead>
+                    <tr class="tab_mean">
+                        <td width="20%">账户</td>
+                        <td width="20%">真实姓名</td>
+                        <td width="20%">电子邮件</td>
+                        <td class="text-right" width="10%">配额</td>
+                        <td class="text-center" width="30%">动作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>hehe</td>
+                        <td>hehe</td>
+                        <td>afsa@er.com</td>
+                        <td class="text-right">2 GB </td>
+                        <td class="text-center"><p><a class="btn1" title="详细信息" id="folderInfo">详细信息</a><a class="btn2" title="变更密码">变更密码</a><a class="btn3" title="编辑" href="InsideUserEdit">编辑</a><a class="btn4" title="设置群组" id="GroupInfo">设置群组</a><a class="btn5" title="删除">删除</a></p></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div id="popupLayer_GroupInfo" class="popup-layer">
+    <div id="popupLayerBox_GroupInfo" class="popup-layer-box folderInfo">
+        <i id="closePopupLayer_GroupInfo" class="close-popupLayer"></i>
+        <h2 class="shoot-tit">设置群组信息</h2>
+        <div class="shoot-cont">
+            <h3>设置群组信息</h3>
+            <div class="tabBox">
+                <table class="shoot-tab">
+                    <tr class="tab_mean">
+                        <td width="10%">
+                            <input type="checkbox" id="selectAll">
+                        </td>
+                        <td width="10%">组名</td>
+                        <td width="80%">组描述信息</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="yy-box">
+                <a id="apply" class="yy-btn">应用</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="popupLayer_FolderInfo" class="popup-layer">
+    <div id="popupLayerBox_FolderInfo" class="popup-layer-box folderInfo">
+        <i id="closePopupLayer_FolderInfo" class="close-popupLayer"></i>
+        <h2 class="shoot-tit">用户 - 详细信息</h2>
+        <div class="shoot-cont">
+            <h3>用户 - 详细信息</h3>
+            <h4>基础设置</h4>
+            <ul>
+                <li><span>账户：</span>aa</li>
+                <li><span>真实姓名：</span>aa</li>
+                <li><span>电子邮件：</span>aa</li>
+            </ul>
+            <h4 class="mtp_20">高级设置</h4>
+            <ul>
+                <li><span>配额：</span>aa</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $("#folderInfo").click(function () {
+        Popup.init('closePopupLayer_FolderInfo', 'popupLayer_FolderInfo', 'popupLayerBox_FolderInfo');
+        Popup.popup();
+    })
+
+    $("#GroupInfo").click(function () {
+        Popup.init('closePopupLayer_GroupInfo', 'popupLayer_GroupInfo', 'popupLayerBox_GroupInfo');
+        Popup.popup();
+    })
+</script>

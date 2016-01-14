@@ -1,0 +1,112 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <title>多文件上传</title>
+    <!-- Load Queue widget CSS and jQuery -->
+
+    <link href="/static/js/plupload-2.1.2/jquery.ui.plupload/css/jquery.ui.plupload.css" rel="stylesheet" />
+    <script src="/static/js/jquery-1.8.2.min.js"></script>
+    <script src="/static/js/plupload-2.1.2/jquery.ui.1.8.23/jquery-ui-1.8.23.custom.min.js"></script>
+    <link href="/static/js/plupload-2.1.2/jquery.ui.1.8.23/jquery-ui-1.8.23.custom.css" rel="stylesheet" />
+    <script src="/static/js/plupload-2.1.2/browserplus-min.js"></script>
+
+    <script src="/static/js/plupload-2.1.2/plupload.full.min.js"></script>
+    <script src="/static/js/plupload-2.1.2/i18n/zh_CN.js"></script>
+    <script src="/static/js/plupload-2.1.2/jquery.ui.plupload/jquery.ui.plupload.js"></script>
+    <script src="/static/js/public.js"></script>
+    <script type="text/javascript">
+    // Convert divs to queue widgets when the DOM is ready
+    $(function () {
+
+    
+        var act = unescape(getQueryString("act"));
+        var type  = getQueryString("type");
+        var sizes = "50mb";
+        var datas; 
+
+         // alert(act+'||'+type)
+         switch(type)
+        {
+            case "1" : datas =[{ title: "图片文件", extensions: "jpg,png,gif,bmp,jpeg" }]; sizes="40mb"; break;
+             case "2" : datas =[{ title: "视频文件", extensions: "mp4,flash,mid,3gp,wma,avi,rmvb,rm,mkv,mov,wmv" }]; sizes="11200mb"; break;
+              case "3" : datas =[{ title: "音频文件", extensions: "mp3,wav,wma" }];sizes="50mb"; break; 
+              case "8" : datas =[{ title: "BT文件", extensions: "torrent" }]; sizes="500mb"; break;
+            default:datas="";sizes = "51200mb"; break;
+        }
+
+        $("#uploader").plupload({
+                runtimes: 'html5,flash',
+                url: '/default/btadddownload/add/', // 服务端上传路径
+            //  url:'/default/uploadfile/testupload',
+                max_file_size: sizes, // 文件上传最大限制。
+                 chunk_size: '50mb', // 上传分块每块的大小，这个值小于服务器最大上传限制的值即可。
+                unique_names: false,
+                filters: datas,
+                flash_swf_url: '/static/js/plupload-2.1.2/Moxie.swf',
+                // silverlight文件所在路径
+                silverlight_xap_url: '/static/js/plupload-2.1.2/Moxie.xap',
+                multipart_params: { 'act': act ,'type':type },
+                 init: {
+                    BeforeUpload:function(up,file){
+                        // alert(JSON.stringify(up));
+                    },
+                        UploadComplete: function (up, file) {
+                            //alert(JSON.stringify(up));
+                            parent.parentClick();
+                        },
+
+                        FileUploaded: function (uploader, file, responseObject) {
+                           //alert(JSON.stringify(uploader));
+                        },
+
+                        Error: function (up, args) { 
+                            //发生错误
+    //                        if (args.file) {
+    //                            alert('文件错误:' + args.file);
+    //                        } else {
+    //                            alert('出错' + args);
+    //                        }
+                            alert("上传文件格式出错!");
+                        }
+                    }
+            });
+
+            // 这一块主要是防止在上传未结束前表带提交，具体大家可酌情修改编写
+            $('form').submit(function (e) {
+                var uploader = $('#uploader').pluploadQueue();  // 取得上传队列
+                if (uploader.files.length > 0) {  // 就是说如果上传队列中还有文件
+                    uploader.bind('StateChanged', function () {
+                        if (uploader.files.length === (uploader.total.uploaded + uploader.total.failed)) {
+                            $('form')[0].submit(); //表单提交
+                        }
+                    });
+                    uploader.start();
+                    
+                } else {
+                    alert('队列中必须至少要有一个文件!');
+                }
+                return false;
+            });
+
+
+        });
+
+    </script>
+    <style>
+        #uploader {
+            margin-top:35px
+        }
+    </style>
+</head>
+<body style="margin:0;">
+    <form id="form1" >
+        {% csrf_token %}
+        <div id="uploader" style="width: 600px">
+            <p>
+                你的浏览器没有Flash支持，请安装最新的Flash！
+            </p>
+        </div>
+         
+    </form>
+</body>
+</html>

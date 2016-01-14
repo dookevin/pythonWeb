@@ -1,0 +1,196 @@
+﻿@charset "utf-8"; 
+@import url("");/*引用CSS*/
+/*css reset*/
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, blockquote, textarea, p, th, td ,table {margin:0;padding:0;}
+body, input, select, button, textarea { font-size: 12px; color:#333; font-family:"宋体";}/*统一不同浏览器字体大小*/
+table {border-collapse:collapse;}
+button { cursor: pointer;}
+fieldset{border:0;}
+img{  border:0 none;}/*图片去边框并居中*/
+address, caption, cite, code, dfn, em, th, var {font-style:normal;font-weight:normal;}
+ol, ul,li{list-style:none;}
+caption, th {text-align:left;}
+h1, h2, h3, h4, h5, h6 {font-size:100%;font-weight:normal;}
+p{text-align:left;}/*Sevnup add------文本左对齐*/
+i,cite,em{font-style:normal;font-weight:normal;}
+abbr, acronym {border:0;}
+a {text-decoration:none;color:#000;} 
+
+.plf_42{padding-left:42px;}
+q:before,q:after {content:'';}  /*<q></q>标签之间的文字两头加上引号(")*/ 
+blr:expression(this.onFocus=this.blur()); /* IE Opera去掉点击链接时的虚线外框 */
+outline:none; /* FF Opera去掉点击链接时的虚线外框 */}
+area {blr:expression(this.onFocus=this.blur()); } /* 图片热点去掉点击链接时的虚线外框 */
+a:focus{-moz-outline-style: none; /* FF去掉点击链接时的虚线外框 */}
+html{overflow:-moz-scrollbars-vertical;}/*在FF浏览器下始终显示滚动条 到达不太浏览器效果一致*/
+.clear:after {
+    clear: both;
+    content: "";
+    display:block;
+    height:0;
+}
+.clear {
+    clear: both;
+    zoom: 1;
+}
+.fl{float:left;}
+.rt{float:right}
+.disabled *{color:#939393;}
+
+html{ scrollbar-face-color:#f6f6f6; scrollbar-highlight-color:#fff; scrollbar-shadow-color:#eeeeee; scrollbar-3dlight-color:#eeeeee; scrollbar-arrow-color:#000; scrollbar-track-color:#fff; scrollbar-darkshadow-color:#fff; }
+
+
+
+.checkbox {
+    position: relative;
+}
+input[type="checkbox"]:checked + label:before,
+input[type="checkbox"]:not(:checked) + label:before {
+    background: #fff url(/Images/Discuz/Home/check.png) no-repeat;
+    content: " ";
+    height: 16px;
+    left: 0px;
+    top: 0;
+    position: absolute;
+    width: 16px;
+}
+
+input[type="checkbox"]:not(:checked):focus + label:before,
+input[type="checkbox"]:not(:checked) + label:hover:before {background-position: -18px 0;}
+input[type="checkbox"]:checked + label:before {background-position: -36px 0;}
+input[type="checkbox"][disabled]:not(:checked) + label:before {background-position: -54px 0;}
+input[type="checkbox"][disabled]:checked + label:before {background-position: -64px 0;}
+
+
+/** 弹出层 style Start **/
+.popup-layer {
+            z-index: 1000;position: absolute; top: 0; left: 0;display: none; background: rgba(220,226,241,0.6);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#CC000000,endColorstr=#CC000000);
+            cursor: auto;
+        }
+        .w400{width:400px;}
+.popup-layer-box {
+    position: absolute;
+    background: #fff;
+    border:7px solid rgba(0,0,0,0.2);
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+/** 弹出关闭Icon 背景图片 style **/
+ .close-popupLayer {
+            position: absolute;
+            top: 4px; 
+            right:4px;
+            cursor: pointer; 
+            width:16px;
+            height:16px;
+            background:url(/Images/Discuz/public/sys_Icon_all.png) -104px -155px no-repeat;
+        }
+  .close-popupLayer:hover { 
+            background:url(/Images/Discuz/public/sys_Icon_all.png) -104px -174px no-repeat;  
+        }
+.downloadpup {padding:0 10px 15px;}
+/** 弹出关闭Icon  X style **/
+.close-Download {
+    width: 20px;
+    height: 20px;
+    display: block;
+    text-align: center;
+    line-height: 20px;
+    font-weight: bold;
+    color: #888;
+    font-family: "微软雅黑";
+    font-size: 20px;
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    right: 7px;
+}
+/** 弹出tit style **/
+.downloadpup h3.item_tit {
+    line-height: 30px;
+    font-size: 12px;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    height: 30px;
+    text-align:left;
+}
+
+.downloadpup .link_text {
+    margin: 20px 0;
+}
+    .downloadpup .link_text .txtUrl {
+        width: 258px;
+        height: 80px;
+        border: 1px solid #eee;
+        float: left;
+    }
+    .red-color{color:#f00; margin-left:10px; float:left;}
+    .downloadpup p.msg{line-height:24px; padding-left:80px; color:#807e7e; margin:5px 0;}
+    /** 弹出——新建相册 style **/
+.downloadpup .photo_text{margin:40px 0 40px 0;}
+.downloadpup .caption {width:80px; text-align:right;}
+.downloadpup .w260 {width: 258px; height: 24px; line-height: 24px; border: 1px solid #c6c6c6; float:left; margin-left:10px;}
+.downloadpup .photo_text span{line-height:24px;}
+/** 弹出——上传照片 style **/
+.downloadpup .photo_Upload{margin:20px 0 15px; padding-bottom:20px; border-bottom:1px solid #ccc;}
+.downloadpup .Upload-lf{ margin-top:14px;}
+.downloadpup .Upload-lf .Upload-Btn {
+    width: 130px;
+    height: 30px;
+    display: inline-block;
+    background: #505050;
+    color: #fff;
+    background-image: -moz-linear-gradient(top, #505050, #707070); /* Firefox */
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #505050), color-stop(1, #707070)); /* Saf4+, Chrome */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#505050', endColorstr='#707070', GradientType='0'); /* IE*/
+    -moz-border-radius: 30px;
+    -webkit-border-radius: 30px;
+    border-radius: 30px;
+    border: 2px solid #808080;
+    font: bold 12px Arial, Helvetica, sans-serif;
+    text-align: center;
+    line-height:30px;
+    cursor:pointer;
+}
+.downloadpup .Upload-Text{width:225px;}
+.downloadpup .Upload-Text span{line-height:16px;}
+.downloadpup .Upload-progress{margin-bottom:20px;}
+.downloadpup .Warning{margin:20px 0;}
+.downloadpup .Warn-icon{width:32px; height:32px; display:inline-block; background:url(/Images/Discuz/public/sys_Icon_all.png) -60px -158px no-repeat; margin:0 15px; }
+.downloadpup .Warn-text{line-height:32px;}
+.downloadpup .BTsone{text-align:center; margin:30px 0;}
+.downloadpup .BTsone p{text-align:center; margin:15px 0 5px; line-height:24px; color:#807e7e;}
+ /*弹出层 button样式*/
+.downloadpup .btnBox {float:right;}
+    .downloadpup .btnBox a {
+        width: 82px;
+        height: 28px;
+        display:inline-block;
+        background: #393f4d;
+        line-height: 28px;
+        font-family: "微软雅黑";
+        font-size: 14px;
+        color: #fff;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        border: 1px solid #393f4d;
+        border-radius: 5px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+    }
+    .downloadpup .btnBox a:hover {
+        background: #535763;
+    }
+    .downloadpup .btnBox a:active {
+        background: #535763;
+    }
+        .downloadpup .btnBox a.cancel {
+            background: #fff;
+            color:#333;
+            margin-left:10px;
+        }
+
+/** 弹出层 style End **/

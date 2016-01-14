@@ -1,0 +1,204 @@
+﻿{% extends "Default/Shared/ContentMaster.html"%}
+
+<!--标题-->
+{% block title %}
+<title>新建用户组 - MiniNas管理系统</title>
+{% endblock %}
+<!--css-->
+{% block css %}
+{% endblock %}
+<!--javascript-->
+{% block javascript %}
+<script src="/static/js/My97DatePicker/WdatePicker.js"></script>
+{% endblock %}
+
+{% block body %}
+<div class="road">
+    <span class="suninfo_str">系统管理 > 系统设置 > 时间区域设置</span>
+</div>
+<div class="rtgy-box">
+    <h3>时间区域设置</h3>
+    <div class="systemRt-cont4" id="systemRt-cont">
+        <div class="set pbt_50">
+            <h6><span class="icon-l"></span><span class="msg">系统目前的日期和时间</span></h6>
+            <div id="nowTime" class="nowTime"></div>
+            <h6><span class="icon-l"></span><span class="msg">日期与时间</span></h6>
+            <div class="group clear">
+                <label class="suninfo_cont_str">时区：</label>
+                <span class="msg msg_sq">Asia/Shanghai </span>
+            </div>
+            <div class="checkbox_marg">
+                <input type="radio" name="setmode" value="local" checked="checked">
+                <span class="suninfo_cont_str">手动设定</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">日期/时间：</label>
+                <input type="text" class="w260 Wdate" id="txtSystime" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })">
+                <span class="msg">欲设定的系统时间<span class="red"> ( &lt;-点击选择时间 ) </span></span>
+            </div>
+            <div class="checkbox_marg">
+                <input type="radio" name="setmode" value="ntp">
+                <span class="suninfo_cont_str">自动与Internet时间服务器同步</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">NTP时间服务器：</label>
+                <input type="text" class="w260" value="202.112.10.36" id="txtServer">
+                <span class="msg">如果不知道,请保持默认</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">端口号：</label>
+                <input type="text" class="w260" value="123" id="txtPort" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+                <span class="msg">如果不知道,请保持默认</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">时间更新间隔：</label>
+                <input type="text" class="w260" value="300" id="txtRefresh" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+                <span class="msg">多少分钟进行一次时间同步。</span>
+            </div>
+            <div class="clear mtp_40 mlf_180">
+                <a class="save" id="btnSub">保存</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block popup %}
+<div id="popupLayer_StatusView" class="popup-layer">
+    <div id="popupLayerBox_StatusView" class="popup-layer-box StatusView" style="overflow:hidden;">
+        <i id="closePopupLayer_StatusView" class="close-popupLayer none"></i>
+        <div style="text-align:center;">
+            <img src="/static/images/Default/public/loading.gif" style="vertical-align:middle; width:30px; height:30px;" />
+            <span id="viewText" style=" margin-left:10px;">数据处理中，请耐心等待，不要进行其它操作......</span>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block footerJavascript %}
+<script type="text/javascript">
+    $(function() {
+        $('#systemRt-cont').niceScroll({
+            cursorcolor: "#999",
+            cursoropacitymax: 1,
+            touchbehavior: false,
+            cursorwidth: "5px",
+            cursorborder: "0",
+            cursorborderradius: "5px"
+        });
+        var d = new Date();
+        $("#txtSystime").val(d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
+        $.post("/default/system/getntptime",function(data){
+            if(data.returncode=="100100000"){
+                var s = data.data;
+                var address = s.address;
+                var port = s.port;
+                var refresh_seq = s.refresh_seq;
+                $("#txtServer").val(address);
+                $("#txtPort").val(port);
+                $("#txtRefresh").val(refresh_seq); // (Math.abs(refresh_seq) / 60 / 1000 / 1000);
+            }else if(data.returncode == "100102246"){
+                alert(data.message)
+                window.parent.location = "/";
+            }
+            else
+            {alert(data.message);}
+        })
+
+        $("#btnSub").click(function() {
+
+            var selVal = $('input[name="setmode"]:checked').val();
+            var time = $("#txtSystime").val();
+            var dt = new Date(time.replace(/-/g, "/"));
+            var second = (dt.getTime() / 1000);
+            var server = $("#txtServer").val();
+            var port = $("#txtPort").val();
+            var refresh = $("#txtRefresh").val();
+
+            var datas = {
+                second: second
+            };
+            var url = "setlocaltime";
+            if (selVal == "ntp") {
+                datas = {
+                    server: server,
+                    port: port,
+                    refresh: refresh
+                };
+                url = "setntptime";
+            }
+            $.ajax({
+                url: url,
+                type: 'post',
+                timeout: 15000,
+                data: datas,
+                beforeSend: function(XMLHttpRequest) {
+                    Popup.init('closePopupLayer_StatusView', 'popupLayer_StatusView', 'popupLayerBox_StatusView');
+                    Popup.popup();
+                },
+                success: function(data, textStatus) {
+                    if (data.returncode == "100100000") {
+                        alert("更新成功");
+                        window.location = window.location.href ;
+                    }else if(data.returncode == "100102246"){
+                        alert(data.message)
+                        window.parent.location = "/";
+                    }
+                    else
+                    {alert(data.message);}
+                },
+                complete: function(XMLHttpRequest, textStatus) {
+                    $("#viewText").text("执行完成!!!");
+                    $("#closePopupLayer_StatusView").click();
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+
+                    $("#closePopupLayer_StatusView").click();
+                }
+            });
+
+        })
+
+        GetNowTime()
+        setInterval("GetNowTime()", 1000);
+
+
+
+
+    })
+
+    function GetNowTime() {
+        $.post("/default/system/getnowtime", function(data, status) {
+            $("#nowTime").html(data.data.second);
+        })
+    }
+
+
+    Date.prototype.Format = function(formatStr) {
+        var str = formatStr;
+        var Week = ['日', '一', '二', '三', '四', '五', '六'];
+
+        str = str.replace(/yyyy|YYYY/, this.getFullYear());
+        str = str.replace(/yy|YY/, (this.getYear() % 100) > 9 ? (this.getYear() % 100).toString() : '0' + (this.getYear() % 100));
+
+        str = str.replace(/MM/, this.getMonth() > 9 ? this.getMonth().toString() : '0' + this.getMonth());
+        str = str.replace(/M/g, this.getMonth());
+
+        str = str.replace(/w|W/g, Week[this.getDay()]);
+
+        str = str.replace(/dd|DD/, this.getDate() > 9 ? this.getDate().toString() : '0' + this.getDate());
+        str = str.replace(/d|D/g, this.getDate());
+
+        str = str.replace(/hh|HH/, this.getHours() > 9 ? this.getHours().toString() : '0' + this.getHours());
+        str = str.replace(/h|H/g, this.getHours());
+        str = str.replace(/mm/, this.getMinutes() > 9 ? this.getMinutes().toString() : '0' + this.getMinutes());
+        str = str.replace(/m/g, this.getMinutes());
+
+        str = str.replace(/ss|SS/, this.getSeconds() > 9 ? this.getSeconds().toString() : '0' + this.getSeconds());
+        str = str.replace(/s|S/g, this.getSeconds());
+
+        return str;
+    }
+</script>
+{% endblock %}

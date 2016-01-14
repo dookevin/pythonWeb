@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="shortcut icon" href="/static/images/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/static/css/public.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/Default/Site.css" />
+    <script src="/static/js/jquery-1.8.2.min.js"></script>
+    <script src="/static/js/public.js"></script>
+    <script src="/static/js/popup.mini.js"></script>
+    <style type="text/css">
+    div.ina{
+        background:url('/static/images/Default/Home/bg-login-input.png') 0px 0px no-repeat; width:247px; height:42px; border:0px; outline:none; padding:0 10px 0 45px; font-size:18px; line-height:42px;}
+    </style>
+</head>
+<!--class CommentForm(form.Form):
+UserName = forms.CharField(widget=forms.TextInput())
+        Password = forms.CharField(widget=forms.TextInput())-->
+<body>
+<!-- 登录页 -->
+    <div class="indexHead">
+        <div class="ilogo fl"></div>
+        <div class="ilogin rt"></div>
+    </div>
+    <div>
+        <form method='post' enctype="multipart/form-data">
+	    {% csrf_token %}
+            <div class="loginMain">
+                <ol>
+                    <li class="errorMessage"></li>
+                    <li class="lusername">
+                        {{uf.UserName}}
+			        <!--<input class = "inp" id="UserName" name="UserName" type="text" value="" />-->
+			        <!--<div class="inp"> {{uf.UserName}}</div>-->
+			            <span class="field-validation-valid"></span>
+                        <i></i>
+                    </li>
+                    <li class="lpassword">
+                       <!-- <input class="inp" id="Password" name="Password" type="password" />-->
+			            {{uf.Password}}
+                        <span class="field-validation-valid" ></span>
+                        <i></i>
+                    </li>
+                    <li>
+                        <div class="checkbox">
+                            <input id="recheck" type="checkbox">
+                            <label for="recheck"></label>
+                        </div>
+                        <label Style="color:#999; margin-left:10px;" for="RememberMe">记住我的登录状态</label>
+                        <a class="lost-password">忘记密码</a>
+                        <input id="RememberMe" name="RememberMe" type="hidden" value="false" />
+                    </li>
+                    <li>
+                        <input type="button" value="登 录" class="btn" id="btnSub" />
+                    </li>
+                </ol>
+            </div>
+        </form>
+    </div>
+    <div class="clear"></div>
+    <div class="indexFoot">
+        <span>版权所有 &copy; 2016 上海闻上信息科技有限公司</span>
+    </div>
+    <!-- 密码问题 -->
+    <div class="pop-case">
+         <!-- 验证密保问题 -->
+        <div class="problem-select certification none">
+            <div class="content-pssword">
+                <span class="close-pop-case" id="closeCertif"></span>
+                <div class="title-password">
+                    <p style="font-size:14px; color:#666666;">验证密保问题</p>
+                    <p style="font-size:18px; margin-top:10px; margin-bottom:30px;">用户名admin</p>
+                </div>
+                <ul class="select-content">
+                    <span>问题一</span>
+                    <span id="getFamily"></span>
+                    <li>
+                        <span>答案</span>
+                        <input type="txt" name="answer" class="aa">
+                        <a class="remind tta" >提示</a>
+                    </li>
+                    <span>问题二</span>
+                    <span id="getSchool"></span>
+                    <li>
+                        <span>答案</span>
+                        <input type="txt" name="answer" class="ab">
+                        <a class="remind ttb">提示</a>
+                    </li>
+                    <span>问题三</span>
+                    <span id="getCareer"></span>
+                    <li>
+                        <span>答案</span>
+                        <input type="txt" name="answer" class="ac">
+                        <a class="remind ttc">提示</a>
+                    </li>
+                </ul>
+                <div class="btn-next btnPrev" id="btnPr">
+                    上一步
+                </div>
+                <div class="btn-next next" id="btnNext">
+                    下一步
+                </div>
+                 <div class="btn-next checkPost" id="btnNext">
+                    下一步
+                </div>
+            </div>
+        </div>
+          <!-- 设置密码jump -->
+        <div class="set-password  none" id="setIgnore">
+            <span class="close-pop-case" id="closeJump"></span>
+            <p style="font-size:18px; color:#333;">重新设置密码</p><span class="jump">跳过</span>
+            <ul class="setpass">
+                <li class="new-pass"><span>新密码</span><input type="password" class="newPassjump"></li>
+                <li class="confirm-pass"><span>确认密码</span><input type="password" class="confirmPassjump"></li>
+            </ul>
+            <div class="btn-next confirm" id="btnConfirmJump">
+                   确定
+            </div>
+        </div>
+      
+            <!-- 设置密码问题 -->
+             <div class="problem-select set-problem none">
+                <div class="content-pssword problem">
+                    <span class="close-pop-case"></span>
+                    <div class="title-password">
+                        <p style="font-size:18px; color:#333;">设置找回密码问题</p>
+                        <p style="font-size:14px; color: #ff3333;margin-top:10px;">*请记住密保问题方便以后找回密码</p>
+                    </div>
+                    <ul class="select-content">
+                            <span class="que">问题一</span>
+                            <select class="selectbox family" id="Family">
+                                <option value ="父亲的姓名">父亲的姓名</option>
+                                <option value ="母亲的姓名">母亲的姓名</option>
+                                <option value ="身份证号码后四位">身份证号码后四位</option>
+                            </select>
+                        <li>
+                            <span>答案</span>
+                            <input type="txt" name="answer" class="answer a"><span id="symbol">*</span>
+                            <label>答案提示</label>
+                            <input type="txt" name="answer-tip" class="tip ta">
+                        </li>
+                            <span class="que">问题二</span>
+                            <select class="school" id="School">
+                                <option value ="小学是在哪所学校">小学是在哪所学校</option>
+                                <option value ="中学是在哪所学校">中学是在哪所学校</option>
+                                <option value ="大学是在哪所学校">大学是在哪所学校</option>
+                            </select>
+                        <li>
+                            <span>答案</span>
+                            <input type="txt" name="answer" class="answer b"><span id="symbol">*</span>
+                            <label>答案提示</label>
+                            <input type="txt" name="answer-tip" class="tip tb">
+                        </li>
+                            <span class="que">问题三</span>
+                            <select class="career" id="Career">
+                                <option value ="您所从事的是什么行业">您所从事的是什么行业</option>
+                                <option value ="您公司的名称">您公司的名称</option>
+                                <option value ="您的职位名称">您的职位名称</option>
+                            </select>
+                        <li>
+                            <span>答案</span>
+                            <input type="txt" name="answer" class="answer c"><span id="symbol">*</span>
+                            <label>答案提示</label>
+                            <input type="txt" name="answer-tip" class="tip tc">
+                        </li>
+                    </ul>
+                    <div class="btn-next" id="btnSet">
+                        确定
+                    </div>
+                </div>
+            </div>
+    </div>
+    <!--磁盘操作引导 弹框-->
+    <div id="popupLayer_diskboot" class="popup-layer diskboot-layer">
+        <div id="popupLayerBox_diskboot" class="popup-layer-box diskboot-box" style="overflow:hidden;">
+            <i id="closePopupLayer_diskboot" class="close-popupLayer"></i>
+            <iframe id="Myiframe" name="Myiframe" src="" frameborder="0" scrolling="no"></iframe>
+        </div>
+    </div>
+</body>
+
+<script>
+if (top.location !== self.location) {
+    top.location=self.location;
+}
+// 仿select
+     $(document).ready(function (){
+            $('.selectbox').css('display', 'none').wrap('<div class="select_wrapper"></div>')
+            $('.selectbox').parent().prepend('<span>'+ $(this).find('.family option:first-child').text() +'</span>');
+            // $('.selectbox option:first-child').remove();
+            $('.selectbox').parent().children('span').width($('.selectbox').width());                  
+            $('.selectbox').parent().append('<ul class="select_inner"></ul>');
+            $('.selectbox').children().each(function(){
+                var opttext = $(this).text();
+                var optval = $(this).val();
+                $('.selectbox').parent().children('.select_inner').append('<li id="' + optval + '">' + opttext + '</li>');
+            });
+
+            $('.selectbox').parent().find('li').on('click', function (){
+                var cur = $(this).attr('id');
+                $('.selectbox').parent().children('span').text($(this).text());
+                $('.selectbox').children().removeAttr('selected');
+                $('.selectbox').children('[value="'+cur+'"]').attr('selected','selected');
+            });
+            
+            $('.selectbox').parent().on('click', function (){
+                $(this).find('ul').slideToggle('fast');
+            });
+
+            $('.school').css('display', 'none').wrap('<div class="select_wrapper"></div>')
+            $('.school').parent().prepend('<span>'+ $(this).find('.school option:first-child').text() +'</span>');
+            // $('.school option:first-child').remove();
+            $('.school').parent().children('span').width($('.school').width());                  
+            $('.school').parent().append('<ul class="select_inner"></ul>');
+            $('.school').children().each(function(){
+                var opttext = $(this).text();
+                var optval = $(this).val();
+                $('.school').parent().children('.select_inner').append('<li id="' + optval + '">' + opttext + '</li>');
+            });
+
+            $('.school').parent().find('li').on('click', function (){
+                var cur = $(this).attr('id');
+                $('.school').parent().children('span').text($(this).text());
+                $('.school').children().removeAttr('selected');
+                $('.school').children('[value="'+cur+'"]').attr('selected','selected');
+            });
+            $('.school').parent().on('click', function (){
+                $(this).find('ul').slideToggle('fast');
+            });
+            $('.career').css('display', 'none').wrap('<div class="select_wrapper"></div>')
+            $('.career').parent().prepend('<span>'+ $(this).find('.career option:first-child').text() +'</span>');
+            // $('.career option:first-child').remove();
+            $('.career').parent().children('span').width($('.career').width());                  
+            $('.career').parent().append('<ul class="select_inner"></ul>');
+            $('.career').children().each(function(){
+                var opttext = $(this).text();
+                var optval = $(this).val();
+                $('.career').parent().children('.select_inner').append('<li id="' + optval + '">' + opttext + '</li>');
+            });
+
+            $('.career').parent().find('li').on('click', function (){
+                var cur = $(this).attr('id');
+                $('.career').parent().children('span').text($(this).text());
+                $('.career').children().removeAttr('selected');
+                $('.career').children('[value="'+cur+'"]').attr('selected','selected');
+            });
+            
+            $('.career').parent().on('click', function (){
+                $(this).find('ul').slideToggle('fast');
+            });
+
+        });
+
+     //pop-case 弹层
+        $(function() {
+            /*关闭弹层*/
+            $('.close-pop-case').click(function() {
+               $('.pop-case').css('display','none');
+            }); 
+        });
+      //设置密码问题判断和提交
+          $('#btnSet').on('click', function() {   
+              /*用户填写答案*/ 
+                var a = $.trim($('.a').val());
+                var b = $.trim($('.b').val());
+                var c = $.trim($('.c').val());
+            /*用户选择问题*/ 
+                var qa = $.trim($('#Family').val());
+                var qb = $.trim($('#School').val());
+                var qc = $.trim($('#Career').val());
+            /*用户填写提示*/ 
+                var ta =  $.trim($(".ta").val());
+                var tb =  $.trim($(".tb").val());
+                var tc =  $.trim($(".tc").val());
+
+                if(a.length<1 || b.length<1 || c.length<1){
+                    alert('请设置完密保问题');
+                    return false;
+                    }else if(a.length>15 || b.length>15 || c.length>15){
+                        alert('答案最多15个字符');
+                        return false;
+                    }else if(ta.length>15 || tb.length>15 || tc.length>15){
+                        alert('答案提示最多15个字符');
+                        return false;
+                    }else{
+                        $('.pop-case').css('display','block');
+                         $('.none').css('display','none');
+                         /*获得密码问题*/ 
+                          $("#getFamily").text(qa);
+                          $("#getSchool").text(qb);
+                          $("#getCareer").text(qc);
+                          $('.certification').css('display','block');
+                          // $('.btnPrev').css('display','block');
+                          $('.next').css({
+                                'display': 'block',
+                                'width': '100px',
+                                'float': 'left',
+                                'margin-left': '30px',
+                                'position': 'relative',
+                                'left': '112px'
+                          });
+                           $('.btnPrev').css({
+                                'display': 'block',
+                                'width': '100px',
+                                'float': 'left',
+                                'margin-left': '30px',
+                                'position': 'relative',
+                                'left': '112px'
+                          });
+                          $('.checkPost').css('display','none');
+
+
+                          //点击提示提醒  
+                            $('.remind').on('click', function(){
+                                if($(this).hasClass('tta')){
+                                    if(ta.trim().length<1){
+                                        alert('该问题您未设置提示')
+                                        return false;
+                                    }else{
+                                        $(this).prev('input').attr('value', ta);
+                                    }
+                                };
+                                if($(this).hasClass('ttb')){
+                                     if(tb.trim().length<1){
+                                        alert('该问题您未设置提示')
+                                        return false;
+                                    } else {
+                                        $(this).prev('input').attr('value', tb);
+                                    }
+                                };
+                                if($(this).hasClass('ttc')){
+                                     if(tc.trim().length<1){
+                                        alert('该问题您未设置提示')
+                                        return false;
+                                    } else {
+                                        $(this).prev('input').attr('value', tc);
+                                    }
+                                };
+                              });
+                        }
+                  });   
+          
+    //验证密保问题 （1）
+        $('#btnNext').on('click', function(){
+             /*用户填写答案*/ 
+                var a = $.trim($('.a').val());
+                var b = $.trim($('.b').val());
+                var c = $.trim($('.c').val());
+            /*用户选择问题*/ 
+                var qa = $.trim($('#Family').val());
+                var qb = $.trim($('#School').val());
+                var qc = $.trim($('#Career').val());
+            /*用户填写提示*/ 
+                var ta =  $.trim($(".ta").val());
+                var tb =  $.trim($(".tb").val());
+                var tc =  $.trim($(".tc").val());
+              /*回答问题的答案*/ 
+                var aa = $.trim($(".aa").val());
+                var ab = $.trim($(".ab").val());
+                var ac = $.trim($(".ac").val());
+                if(a!==aa || b!==ab || c!==ac){
+                     alert('问题回答错误')
+                 } else {
+                        var datas = {q1:qa + '_'+ a +'_'+ ta, q2:qb + '_'+ b +'_'+ tb, q3:qc + '_'+ c +'_'+ tc };
+                            $.post("/default/accountc/saveanswer/ ", datas, function (data, status) {
+                               if (data.returncode == "100100000"){
+                                  // setCookie("flogin","0","h10");
+                                    $('.pop-case').css('display','block');
+                                    $('.none').css('display','none');
+                                    $('#setIgnore').css('display','block');
+                                 }else if(data.returncode == "100102250"){
+                                            alert(data.message)
+                                            $('.pop-case').css('display','none');
+                                 }else if(data.returncode == "100102251"){
+                                            alert(data.message)
+                                 } 
+                                    code = data.code;        
+                             },"json");
+                          return false;
+                      }
+              });
+
+// 上一步按钮点击
+    $('.btnPrev').on('click',function(){
+            $('.certification').css('display','none');
+            $('.set-problem').css('display','block');
+        });
+
+    // //验证密保问题 （2）
+     $('.checkPost').on('click', function(){
+         /*回答问题的答案*/ 
+                var aa = $.trim($(".aa").val());
+                var ab = $.trim($(".ab").val());
+                var ac = $.trim($(".ac").val());
+                 if(aa.length < 1 || ab.length < 1 || ac.length < 1){
+                    alert('请填完问题答案')
+                    return false;
+                 }
+                 var datas = { q1:aa, q2:ab, q3:ac};
+                     $.post("/default/accountc/checkanswer/", datas, function (data, status) {
+                           if (data.returncode == "100100000"){
+                                    $('.pop-case').css('display','block');
+                                    $('.none').css('display','none');
+                                    $('.jump').css('display','none');
+                                    $('#setIgnore').css('display','block');
+                                } else if(data.returncode == "100102249"){
+                                    alert(data.message)
+                                }
+                                code = data.code;
+                      },"json");
+                     return false;
+                });
+
+
+    // 验证重置密码(jump)
+    $('#btnConfirmJump').on('click', function(){
+        var newpwd = $.trim($(".newPassjump").val());
+        var Conpwd = $.trim($(".confirmPassjump").val());
+        if (newpwd.trim().length < 5) {
+            alert("新密码不能小于6位字符");
+            return false;
+             }
+        if (newpwd != Conpwd) {
+            alert("新密码和确认密码不匹配");
+            return false;
+             }
+
+        var datas = {newpwd: newpwd, code: code };
+        $.post("/default/accountc/resetpwd/", datas, function (data, status) {
+            if (data.returncode == "100100000"){
+                code = null;
+                window.location = "/";
+
+            }else{
+               alert(data.message)
+            }
+        },"json");
+        return false;
+    });
+
+    //点击跳过
+        $('.jump').on('click', function(){
+//            var f = getCookie("flogin")
+//            if(f!=null)
+//            {
+//                //alert("应到也1111111")
+//                $("#Myiframe").attr("src","/default/diskoperationboot");
+//                Popup.init('closePopupLayer_diskboot', 'popupLayer_diskboot', 'popupLayerBox_diskboot');
+//                Popup.popup();
+//                docCookies.removeItem("flogin","/");
+//            }
+//            else
+                window.location = "/default/home/index/"
+             });
+    //点击关闭 
+         $('#closeJump').on('click', function(){
+                window.location = "/"
+             });
+         $('#closeCertif').on('click', function(){
+                window.location = "/"
+             });
+    // 用户点击“找回密码”
+    $('.lost-password').on('click',function(){
+           $.post("/default/accountc/getquestion/", {}, function (data, status) {
+                if (data.returncode == "100100000"){
+                     $('.pop-case').css('display','block');
+                     $('.none').css('display','none');
+                     /*获得密码问题*/ 
+                     $("#getFamily").text(data.data.q1.split('_')[0]);
+                     $("#getSchool").text(data.data.q2.split('_')[0]);
+                     $("#getCareer").text(data.data.q3.split('_')[0]);
+                     $('.certification').css('display','block');
+                     $('#btnNext').css('display','none');
+                     $('#btnPr').css('display','none');
+                     $('.checkPost').css('display','block');
+                         //点击提示提醒  
+                            $('.remind').on('click', function(){
+                                   /*用户填写提示*/ 
+                                    var ta = data.data.q1.split('_')[1];
+                                    var tb = data.data.q2.split('_')[1];
+                                    var tc = data.data.q3.split('_')[1];
+                                if($(this).hasClass('tta')){
+                                    if(ta.trim().length<1){
+                                        alert('该问题您未设置提示')
+                                        return false;
+                                    }else{
+                                        $(this).prev('input').attr('value', ta);
+                                    }
+                                };
+                                if($(this).hasClass('ttb')){
+                                     if(tb.trim().length<1){
+                                        alert('该问题您未设置提示')
+                                        return false;
+                                    } else {
+                                        $(this).prev('input').attr('value', tb);
+                                    }
+                                };
+                                if($(this).hasClass('ttc')){
+                                     if(tc.trim().length<1){
+                                        alert('该问题您未设置提示')
+                                        return false;
+                                    } else {
+                                        $(this).prev('input').attr('value', tc);
+                                    }
+                                };
+                              });
+
+                     } else if(data.returncode == "100102248"){
+                         alert(data.message)
+                }
+            },"json");
+            return false;
+    });
+
+        // 记住登陆状态
+        $(function() {
+            $("#recheck").click(function() {
+                if (this.checked)
+                    $("#RememberMe").val("true");
+                else
+                    $("#RememberMe").val("false");
+            })
+        })
+
+        //键盘事件(enter键登陆)
+        document.onkeydown = function (event)
+        { 
+            var e=event || window.event || arguments.callee.caller.arguments[0]; 
+            if (e && e.keyCode == 13)
+            { 
+            document.getElementById("btnSub").click(); 
+            return false; 
+            } 
+        } 
+
+    $(function() {
+       // docCookies.removeItem("flogin","/");
+
+        $("#UserName").focus(function() {
+            $(".lusername i").css("background", "url(/static/images/Default/Home/icon-input-login.png) -3px -2px no-repeat");
+            $("#UserName").css("background", "url(/static/images/Default/Home/bg-login-input.png) 0px -48px no-repeat");
+        }).blur(function() {
+            if ($("#UserName").val().length < 1)
+                $(".lusername i").css("background", "url(/static/images/Default/Home/icon-input-login.png) -65px -2px no-repeat");
+            $("#UserName").css("background", "url(/static/images/Default/Home/bg-login-input.png) 0px 0px no-repeat");
+        })
+        $("#Password").focus(function() {
+            $(".lpassword i").css("background", "url(/static/images/Default/Home/icon-input-login.png) -33px -2px no-repeat");
+            $("#Password").css("background", "url(/static/images/Default/Home/bg-login-input.png) 0px -48px no-repeat");
+        }).blur(function() {
+            if ($("#Password").val().length < 1)
+                $(".lpassword i").css("background", "url(/static/images/Default/Home/icon-input-login.png) -95px -2px no-repeat");
+            $("#Password").css("background", "url(/static/images/Default/Home/bg-login-input.png) 0px 0px no-repeat");
+        });
+
+
+    //点击登录按钮判断
+        $("#btnSub").click(function() {
+            $(".errorMessage").text("");
+            var uname = $("#id_UserName").val();
+            var upwd = $("#id_Password").val();
+
+           if(uname.length<1)
+            {
+                 $(".errorMessage").text("账户名不能为空!");
+                $("#id_UserName").focus();
+                return false;
+            }
+            var patternuname = /^[\u4e00-\u9fa5A-Za-z0-9]{4,16}$/;    //中文、英文、数字、下划线、4-16个字符
+            var flaguname = patternuname.test(uname);
+            if(!flaguname)
+            {
+                  $(".errorMessage").text("输入的帐号名格式有误，请重新输入！")
+                return false;
+            }
+
+            // 解决ie8支持string trim
+            String.prototype.trim = function(){ return Trim(this);};
+            function LTrim(str)
+            {
+                var i;
+                for(i=0;i<str.length;i++)
+                {
+                    if(str.charAt(i)!=" "&&str.charAt(i)!=" ")break;
+                }
+                str=str.substring(i,str.length);
+                return str;
+            }
+            function RTrim(str)
+            {
+                var i;
+                for(i=str.length-1;i>=0;i--)
+                {
+                    if(str.charAt(i)!=" "&&str.charAt(i)!=" ")break;
+                }
+                str=str.substring(0,i+1);
+                return str;
+            }
+            function Trim(str)
+            {
+                return LTrim(RTrim(str));
+            }
+
+             if(upwd.trim().length<1)
+            {
+                  $(".errorMessage").text("密码不能为空!");
+                $("#id_Password").focus();
+                return false;
+            }
+            var patternupwd = /^.{5,30}$/;    //5——30个字符
+            // var pattertrim = /\s/; //含空格
+            var flagupwd = patternupwd.test(upwd);
+            // var trimupwd = pattertrim.test(upwd);
+            if(!flagupwd)
+            {
+                 $(".errorMessage").text("输入的密码有误，请重新输入！")
+                return false;
+            }
+            /*判断是否设置设置密保问题 然后登陆*/
+            var datas ={UserName:uname,Password:upwd};
+            $.post("/",datas,function(data){
+                if(data.returncode=="100100000")
+                {
+//                   var f = getCookie("flogin")
+//                    if(f!=null)
+//                    {
+//                        //alert("应到也1111111");
+//                        $("#Myiframe").attr("src","/default/diskoperationboot");
+//                        Popup.init('closePopupLayer_diskboot', 'popupLayer_diskboot', 'popupLayerBox_diskboot');
+//                        Popup.popup();
+//                        docCookies.removeItem("flogin","/");
+//                    }
+//                    else{
+                        if(myBrowser().indexOf("IE")>-1)
+                            docCookies.setItem("UserName", uname, 3600*24);
+                       window.location = "/default/home/index/";
+//                    }
+                }
+                else if(data.returncode=="100102248"){
+                    $('.pop-case').css('display','block');
+                       $('.none').css('display','none');
+                        $('.set-problem').css('display','block');
+                        $("#id_Password").blur();
+                }
+                else{
+                    alert(data.message);
+                }
+            })
+        });
+    });
+</script>
+</html>

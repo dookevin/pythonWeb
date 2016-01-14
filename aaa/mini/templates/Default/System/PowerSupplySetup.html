@@ -1,0 +1,136 @@
+﻿
+{% extends "Default/Shared/ContentMaster.html"%}
+
+<!--标题-->
+{% block title %}
+<title>新建用户组 - MiniNas管理系统</title>
+{% endblock %}
+<!--css-->
+{% block css %}
+{% endblock %}
+<!--javascript-->
+{% block javascript %}
+{% endblock %}
+
+{% block body %}
+<div class="road">
+    <span class="suninfo_str">系统管理 > 系统设置 > 电源设置</span>
+</div>
+<div class="rtgy-box">
+    <h3>电源设置</h3>
+    <div class="systemRt-cont4" id="systemRt-cont">
+        <div class="set pbt_50">
+            <h6><span class="icon-l"></span><span class="msg">开关机管理</span></h6>
+            <div class="Description_content">
+                <p>立即执行重新启动/关机</p>
+            </div>
+            <div class="sure_btn mlf_100 mtp_48">
+                <a class="reboot mrt_20" onclick="true" id="reboot" href="javascript:void(0);">重新启动</a>
+                <a class="shutdown" id="shutdown" href="javascript:void(0);">关机</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block popup %}
+<div id="popupLayer_Restart" class="popup-layer popupLayer_Whether">
+    <div id="popupLayerBox_Restart" class="popup-layer-box" style="overflow:hidden;">
+        <i id="closePopupLayer_Restart" class="close-popupLayer none"></i>
+        <div class="Whether-BombBox">
+            <p class="WhetherTit">是否<span>重新启动</span></p>
+            <p class="WhetherTip">确定重新启动，将在5秒后执行！</p>
+            <a id="RestartBtn">是</a>
+            <a id="Restart_cancelBtn">否</a>
+        </div>
+    </div>
+</div>
+
+<div id="popupLayer_Shutdown" class="popup-layer popupLayer_Whether">
+    <div id="popupLayerBox_Shutdown" class="popup-layer-box" style="overflow:hidden;">
+        <i id="closePopupLayer_Shutdown" class="close-popupLayer none"></i>
+        <div class="Whether-BombBox">
+            <p class="WhetherTit">是否<span>关机</span></p>
+            <p class="WhetherTip">确定关机，将在5秒后执行！</p>
+            <a id="ShutdownBtn">是</a>
+            <a id="Shutdown_cancelBtn">否</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block footerJavascript %}
+<script>
+    isfraid =false;
+    $(function(){
+
+        $('#systemRt-cont').niceScroll({
+            cursorcolor: "#999",
+            cursoropacitymax: 1,
+            touchbehavior: false,
+            cursorwidth: "5px",
+            cursorborder: "0",
+            cursorborderradius: "5px"
+        });
+        //重启 or 取消 弹框
+        $('#reboot').click(function(){
+            Popup.init('closePopupLayer_Restart', 'popupLayer_Restart', 'popupLayerBox_Restart');
+            Popup.popup();
+        });
+        //关机 or 取消 弹框
+        $('#shutdown').click(function(){
+            Popup.init('closePopupLayer_Shutdown', 'popupLayer_Shutdown', 'popupLayerBox_Shutdown');
+            Popup.popup();
+        });
+        var type = 0;
+        //重启
+        $('#RestartBtn').click(function(){
+            type = 0;
+            var datas={type:type};
+            $.post("/default/system/rebootorhalt",datas,function(data){
+                if(data.returncode == "100100000")
+                {
+                    window.parent.location = "/";
+                }
+                else if(data.returncode == "100102246"){
+                    alert(data.message)
+                    window.parent.location = "/";
+                }
+                else
+                {alert(data.message);}
+            });
+        });
+        //关机
+        $('#ShutdownBtn').click(function(){
+            type = 1;
+            var datas={type:type};
+            $.post("/default/system/rebootorhalt",datas,function(data){
+                if(data.returncode == "100100000")
+                {
+                    window.parent.location = "/";
+                }
+                else if(data.returncode == "100102246"){
+                    alert(data.message)
+                    window.parent.location = "/";
+                }
+                else
+                {
+                    alert(data.message);
+                }
+            });
+        })
+        //取消
+        $("#Restart_cancelBtn").click(function() {
+            $("#closePopupLayer_Restart").click();
+        });
+        $("#Shutdown_cancelBtn").click(function() {
+            $("#closePopupLayer_Shutdown").click();
+        });
+
+
+
+    });
+</script>
+{% endblock %}

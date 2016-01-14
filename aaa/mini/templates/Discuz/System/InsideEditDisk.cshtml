@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "InsideEditDisk";
+    Layout = "~/Views/Templates/Discuz/Shared/_SystemLayout.cshtml";
+}
+
+<div class="road">
+    <span class="suninfo_str">首页 > 存储设置 > 磁盘管理</span>
+</div>
+<div class="rtgy-box">
+    <div class="rtgy-cont">
+        <h3>磁盘管理</h3>
+        <div class="rightCol">
+            <div class="tab_nav">
+                <ul class="clear">
+                    <li class="first_li cur">管理</li>
+                </ul>
+            </div>
+            <div class="tab_contBox">
+                <div class="set">
+                    <h5 class="mtp_2">基础设置</h5>
+                    <div class="group clear">
+                        <label class="suninfo_cont_str">磁盘：</label>
+                        <select id="securitylist" class="w400">
+                            <option>ata-Hitachi_HUA722010CLA330_JPW9M0N12ZASUL (slot2,953869M)</option>
+                        </select>
+                        <span class="msg"></span>
+                    </div>
+                    <div class="group clear">
+                        <label class="suninfo_cont_str">描述：</label>
+                        <input type="text" class="w200" value="Hitachi_HUA722010CLA330">
+                        <span class="msg">必要的描述文字</span>
+                    </div>
+                    <div class="group clear">
+                        <label class="suninfo_cont_str">S.M.A.R.T.：</label>
+                        <div class="checkbox mrt_10 fl m_4">
+                            <input id="smart_enable" type="checkbox">
+                            <label for="smart_enable"></label>
+                        </div>
+                        <span class="msg">开启监测此设备的S.M.A.R.T.功能</span>
+                    </div>
+                </div>
+                <div class="btnBox">
+                    <a class="save">保存</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

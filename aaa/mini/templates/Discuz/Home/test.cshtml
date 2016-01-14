@@ -1,0 +1,50 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>test</title>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+
+    <script type="text/javascript">
+        function addBtn() {
+            $('#mDiv').append(' <button class="cBtn">button5</button>')
+        }
+        jQuery(function ($) {
+            //使用on代替live和delegate（live由于性能原因已经被废弃，被delegate代替）,新添加到mDiv的button依然会有绑定的事件
+            $('#mDiv').on('click', '.cBtn', function (index, eleDom) {
+                alert($(this).html())
+            });
+            ////使用on代替bind
+            //$('.cBtn').on('click', function () {
+            //    alert($(this).html())
+            //});
+        })
+
+
+    </script>
+
+</head>
+<body>
+    <div>
+        <a href="#" onclick="addBtn()">addBtn</a>
+
+        <div id="mDiv">
+
+            <button class="cBtn" onclick="alert(11111)">button1</button>
+
+            <button class="cBtn">button2</button>
+
+            <button class="cBtn">button3</button>
+
+        </div>
+
+
+       
+    </div>
+</body>
+</html>

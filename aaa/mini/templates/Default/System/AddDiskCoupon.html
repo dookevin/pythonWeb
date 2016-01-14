@@ -1,0 +1,244 @@
+﻿{% extends "Default/Shared/ContentMaster.html"%}
+
+<!--标题-->
+{% block title %}
+<title>新建磁盘卷 - MiniNas管理系统</title>
+{% endblock %}
+<!--css-->
+{% block css %}
+{% endblock %}
+<!--javascript-->
+{% block javascript %}
+{% endblock %}
+
+{% block body %}
+<div class="road">
+    <span class="suninfo_str">系统管理 > 存储设置 > 磁盘卷管理</span>
+</div>
+<div class="rtgy-box">
+    <h3>磁盘卷管理</h3>
+    <div class="systemRt-cont" id="systemRt-cont">
+        <div class="tab_contBox">
+            <div class="set">
+                <h6><span class="icon-l"></span><span class="msg">基础设置</span><span class="red mlf_10">(注意: 新建磁盘卷会格式化磁盘!请确认后再操作!!!)</span></h6>
+                <div class="group clear">
+                    <label class="suninfo_cont_str">磁盘卷名称</label>
+                    <input type="text" class="w260" value="winsun" id="poolname">
+                    <span class="msg"><font>*</font>【中文、英文、数字、下划线、4-16个字符】</span>
+                </div>
+                <div class="group clear postion_box">
+                    <label class="suninfo_cont_str">磁盘卷类型</label>
+                    <div class="option_list">
+                        <span class="dropdown_Text" prv="0">条带盘 RAID-0</span>
+                        <a class="dropdownBtn"></a>
+                    </div>
+                    <span class="msg"></span>
+                    <div class="dropdown_cont">
+                        <span class="dropdown_mean dropdown_cur" prv="0"><a class="cur_gou">条带盘 RAID-0</a></span>
+                        <span class="dropdown_mean2" prv="1"><a class="">镜像 RAID-1</a></span>
+                    </div>
+                </div>
+                <div class="group clear">
+                    <label class="suninfo_cont_str">磁盘</label>
+                    <div class="cptab-box">
+                    </div>
+                    <span class="msg msg_bottom"> </span>
+                </div>
+                <div class="group clear">
+                    <label class="suninfo_cont_str">描述</label>
+                    <textarea class="txtRemark" id="txtRemark"></textarea>
+                    <span class="msg">【不超过100个字符】</span>
+                </div>
+                <div class="group clear none">
+                    <label class="suninfo_cont_str">删除重复数据</label>
+                    <div class="checkbox checkbox_postion">
+                        <input id="checkAll2" type="checkbox" name="checkAll" class="checkAll">
+                        <label for="checkAll2"></label>
+                    </div>
+                    <span class="msg">删除多余数据副本</span>
+                </div>
+                <div class="sure_btn mlf_180 pbt_50  mtp_48">
+                    <input type="submit" id="btnAdd" class="reboot mrt_20" value="保存">
+                    <a href="diskcouponmanagement.html">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block popup %}
+<div id="popupLayer_StatusView" class="popup-layer">
+    <div id="popupLayerBox_StatusView" class="popup-layer-box StatusView" style="overflow:hidden;">
+        <i id="closePopupLayer_StatusView" class="close-popupLayer none"></i>
+        <div style="text-align:center;"><img src="/static/images/Default/public/loading.gif" style="vertical-align:middle; width:30px; height:30px;" />
+            <span id="viewText" style=" margin-left:10px;">开始创建磁盘，请耐心等待，不要进行其它操作......</span>
+        </div>
+    </div>
+</div>
+<div id="popupLayer_Restart" class="popup-layer">
+    <div id="popupLayerBox_Restart" class="popup-layer-box folderRestart">
+        <i id="closePopupLayer_Restart" class="close-popupLayer"></i>
+        <div class="shoot-cont">
+            <p class="tip">磁盘卷添加成功，系统需要重新启动！</p>
+            <div class="Btn-bar plf">
+                <a class="RestartBtn" id="ShutdownBtn">重启</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block footerJavascript %}
+<script>
+    $(function() {
+        $('#systemRt-cont').niceScroll({
+            cursorcolor: "#999",
+            cursoropacitymax: 1,
+            touchbehavior: false,
+            cursorwidth: "5px",
+            cursorborder: "0",
+            cursorborderradius: "5px"
+        });
+        $.post("/default/system/getdiskname",function(data){
+            if(data.returncode=="100100000"){
+                var html = "";
+                $.each(data.data, function (idx, item) {
+                    html+="<div class=\"cpList\">";
+                    html+="<div class=\"checkbox\"><input id=\""+item.id+"\" type=\"checkbox\" class=\"checkAll\" name=\"checkone\"><label for=\""+item.id+"\"></label></div><span class=\"msg\">"+item.name+"("+item.serial+")</span>";
+                    html +="</div>";
+                })
+                $(".cptab-box").append(html);
+            }
+            else if(data.returncode == "100102246"){
+                alert(data.message)
+                window.parent.location = "/";
+            }
+            else
+            {
+                alert(data.message);
+            }
+        })
+
+        $("#btnAdd").click(function() {
+            var name = $("#poolname").val();
+            var description = $("#txtRemark").val();
+            var rtype =  $(".dropdown_Text").attr("prv");
+            ;
+            if(name.length<1)
+            {
+                alert("磁盘卷名称不能为空!");
+                return false;
+            }
+            var patternPoolName = /^[\u4e00-\u9fa50-9a-zA-Z_]{4,16}$/;    //中文、英文、数字、下划线、4-16个字符
+            var flagPoolName = patternPoolName.test(name);
+            if(!flagPoolName)
+            {
+                alert("输入的磁盘卷名称格式有误，请重新输入！");
+                return false;
+            }
+            if(description.length>100)
+            {
+                alert("磁盘描述不超过100个字符!");
+                return false;
+            }
+            var disks = GetValue();
+
+            if (disks == null || disks == "") {
+                alert("请选择需要添加的磁盘");
+                return false;
+            }
+            if (disks.split(',').length < 2 && rtype == "1") {
+                alert("RAID-1 需要选择至少二块磁盘.");
+                return false;
+            }
+            //if (disks == null || disks == "") {
+            //    alert("请选择可用的磁盘卷");
+            //    return false;
+            //}
+            var datas = {
+                name: name,
+                rtype: rtype,
+                disks: disks,
+                description: description
+            };
+
+            if (confirm("您确定要新建磁盘卷 '" + name + "' 吗?此操作会对磁盘格式化!")) {
+                $.ajax({
+                    url: '/default/system/createraid',
+                    type: 'post',
+                    data: datas,
+                    timeout: 15000,
+                    beforeSend: function(XMLHttpRequest) {
+                        Popup.init('closePopupLayer_StatusView', 'popupLayer_StatusView', 'popupLayerBox_StatusView');
+                        Popup.popup();
+                    },
+                    success: function(data, textStatus) {
+                        if(data.returncode=="100100000") {
+                            alert("添加成功!");
+                            window.location = "diskcouponmanagement.html";
+                        }
+                        else if(data.returncode == "100102246"){
+                            alert(data.message)
+                            window.parent.location = "/";
+                        }
+                        else
+                        {
+                            alert(data.message);
+                        }
+                    },
+                    complete: function(XMLHttpRequest, textStatus) {
+                        $("#viewText").text("执行完成!!!");
+                        $("#closePopupLayer_StatusView").click();
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        //  alert("出错了.--txtStatus:" + textStatus + " xmlhttprequest:" + XMLHttpRequest.statusText + "  errorthrown:" + errorThrown);
+                        $("#closePopupLayer_StatusView").click();
+
+                    }
+                });
+            }
+        });
+        // right 点击下拉菜单 jQuery
+        $('.group').each(function (i) {
+            var $this = $(this);
+            $this.find(".dropdownBtn").click(function (event) {
+                $this.find(".dropdown_cont").toggle();
+                event.stopPropagation();
+            });
+            $this.find(".dropdown_cont span").click(function (event) {
+                var _this = $(this);
+                $this.find(".dropdown_Text").html(_this.text());
+                $this.find(".dropdown_cont").toggle();
+                event.stopPropagation();
+                if (_this.attr("prv") != null) {
+                    $this.find(".dropdown_Text").attr("prv", _this.attr("prv"));
+                }
+            });
+            $this.find(".dropdown_cont span").hover(function (event) {
+                $(this).addClass("dropdown_cur").siblings("span").removeClass("dropdown_cur");
+                $this.find(".dropdown_cont span").children("a").removeClass("cur_gou")
+                $(this).children("a").addClass("cur_gou");
+                event.stopPropagation();
+            });
+        });
+        $(document).click(function () {
+            $(".dropdown_cont").hide();
+            $(".tal_box").hide();
+        });
+    })
+    function GetValue() {
+        var str = "";
+        $("input[type='checkbox'][name='checkone']").each(function () {
+            if ($(this).is(":checked")) {
+                str +=$(this).attr("id")+",";
+            }
+        })
+        if(str.length>0)
+            str = str.replace(/,$/, ""); //去掉最后一个逗号
+        return str;
+    }
+    isfraid =false;
+</script>
+{% endblock %}

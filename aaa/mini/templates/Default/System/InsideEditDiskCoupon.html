@@ -1,0 +1,144 @@
+﻿{% extends "Default/Shared/ContentMaster.html"%}
+
+<!--标题-->
+{% block title %}
+<title>新建用户组 - MiniNas管理系统</title>
+{% endblock %}
+<!--css-->
+{% block css %}
+{% endblock %}
+<!--javascript-->
+{% block javascript %}
+{% endblock %}
+
+{% block body %}
+<div class="user_add">
+    <div class="add_disk">
+        <div class="user_add_lf user_add_bg"></div>
+        <div class="user_add_ct">
+            <a id="add_btn" href="adddiskcoupon.html" class="add_btn" ns="User">新增磁盘卷</a>
+        </div>
+        <div class="user_add_rt user_add_bg"></div>
+    </div>
+    <div class="diskHelp" id="diskHelp">
+        <span class="diskHelpIcon"></span>帮助
+    </div>
+</div>
+<div class="road">
+    <span class="suninfo_str">系统管理 > 存储设置 > 磁盘卷管理</span>
+</div>
+<div class="rtgy-box">
+    <h3>磁盘卷管理</h3>
+    <div class="systemRt-cont6" id="systemRt-cont">
+        <div class="tab_contBox pbt_50">
+            <div class="set">
+                <h6><span class="icon-l"></span><span class="msg">基础设置</span></h6>
+                <div class="group clear postion_box">
+                    <label class="suninfo_cont_str">磁盘卷名称</label>
+                    <input type="text" class="w260" value="" id="couponName" disabled="disabled">
+                    <span class="msg">（不可修改）</span>
+                </div>
+                <div class="group clear">
+                    <label class="suninfo_cont_str">物理空间</label>
+                    <input type="text" class="w260" value="" id="Space" disabled="disabled">
+                    <span class="msg">（不可修改）</span>
+                </div>
+                <div class="group clear">
+                    <label class="suninfo_cont_str">已用</label>
+                    <input type="text" class="w260" value="" id="Used" disabled="disabled">
+                    <span class="msg">（不可修改）</span>
+                </div>
+                <div class="group clear">
+                    <label class="suninfo_cont_str">空闲</label>
+                    <input type="text" class="w260" value="" id="Free" disabled="disabled">
+                    <span class="msg">（不可修改）</span>
+                </div>
+                <div class="group clear">
+                    <label class="suninfo_cont_str">描述</label>
+                    <textarea class="w260 sext_w260" id="Description"></textarea>
+                    <span class="msg">【不超过100个字符】</span>
+                </div>
+                <div class="sure_btn mlf_180 mtp_48">
+                    <a class="reboot mrt_20" id="btnSub">保存</a>
+                    <a class="shutdown" href="diskcouponmanagement.html">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block popup %}
+
+{% endblock %}
+
+
+{% block footerJavascript %}
+<script>
+    $(function() {
+        $("#diskHelp").click(function(){
+            window.parent.JumpInfo();
+        });
+        $('#systemRt-cont').niceScroll({
+            cursorcolor: "#999",
+            cursoropacitymax: 1,
+            touchbehavior: false,
+            cursorwidth: "5px",
+            cursorborder: "0",
+            cursorborderradius: "5px"
+        });
+        var id = getQueryString("id");
+        var datas={id:id};
+        $.post("/default/system/getraiddes", datas, function(data) {
+            if(data.returncode=="100100000")
+            {
+                var jsonObj=data.data;
+                $("#couponName").val(jsonObj.name);
+                $("#Space").val(jsonObj.capacity);
+                $("#Used").val(jsonObj.used);
+                $("#Free").val(jsonObj.avail);
+                $("#Description").val(jsonObj.description);
+            }
+            else if(data.returncode == "100102246"){
+                alert(data.message)
+                window.parent.location = "/";
+            }
+            else
+            {alert(data.message);}
+        });
+
+
+        $("#btnSub").click(function() {
+
+            var description = $("#Description").val();
+
+            if(description.length>100)
+            {
+                alert("群组描述不超过100个字符!");
+                $("#Description").focus();
+                return false;
+            }
+            var datas = {
+                id: id,
+                description: description
+            };
+            $.post("/default/system/editraid", datas, function(data) {
+
+                if(data.returncode=="100100000")
+                {
+                    alert("提交成功!");
+                    window.location = "/default/system/diskcouponmanagement.html";
+                }
+                else if(data.returncode == "100102246"){
+                    alert(data.message)
+                    window.parent.location = "/";
+                }
+                else
+                {alert(data.message);}
+            });
+
+        })
+    })
+</script>
+{% endblock %}
+

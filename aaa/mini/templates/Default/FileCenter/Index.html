@@ -1,0 +1,924 @@
+{% extends "Default/Shared/Master.html"%}
+<!--标题-->
+{% block title %}
+<title>文件中心 - MiniNas管理系统</title>
+{% endblock %}
+<!--css-->
+{% block css %}
+<link href="/static/css/Default/pager.css" rel="stylesheet" /> {% endblock %}
+<!--javascript-->
+{% block javascript %}
+<script src="/static/js/pager/jquery.pager.js"></script>
+{% endblock %}
+<!--左边导航-->
+{% block left %}
+<div>
+    <a href="/default/filecenter/index.html" title="返回根目录"><img src="/static/images/Default/public/logo-file.png" /> </a>
+</div>
+<div class="search">
+    <input id="txtSearch" class="input"  maxlength="30" style="color:#ccc;" value="请输入关键字" onfocus="if(value=='请输入关键字') {value=''}" onblur="if (value=='') {value='请输入关键字'}" />
+    <i id="btnSearch"></i>
+</div>
+<div class="lefttitle">
+    <span><a href="/default/filecenter/index.html" title="返回根目录" style="color:#333;">文件列表</a></span>
+    <i id="btnAddFolder" title="新建"></i>
+</div>
+<div class="treelist" id="treelist" avl="0">
+    <ul>
+    </ul>
+</div>
+{% endblock %}
+<!--右边主体-->
+{% block right %}
+<div class="itemHeader plf_42">
+    <ul>
+        <li class="li1" style="display:none;"><i></i></li>
+        <li class="li2" style="display:none;"><i></i></li>
+        <li class="li3" style="display:none;"><i></i><span>播放</span></li>
+        <li class="li4" id="UploadPhotoFile" ><i></i><span>上传</span></li>
+    </ul>
+</div>
+<div class="mianHeader plf_42">
+    <a href="/default/filecenter/index.html" title="返回根目录" style="color:#666;">文件列表</a> <span id="selectFolder"> </span>
+</div>
+<div id="listItems" class="listItems photoTab">
+    <div class="thTitle">
+        <table>
+            <tr style="background-color:#e5e5e5">
+                <th class="ck">
+                    <div class="checkbox">
+                        <input id="checkAll" type="checkbox" class="checkAll" name="checkAll" autocomplete="off">
+                        <label for="checkAll"></label>
+                    </div>
+                </th>
+                <th class="listFileName">
+                    <table class="i">
+                        <tr>
+                            <th class="tf">
+                                <div class="txt_hidden">名称</div>
+                            </th>
+                        </tr>
+                    </table>
+                </th>
+                <th class="tyle">类型</th>
+                <th class="size">大小</th>
+                <th class="creator">创建者</th>
+                <th class="upload-time">上传时间</th>
+                <th class="operation">操作</th>
+            </tr>
+            <tr style="height:16px;"></tr>
+        </table>
+    </div>
+    <div class="rtgy-cont" id="rtgy-cont">
+        <table>
+            <tbody id="fileList">
+            </tbody>
+        </table>
+    </div>
+    <script type="text/javascript">
+    $("#treelist,#rtgy-cont,#thumbItems").niceScroll({
+        cursorcolor: "#999",
+        cursoropacitymax: 1,
+        touchbehavior: true,
+        cursorwidth: "5px",
+        cursorborder: "1",
+        cursorborderradius: "5px"
+    });
+    </script>
+    <div id="pager" class="paginations"></div>
+    <div class="footOpertion">
+        <div class="checkbox">
+            <input id="checkAll2" type="checkbox" name="checkAll" class="checkAll" autocomplete="off">
+            <label for="checkAll2"></label>
+        </div>
+        <span id="btn-deletes">删除</span>
+        <span id="btn-downloads" style="display:none;">下载</span>
+    </div>
+</div>
+{% endblock %}
+<!--弹窗相关杂项-->
+{% block popup %}
+<div id="popupLayer_Upload" class="popup-layer">
+    <div id="popupLayerBox_Upload" class="popup-layer-box uploadPhoto" style="overflow:hidden;">
+        <i id="closePopupLayer_Upload" class="close-popupLayer"></i>
+        <div id="turl">
+        </div>
+    </div>
+</div>
+<div id="popupLayer_Move" class="popup-layer">
+    <div id="popupLayerBox_Move" class="popup-layer-box moveFolder" style="overflow:hidden;">
+        <i id="closePopupLayer_Move" class="close-popupLayer"></i>
+        <iframe src="" id="ifmove" scrolling="no" style="border:0px; width:100%; height:360px; padding-bottom:20px;"></iframe>
+    </div>
+</div>
+<div id="popupLayer_playFile" class="popup-layer">
+    <div id="popupLayerBox_playFile" class="popup-layer-box playFile" style="overflow:hidden;">
+        <i id="closePopupLayer_playFile" class="close-popupLayer"></i>
+        <iframe src="" id="playFile" scrolling="no" style="border:0px; width:100%; height:100%; "></iframe>
+    </div>
+</div>
+{% endblock %} {% block footerJavascript %}
+<script>
+var pagecount = 0;
+var indexPath = "{{ UserName }}/";
+var folderPath = "{{ UserName }}/"; //        admin/
+var tmpOldName = "";
+var tmpOldPath = "";
+var keyword = ""; //搜索关键字
+var indexType = 5; //  0:其它 1:图片 2：视频 3：音频  4：~
+var pagesize=10;
+var pageNumber=1;
+var istype=0;  //用于回车事件判断新增或修改
+
+jQuery(function($) {
+    //文件夹加载
+    loadingfolderlist();
+    lodingList(folderPath, pagesize,pageNumber, indexType, keyword);
+
+    //文件加载
+    //lodingList(folderPath, 10, 1,indexType,keyword);
+
+    //  $("#ifupload").attr("src", "/FileCenter/UploadFile?act=" + filePath + "");    ////////./////
+    //  $("#turl").html("<iframe src=\"/FileCenter/UploadFile?act=" + filePath + "\" id=\"ifupload\" scrolling=\"no\" style=\"width:608px; height:350px; border:0px; overflow:hidden;\"></iframe>");
+
+    $("#UploadPhotoFile").click(function() {
+
+
+        overdue();/*上传登录过期*/
+
+        var t = folderPath.split('/')[1];
+
+        var type = 5;
+        switch (t) {
+            case "photo":
+                type = 1;
+                break;
+            case "video":
+                type = 2;
+                break;
+            case "music":
+                type = 3;
+                break;
+            default:    
+                type = 5;
+                break;
+        }
+
+
+        if(myBrowser().indexOf("IE9")>-1 || myBrowser().indexOf("IE8")>-1 || myBrowser().indexOf("IE7")>-1 || myBrowser().indexOf("IE6")>-1)
+        {
+            layer.msg('温馨提示:为了更好的上传效果,建议您使用Chrome,火狐或IE9以上浏览器操作!', {icon: 1});
+            $("#turl").html("<iframe src=\"/default/filecenter/uploadfileforie/?act=" + escape(folderPath) + "&type=" + type + "\" id=\"ifupload\" scrolling=\"no\" style=\"width:608px; height:350px; border:0px; overflow:hidden;\"></iframe>");
+        }
+        else{
+            $("#turl").html("<iframe src=\"/default/filecenter/uploadfile/uploadfile.html?act=" + escape(folderPath) + "&type=" + type + "\" id=\"ifupload\" scrolling=\"no\" style=\"width:608px; height:350px; border:0px; overflow:hidden;\"></iframe>");
+        }
+
+        Popup.init('closePopupLayer_Upload', 'popupLayer_Upload', 'popupLayerBox_Upload');
+        Popup.popup();
+
+    });
+
+    // 点击页码去掉全选按钮
+    $('#pager').on('click', 'ul li',function(){
+        var checked = $(this).is(":checked");
+        $("input[type='checkbox'][name='checkAll']").prop("checked", checked);
+    });
+
+    $('.treelist ul').on('click', 'li', function(index, eleDom) {
+
+        pageNumber=1;
+        //解决ibtn-edit与li的 click事件冲突
+        if ($(this).children("input").attr("id") == "newtext") {
+            $(this).removeClass('checked');
+            return false;
+        }
+
+        $('.treelist ul li').each(function() {
+
+            if ($(this).children("i").hasClass("ico-open-se")) {
+                $(this).children("i").removeClass("ico-open-se");
+                $(this).children("i").addClass("ico-open");
+            }
+            if ($(this).children("i").hasClass("ico-close-se")) {
+                $(this).children("i").removeClass("ico-close-se");
+                $(this).children("i").addClass("ico-close");
+            }
+
+            $(this).children("i").removeClass("ico-se");
+            $(this).removeClass('checked');
+
+        })
+
+
+
+        var tagName = "";
+        if ($(this).next().children().length != 0)
+        // if ($(this).next().get(0) != null )
+            tagName = $(this).next().get(0).tagName.toLowerCase();
+        if (tagName == "div") {
+            $(this).children("i").removeClass("ico-open").addClass("ico-close-se");
+            $(this).next("div").remove("div"); //移除中间元素防止重复
+
+        } else {
+
+            if ($(this).children("i").attr("class") != "ico" && $(this).children("i").attr("class").indexOf("ico-se") < 0) {
+
+                var avl = $(this).parent().attr("avl"); //获取当前等级
+                var margin = 20; //下一级位移的默认值
+                $(this).next("div").remove("div"); //移除中间元素防止重复
+                // if(!$(id).children("i").hasClass("ico-close-se"))
+                $(this).children("i").removeClass("ico-close");
+                $(this).children("i").addClass("ico-open-se");
+
+                $(".treelist ul li").each(function() {
+                    $(".treelist ul li").removeClass("checked");
+                });
+
+                $(this).addClass("checked");
+                 // 去掉全选按钮
+                 var checked = $(this).is(":checked");
+                 $("input[type='checkbox'][name='checkAll']").prop("checked", checked);
+
+                if (avl == null) {
+                    avl = 1;
+                } else {
+                    avl = parseInt(avl) + 1;
+                }
+                var tempStr = "";
+                var uppath = $(this).attr("pt");
+                var id = this;
+                datas = {
+                    filePath: indexPath + uppath + "/"
+                };
+
+                $.post("/default/filecenter/getfolderlist", datas, function(data, result) {
+
+                    if (data.returncode == "100100000") {
+
+                        var dataObj = data.data;
+
+                        // alert(JSON.stringify(data));
+                        $.each(dataObj, function(idx, item) {
+
+
+
+                            if (item.subfolder > 0) {
+
+                                tempStr += "<li pt=\"" + uppath + "/" + item.foldername + "" + "\" nv=\"" + item.foldername + "\"><i class=\"ico-close\" style='margin-left:" + (margin * avl) + "px;'></i>" + item.foldername.substr(0, 15);
+                                tempStr += "<div>";
+                                tempStr += "<i class=\"ibtn-edit mtp_10\" title=\"编辑\"></i>";
+                                tempStr += "<i class=\"ibtn-delete mtp_10\" title=\"删除\"></i>";
+                                tempStr += "</div></li>";
+
+
+
+                            } else {
+                                tempStr += "<li pt=\"" + uppath + "/" + item.foldername + "" + "\" nv=\"" + item.foldername + "\"><i class=\"ico\" style='margin-left:" + (margin * avl) + "px;'></i>" + item.foldername.substr(0, 15);
+                                tempStr += "<div>";
+                                tempStr += "<i class=\"ibtn-edit mtp_10\" title=\"编辑\"></i>";
+                                tempStr += "<i class=\"ibtn-delete mtp_10\" title=\"删除\"></i>";
+                                tempStr += "</div></li>";
+                            }
+
+                        });
+                        $(id).next("div").remove("div");
+                        $(id).after("<div pt=\"" + uppath + "\"  avl=\"" + avl + "\">" + tempStr + "</div>");
+                    }
+                }, 'json');
+            } else {
+                $(this).children("i").addClass("ico-se");
+                $(this).addClass('checked');
+                 // 去掉全选按钮
+                 var checked = $(this).is(":checked");
+                 $("input[type='checkbox'][name='checkAll']").prop("checked", checked);
+            }
+
+
+        }
+
+
+        folderPath = indexPath + $(this).attr("pt") + "/";
+        $("#selectFolder").text("/" + $(this).attr("pt"));
+
+
+        var t = folderPath.split('/')[1];
+        var type = 5;
+        switch (t) {
+            case "photo":
+                indexType = 1;
+                break;
+            case "video":
+                indexType = 2;
+                break;
+            case "music":
+                indexType = 3;
+                break;
+            default:
+                indexType = 5;
+                break;
+        }
+        // alert(indexType)
+
+        lodingList(folderPath, pagesize,pageNumber, indexType, keyword);
+
+    });
+
+    //右边列表文件点击
+    $("#fileList").on("click", "tr .listFileName", function (index, eleDom) {
+
+        var id = $(this).parents("tr").attr("tid");
+        var ext = $(this).parents("tr").children(".tyle").text().trim();
+
+        var extimage = [".jpg",".png",".gif",".bmp",".jpeg"];
+        var extvideo = [".mp4",".flash",".mid",".3gp",".wma",".avi",".rmvb",".rm",".mkv",".mov",".wmv"];
+        var extmusic = [".mp3",".wav",".wma"];
+
+        if(extimage.indexOf(ext)>-1)
+        {
+              $("#popupLayer_playFile").attr("style","width: 100%; height: 100%;")
+              $("#popupLayer_playFile .playFile").attr("style","width: 100%; height: 100%;")
+
+              $("#playFile").attr("src","/default/photo/player/?id="+id);
+              Popup.init('closePopupLayer_playFile', 'popupLayer_playFile', 'popupLayerBox_playFile');
+              Popup.popup();
+
+        }
+        else if(extmusic.indexOf(ext)>-1)
+        {
+
+        }
+        else if(extvideo.indexOf(ext)>-1)
+        {
+
+            $("#popupLayer_playFile .playFile").attr("style","width: 830px; height:455px;background-color:#000")
+
+            var datas = { filePath: folderPath, pageSize: pagesize, pageNumber: pageNumber, type: indexType,keyword:keyword};
+            var num = "";
+            var indexNum=0;
+            $.ajax({
+                type:"post",
+                data:datas,
+                url:"/default/filecenter/getfilelist",
+                datatype:"json",
+                // async: false,                                 //同步操作.当数据 完全 出来后.再执行下一个函数
+                success:function(data){
+                    if (data.returncode == "100100000") {
+                        var dataObj = data.data
+
+                        $.each(dataObj["rows"], function (idx, item) {
+                          //  if(id.replace("p","") ==item.id)  indexNum = idx+1;
+                            if(extvideo.indexOf(item.type)>-1)
+                                num+='["","/userfiles/'+item.path+item.name+item.type+'"],'; //url:"/userfiles/'+item.path+item.name+item.type+'"
+                        });
+
+                        num = "[" + num + "]";
+                        num = num.replace("],]","]]")
+
+                        setCookie("videoPram",num,"10s");
+                        //  alert( document.cookie)
+
+                        $("#playFile").attr("src","/default/video/player/");
+                        Popup.init('closePopupLayer_playFile', 'popupLayer_playFile', 'popupLayerBox_playFile');
+                        Popup.popup();
+                    }
+                }
+            })
+        }
+    });
+
+    $("#closePopupLayer_playFile").click(function(){
+
+       // playFile.window.closePlay();
+    })
+    //添加文件夹
+    $("#btnAddFolder").click(function() {
+
+        istype=0;
+        var count = 0;
+        $(".treelist ul li").each(function() {
+
+            if ($(this).hasClass("checked")) {
+                var avl = $(this).parent().attr("avl") == null ? 0 : $(this).parent().attr("avl");
+                if (avl == "4") {
+                    alert("目前最多只支持创建5级目录!");
+                    count++;
+                    return;
+                }
+                var margin = 20;
+                avl = parseInt(avl) + 1;
+
+                /*单个文件夹新建子文件夹*/
+                if ($(this).hasClass('checked') && $(this).children("i").hasClass('ico-se')) {
+                    var pt = $(this).attr("pt");
+                    $(this).after("<div pt='" + pt + "'></div>");
+                }
+
+                $(this).next("div").prepend("<li pt=''><i class=\"ico\" style='margin-left:" + (margin * avl) + "px;'></i><input type='text' id='newtext'></li>");
+                count++;
+
+            }
+        });
+
+        if (count < 1) {
+            $(".treelist ul").prepend("<li ><i class=\"ico\"></i><input type='text' id='newtext'></li>");
+        }
+        $("#newtext").focus();
+        $("#newtext").bind('blur', AddNewtext);
+    });
+
+    //checkbox全选按扭事件
+    $(".checkAll").live("change", function() {
+        var checked = $(this).is(":checked");
+        $("input[type='checkbox'][name='checkOne']").prop("checked", checked);
+        $("input[type='checkbox'][name='checkAll']").prop("checked", checked);
+    });
+
+    $(".checkbox input[type='checkbox'][name='checkOne']").live("change", function() {
+
+        var checked = $(this).is(":checked");
+        var flag = true;
+        //全选 按扭的控制  -------------------------------
+        if (!checked) {
+            $("input[type='checkbox'][name='checkAll']").prop("checked", false);
+            flag = false;
+        } else {
+            $("input[type='checkbox'][name='checkOne']").each(function() {
+                if (!$(this).is(":checked")) {
+                    flag = false;
+                }
+            })
+        }
+        if (flag) $("input[type='checkbox'][name='checkAll']").prop("checked", true);
+        //全选 按扭的控制  -------------------------------
+    })
+
+    //删除 文件
+    $('.main-right #fileList').on('click', '.ibtn-delete', function(index, eleDom) {
+
+        // var filePath = "#" + $("#selectFolder").text() + "/" + $(this).attr("title");
+        // filePath = filePath.replace("#/", "");
+
+        // var datas = { filePath: indexPath + filePath + "/" };
+        // alert(indexPath + filePath + "/" )
+        var id = $(this).attr("prv");
+        var datas = {
+            fid: id
+        }
+        if (confirm("您确定要删除吗？")) {
+            $.post("/default/delete/deletefile", datas, function(data) {
+                // alert(JSON.stringify(data));
+                if (data.returncode == "100100000")
+                    lodingList(folderPath,pagesize,pageNumber,indexType, keyword);
+                else
+                    alert(data.message);
+            }, 'json');
+        }
+    });
+
+    //删除文件集合
+    $("#btn-deletes").click(function() {
+        var array = new Array();
+        $("input[type='checkbox'][name='checkOne']").each(function() {
+
+            if ($(this).is(":checked")) {
+                var path = $(this).attr("id");
+                if (path != null) {
+                    array.push(path);
+                }
+            }
+        })
+        if (array.length > 0) {
+            var datas = {
+                fid: array.toString()
+            };
+            // alert(array.toString())
+            if (confirm("您确定要删除吗？")) {
+                $.post("/default/delete/deletefile", datas, function(data, status) {
+                    if (data.returncode == "100100000")
+                        lodingList(folderPath, pagesize,pageNumber, indexType, keyword);
+                    else
+                        alert(data.message);
+                }, 'json');
+            }
+            var checked = $(this).is(":checked");
+            $("input[type='checkbox'][name='checkAll']").prop("checked", checked);
+        } else {
+            alert("请选择要删除的内容");
+            return;
+        }
+
+    });
+
+    //移动文件
+    $('.main-right #fileList').on('click', '.ibtn-opertion', function(index, eleDom) {
+
+        var id = $(this).attr("prv");
+        var oldpath = $(this).attr("oldpath");
+        // alert(id)
+        var fname = $(this).parents("tr").children('.listFileName').text();
+        var typee = $(this).parents("tr").children('.tyle').text();
+         var fpath = $('#treelist').find('.checked').attr("pt"); //当前文件所在路径
+        // alert(typee)
+
+        // $("#ifmove").attr("src", "/default/filecenter/movefolder/?id=" + id+"&fname="+escape(fname));
+        $("#ifmove").attr("src", "/default/filecenter/movefolder/?id=" + id + "&fname=" + escape(fname) + "&fpath="+ escape(fpath)+ "&type=" + typee + "&oldpath=" + oldpath);
+        Popup.init('closePopupLayer_Move', 'popupLayer_Move', 'popupLayerBox_Move');
+        Popup.popup();
+    });
+
+    //文件夹鼠标效果
+    $(".treelist ul").on("mouseover", "li", function(index, eleDom) {
+        var n = $(this).attr("pt");
+        // if (n.indexOf("download") < 0) //download为默认文件夹
+        $(this).children("div").css("display", "block");
+
+         /*默认文件夹不予删除编辑*/
+        if(n.toLocaleLowerCase()=="music" || n.toLocaleLowerCase()=="download" || n.toLocaleLowerCase()=="photo" || n.toLocaleLowerCase()=="video" ||n.toLocaleLowerCase()=="btdownload" || n.toLocaleLowerCase()=="tddownload" || n.toLocaleLowerCase()=="btdownload/bt")
+            { 
+                $(this).children("div").css("display", "none");
+            }
+    });
+
+    $(".treelist ul").on("mouseout", "li", function(index, eleDom) {
+        $(this).children("div").css("display", "none");
+    })
+
+    //删除文件夹
+    $(".treelist").on("click", ".ibtn-delete", function(index, eleDom) {
+        var name = $(this).parent().parent().attr("pt");
+        var datas = {
+            name: indexPath + name + "/"
+        };
+        // alert(indexPath+ name +"/");
+
+        // if (name == "downloads" || name == "music" || name == "photo" || name == "video") {
+        //     alert("此文件夹为专用文件夹,不能删除!");
+        //     loadingfolderlist();
+        //     return false;
+        // }
+
+        if (confirm("您确定要删除吗？")) {
+            $.post("/default/photod/", datas, function(data) {
+                if (data.returncode == "100100000") {
+                    loadingfolderlist();
+                    $("#selectFolder").text("");
+                    $("#fileList tr").remove();
+                    lodingList(indexPath, pagesize,pageNumber, indexType, keyword);
+                } else
+                    alert(data.message);
+            }, 'json');
+        }
+    });
+
+    //重命名文件夹
+    $(".treelist").on("click", ".ibtn-edit", function(index, eleDom) {
+        istype=1;
+        var oldName = $(this).parent().parent().attr("nv");
+        var oldPath = $(this).parent().parent().attr("pt");
+        var avl = $(this).parent().parent().parent().attr("avl") == null ? 0 : $(this).parent().parent().parent().attr("avl"); //获取等级标识
+        var margin = 20;
+        avl = parseInt(avl);
+
+        $(this).parent().parent().html("<i class=\"ico\" style='margin-left:" + (margin * avl) + "px;'></i><input type='text' id='newtext'>");
+        tmpOldName = oldName;
+        tmpOldPath = indexPath + oldPath + "/";
+
+        $("#newtext").focus();
+        $("#newtext").val(oldName);
+        $("#newtext").bind('blur', renameNewtext);
+        return;
+    });
+
+})
+//获取文件夹列表
+function loadingfolderlist() {
+    var datas = {
+        filePath: indexPath
+    };
+
+    $.ajax({
+        url: '/default/filecenter/getfolderlist',
+        type: 'post',
+        timeout: 150000,
+        data:datas,
+        beforeSend: function(XMLHttpRequest) {
+            $(".treelist ul").append("<li style='text-align: center; margin-top:50px;'><img style='width: 32px;height:32px;' src='/static/images/Default/public/move-loading.gif'></li>");
+        },
+        success: function(data, textStatus) {
+
+            if (data.returncode == "100100000") {
+                dataObj = data.data;
+                $(".treelist ul li").remove();
+
+                var t = "",
+                        tempFolder = "";
+
+                $.each(dataObj, function(idx, item) {
+                    if (idx == 0) tempFolder = item.foldername;
+                    if (item.subfolder > 0) {
+                        t += "<li pt=\"" + item.foldername + "\" nv=\"" + item.foldername + "\"><i class='ico-close'></i>" + item.foldername.substr(0, 20);
+                        t += "<div>";
+                        t += "<i class=\"ibtn-edit mtp_10\" title=\"编辑\"></i>";
+                        t += "<i class=\"ibtn-delete mtp_10\" title=\"删除\"></i>";
+                        t += "</div></li>";
+                    } else {
+                        t += "<li  pt=\"" + item.foldername + "\" nv=\"" + item.foldername + "\"><i class='ico'></i>" + item.foldername.substr(0, 20);
+                        t += "<div>";
+                        t += "<i class=\"ibtn-edit mtp_10\" title=\"编辑\"></i>";
+                        t += "<i class=\"ibtn-delete mtp_10\" title=\"删除\"></i>";
+                        t += "</div></li>";
+                    }
+                });
+                $(".treelist ul").append(t);
+
+            } else if(data.returncode == "100102246"){
+                alert(data.message)
+                $.post("/default/logout/", function (data, status) {
+                    if (status == "success")
+                        window.location = "/";
+                });
+            }
+
+        },
+        complete: function(XMLHttpRequest, textStatus) {
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+           // alert("数据读取出错!");
+        }
+    });
+
+
+    
+}
+
+
+//播放图片调用
+function getPlayData(id)
+{
+    var num = "";
+    var indexNum=0;
+    var r="";
+    var n=0;
+
+    $('#fileList tr').each(function(idx,val){
+        var ext = $(this).children(".tyle").text().trim();
+
+        var extimage = [".jpg",".png",".gif",".bmp",".jpeg"];
+        var extvideo = [".mp4",".flash",".mid",".3gp",".wma",".avi",".rmvb",".rm",".mkv",".mov",".wmv"];
+        var extmusic = [".mp3",".wav",".wma"];
+
+        if(extimage.indexOf(ext)>-1){
+            n++;
+            if(id  ==$(this).attr("tid"))  indexNum = n;
+            num+='{image:"'+ $(this).attr("prv") +'", title:"'+ $(this).children(".listFileName").attr("title") +'",url:"#"},'; //url:"/userfiles/'+item.path+item.name+item.type+'"
+        }
+    })
+    var v='{currentIndex:'+indexNum+',data:['+num+']}';
+    v = v.replace("},]}","}]}")
+    return v;
+}
+
+//获取文件列表
+function lodingList(path, pageSize, pagenumber, type) {
+
+    var datas = {
+        filePath: path,
+        pageSize: pageSize,
+        pageNumber: pagenumber,
+        type: type,
+        keyword: keyword
+    };
+
+    $("#fileList tr").remove();
+
+    $.ajax({
+        url: "/default/filecenter/getfilelist",
+        data: datas,
+        datatype: "json",
+        type: "post",
+        async: true,
+        success: function(data, textStatus) {
+        if (data.returncode == "100100000") {
+            var dataObj = data.data
+            var pagecount = parseInt(dataObj["pageTotal"]);
+            // alert (pagecount)
+            var list = "";
+            $.each(dataObj["rows"], function(idx, item) {
+                list += "<tr tid=\"" + item.id + "\" prv='/userfiles/"+item.path+item.name+item.type+"'>";
+                        list +=  "<th class=\"ck\"><div class=\"checkbox\"><input id=\"" + item.id + "\" type=\"checkbox\" name=\"checkOne\" title=\"" + item.path + "\"><label for=\"" + item.id + "\"></label></div></th>" ;
+                if(keyword.length>0) //当为搜索时.title 显示路径
+                    list +=    "<th class=\"listFileName\" id=\"listfilename\" title='"+item.path+item.name+"'>" + item.name + "</th>" ;
+                else
+                        list +=    "<th class=\"listFileName\" id=\"listfilename\" title=\""+item.name+"\">" + item.name + "</th>" ;
+                        list +=    "<th class=\"tyle\">" + item.type + "</th>" ;
+                        list +=    "<th class=\"size\">" + item.size + "</th>" ;
+                        list +=    "<th class=\"creator\">" + item.owner + "</th>" ;
+                        list +=     "<th class=\"upload-time\">" + item.uploadstarttime + "</th>" ;
+                        list +=     "<th class=\"operation\"><span class='ibtn-delete' title=\"删除\" prv=\"" + item.id + "\"></span>" ;
+                        list +=      "<a class=\"ibtn-down\" title=\"下载\"  href='/default/tstaticdown/?filename="+path+item.name+item.type+"'  download='" + item.name + "'>&nbsp;</a>" ;
+                        list +=     "<span class='ibtn-opertion' title=\"移动\" prv='" + item.id + "' oldpath='" + item.path + "'></span></th>" ;
+                        list +=     "</tr>";
+            });
+
+            // 未找到显示内容及显示页码
+            $("#fileList tr").remove();
+            if (list.length > 1)
+                $("#fileList").append(list);
+            else
+                $("#fileList").append("<tr><td style='color:red;text-align:center;' colspan=\"7\">未找到显示的内容</td></tr>");
+
+            if (pagecount > 1) {
+                $("#pager").pager({
+                    pagenumber: pagenumber,
+                    pagecount: pagecount,
+                    buttonClickCallback: PageClick
+                });
+
+                $("#pager").css("display", "block");
+            } else
+                $("#pager").css("display", "none");
+
+            $('.paginations').css('margin-left', -$('.paginations').width() / 2);
+
+
+        } else if(data.returncode == "100102246"){
+             alert(data.message)
+              $.post("/default/logout/", function (data, status) {
+               if (status == "success")
+                   window.location = "/";
+           });
+        }
+    } 
+    });
+
+};
+
+//  搜索
+$('#txtSearch').blur(function() /*失去焦点时触发(清除关键字)*/ {
+    if ($('#txtSearch').val() == '请输入关键字') {
+        keyword = "";
+        lodingList(folderPath,pagesize,pageNumber, indexType, keyword);
+    }
+})
+
+$("#btnSearch").click(function() {
+
+    var searchName = $("#txtSearch").val().trim();
+    // alert(searchName);
+    if (searchName == "请输入关键字") {
+        alert('请输入关键字')
+        keyword = "";
+        lodingList(folderPath, pagesize,pageNumber, indexType, keyword);
+        return false;
+    }
+    if (searchName.length > 20) {
+        alert("搜索条件不合法,请控制在20个字符以内!");
+        $("#txtSearch").val("");
+        return false;
+    }
+
+    if (searchName.length > 0) {
+        keyword = searchName;
+        lodingList(folderPath, pagesize,pageNumber, indexType, keyword);
+    }
+})
+
+//新增文件夹操作
+function AddNewtext() {
+
+    var txt = $("#newtext").val().trim();
+    if (txt.length < 1) {
+        $("#newtext").parent().remove();
+    } else {
+        if (txt.length < 3) {
+            alert("新增目录名称必须大于3个字符");
+            $("#newtext").focus();
+        } else if (txt.length > 30) {
+            alert("新增目录名称必须小于30个字符");
+            $("#newtext").focus();
+        } else if (txt.toLocaleLowerCase() == "download") {
+            alert("Download为专用文件夹,不允许添加!");
+            $("#newtext").focus();
+        }
+        // else if(hastext>-1){
+        //     alert("文件已存在，不能添加");
+        //     $("#newtext").focus();
+        // }
+        else {
+            // alert(2);
+            var pt = $("#newtext").parent().parent().attr("pt") == null ? "" : $("#newtext").parent().parent().attr("pt") + "/";
+
+            var datas = {
+                name: indexPath + pt + txt
+            };
+            // alert(indexPath+ pt + txt);
+            $.post("/default/photoa/", datas, function(data) {
+
+                if (data.returncode == "100100000")
+                    loadingfolderlist();
+                else
+                    alert(data.message);
+                $("#newtext").focus();
+            }, 'json');
+
+        }
+    }
+}
+
+
+//重命名文件夹
+function renameNewtext() {
+
+    var txt = $("#newtext").val().trim();
+
+    if (txt.length < 1 || tmpOldName == txt) {
+
+        // $(".treelist ul li:last-child").remove();
+        //暂时先刷新
+        window.location = "";
+    } else {
+        if (txt.length < 3) {
+            alert("目录名称必须大于3个字符");
+            $("#newtext").focus();
+        } else if (txt.length > 30) {
+            alert("目录名称必须小于30个字符");
+            $("#newtext").focus();
+        } else if (txt.toLocaleLowerCase() == "download") {
+            alert("Download为专用文件夹,不允许修改!");
+            $("#newtext").focus();
+        } else {
+            // var pathName = $("#newtext").parent().attr("title");
+            var datas = {
+                oldName: tmpOldPath,
+                newName: txt + "/"
+            };
+
+            $.post("/default/photor/", datas, function(data, result) {
+                // alert(JSON.stringify(data));
+                if (data.returncode == "100100000")
+                    loadingfolderlist();
+                else
+                    alert(data.message);
+                $("#newtext").focus();
+            }, 'json');
+
+        }
+    }
+}
+
+/*上传登陆过期跳转*/
+       function overdue(){
+            var datas = {
+            filePath: indexPath
+             };
+            $.post("/default/filecenter/getfolderlist", datas, function(data) {
+                if(data.returncode == "100102246"){
+                    Popup.closepopup();/*关闭上传弹窗*/
+                     alert(data.message)
+                      $.post("/default/logout/", function (data, status) {
+                       if (status == "success")
+                           window.location = "/";
+                   });
+                }
+            })
+        }
+
+
+PageClick = function(pageclickednumber) {
+        pageNumber=pageclickednumber;
+        lodingList(folderPath, pagesize,pageNumber, indexType, keyword);
+    }
+    //上传文件后子页面关闭事件
+function parentClick() {
+    Popup.closepopup();
+    lodingList(folderPath, pagesize,pageNumber, indexType, keyword);
+}
+
+//移动文件夹子页面取消按扭
+function parentClickbyMove() {
+    Popup.closepopup();
+    lodingList(folderPath, pagesize,pageNumber, indexType, keyword);
+    loadingfolderlist();
+}
+
+document.onkeydown = function(event) {
+    var e = event || window.event || arguments.callee.caller.arguments[0];
+
+    if (e && e.keyCode == 13) { // enter 键
+        if(document.activeElement.id=='newtext'){
+            if(istype==0)
+                AddNewtext();
+            else if(istype==1)
+                renameNewtext();
+        }
+        else{
+            //要做的事情
+            $("#btnSearch").click(); return false;
+        }
+    }
+
+}
+
+</script>
+{% endblock %}

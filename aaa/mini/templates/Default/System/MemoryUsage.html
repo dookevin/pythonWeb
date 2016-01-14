@@ -1,0 +1,176 @@
+﻿
+{% extends "Default/Shared/ContentMaster.html"%}
+
+<!--标题-->
+{% block title %}
+<title>新建用户组 - MiniNas管理系统</title>
+{% endblock %}
+<!--css-->
+{% block css %}
+{% endblock %}
+<!--javascript-->
+{% block javascript %}
+{% endblock %}
+
+{% block body %}
+<div class="road">
+    <span class="suninfo_str">系统管理 > 系统状态  > 资源监控</span>
+</div>
+<div class="rtgy-box">
+    <h3>资源监控</h3>
+    <div class="tab_nav mtp_20">
+        <ul>
+            <li class="first_li"><a href="resourcesmonitor.html">CPU</a></li>
+            <li class="cur"><a href="memoryusage.html">内存使用</a></li>
+            <li><a href="diskcouponusage.html" style="display:none;">磁盘卷使用量</a></li>
+            <li><a href="bandwidth.html">带宽传输量</a></li>
+            <li class="last_li" style="display:none;"><a href="process.html">进程</a></li>
+        </ul>
+    </div>
+    <div class="systemRt-cont5" id="systemRt-cont">
+        <div class="rightCol">
+            <div class="tab_contBox">
+                <div id="container" class="pbt_50"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block popup %}
+
+{% endblock %}
+
+
+{% block footerJavascript %}
+<script src="/static/js/Default/Resources/highcharts.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#systemRt-cont').niceScroll({
+            cursorcolor: "#999",
+            cursoropacitymax: 1,
+            touchbehavior: false,
+            cursorwidth: "5px",
+            cursorborder: "0",
+            cursorborderradius: "5px"
+        });
+
+        String.prototype.trim = function() {
+            return this.replace(/(^\s*)|(\s*$)/g, "");
+        }
+        Highcharts.setOptions({
+            global: {
+                useUTC: false
+            }
+        });
+        $('#container').highcharts({
+            chart: {
+                zoomType: 'x',
+                events: {
+                    load: function() {
+
+                        // set up the updating of the chart each second
+                        var series = this.series[0];
+
+                        var y;
+                        setInterval(function() {
+                            var x = (new Date()).getTime();
+
+                            $.ajax({
+                                type: "post",
+                                url: "getmeminfor",
+                                datatype: "json",
+                                async: false, //注意！！这个为必要的参数，不然这个会在上面的Ajax请求后才执行
+                                success: function(data, result) {
+
+                                    //var obj = eval('(' + data.data + ')');
+                                    obj=data.data;
+                                    var total = parseInt(obj.memtotal.trim()); //json name
+                                    var used = parseInt(obj.memused.trim());
+                                    y = Math.round(used / total * 10000) / 100.00;
+
+                                    //去掉网址logo
+                                    $(".highcharts-container text").each(function() {
+                                        if ($(this).attr("x") == "890")
+                                            $(this).text(used + " / " + total);
+                                    })
+                                }
+                            });
+                            if (series.data.length > 50)
+                                series.addPoint([x, y], true, true);
+                            else
+                                series.addPoint([x, y], true, false);
+
+                        }, 1000);
+                    }
+                }
+            },
+            title: {
+                text: '内存使用率监控 -- %/s'
+            },
+            subtitle: {
+                text: ""
+            },
+            xAxis: {
+                type: 'datetime',
+                tickPixelInterval: 100
+            },
+            yAxis: {
+                title: {
+                    text: '使用率/%'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                area: {
+                    fillColor: {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    },
+                    marker: {
+                        radius: 0
+                    },
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                            lineWidth: 1
+                        }
+                    },
+                    threshold: null
+                }
+            },
+
+            series: [{
+                type: 'spline',
+                name: '内存',
+                data: (function() {
+                    // generate an array of random data
+                    var data = [],
+                            time = (new Date()).getTime(),
+                            i;
+
+                    for (i = -10; i <= 0; i++) {
+                        data.push({
+                            x: time + i * 1000,
+                            y: null
+                        });
+                    }
+
+                    return data;
+                })()
+            }]
+        });
+
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,170 @@
+﻿@model MiniNasWeb.Models.LoginModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="shortcut icon" href="/Images/Discuz/Home/ico/login.ico" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="/Content/Discuz/login.css">
+    <link rel="stylesheet" href="/Content/public/home.css">
+    <script src="/Scripts/jquery-1.8.2.min.js"></script>
+    <title>login</title>
+</head>
+
+<body>
+    <div class="home-main">
+         
+        @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            
+            
+            
+            
+            
+            <div class="mlogin">
+            <div class="mlogin-input">
+                <p class="puname">
+                    <input type="text" id="username" class="username" value="使用者名称" />
+                    @*@Html.TextBoxFor(m => m.UserName, new { @value = "使用者名称" })*@
+                </p>
+                <p class="ppwd">
+                    <input type="text" id="t_password" class="password" value="密码" />
+                   
+                    <input type="password" id="password" class="password" style="display:none;" />
+                    @*@Html.PasswordFor(m => m.Password, new { @value = "密码" })*@
+                </p>
+                <p class="errorpop"></p>
+                <a id="active" class="suninfo_str" ns="Login" style="display:none;">Active</a>
+            </div>
+            <div class="mlogin-btn" id="login"></div>
+                <input type="submit" value=" " class="mlogin-btn" id="btnSub" />
+            <div class="mlogin-logo"></div>
+        </div>
+            
+            
+        }
+
+
+
+    </div>
+    <script type="text/javascript">
+
+        //登录输入
+        var aInp = document.getElementsByTagName('input');
+        var i = 0;
+        var sArray = [];
+        for (i = 0; i < aInp.length; i++) {
+            aInp[i].index = i;
+            sArray.push(aInp[i].value);
+            aInp[i].onfocus = function () {
+                if (sArray[this.index] == aInp[this.index].value) {
+                    aInp[this.index].value = '';
+                }
+                aInp[this.index].className = 'veryhuo_com';
+            };
+            aInp[i].onblur = function () {
+                if (aInp[this.index].value == '') {
+                    aInp[this.index].value = sArray[this.index];
+                }
+                aInp[this.index].className = '';
+            };
+        }
+
+        //背景随机播放
+        var bodyBgs = [];
+        bodyBgs[0] = "/Images/Discuz/home-login/bg01.jpg";
+        bodyBgs[1] = "/Images/Discuz/home-login/bg02.jpg";
+        bodyBgs[2] = "/Images/Discuz/home-login/bg03.jpg";
+        bodyBgs[3] = "/Images/Discuz/home-login/bg04.jpg";
+        var randomBgIndex = Math.round(Math.random() * 3);
+        //输出随机的背景图
+        //document.write('<style>body{background:url(' + bodyBgs[randomBgIndex] + ') no-repeat 50% 0}</style>');\
+        var imgurl = bodyBgs[randomBgIndex];
+        $("body").css("background", "url(" + imgurl + ") no-repeat");
+        $("body").css("background-size", "cover");
+
+
+
+        //登录判断
+        $("#login").click(function () {
+            $(".errorpop").text("");
+            var uname = $("#username").val();
+            var upwd = $("#password").val();
+
+
+            if (uname.trim().length < 4) {
+                $(".errorpop").text("用户名格式不正确");
+                $("#username").focus();
+                return false;
+            }
+            if (uname.value == "") {
+                $(".errorpop").text("请输入用户名");
+                $("#username").focus();
+                return false;
+            }
+            if (upwd.trim().length < 5) {
+                $(".errorpop").text("密码格式不正确");
+                $("#password").focus();
+                return false;
+            }
+        })
+    </script>
+
+</body>
+
+
+
+<script>
+    $(function () {
+
+        $("#UserName").focus(function () {
+            $(".lusername i").css("background", "url(/Images/Default/Home/icon-input-login.png) -3px -2px no-repeat");
+            $("#UserName").css("background", "url(/Images/Default/Home/bg-login-input.png) 0px -48px no-repeat");
+        }).blur(function () {
+            if ($("#UserName").val().length < 1)
+                $(".lusername i").css("background", "url(/Images/Default/Home/icon-input-login.png) -65px -2px no-repeat");
+            $("#UserName").css("background", "url(/Images/Default/Home/bg-login-input.png) 0px 0px no-repeat");
+        })
+
+        $("#Password").focus(function () {
+            $(".lpassword i").css("background", "url(/Images/Default/Home/icon-input-login.png) -33px -2px no-repeat");
+            $("#Password").css("background", "url(/Images/Default/Home/bg-login-input.png) 0px -48px no-repeat");
+        }).blur(function () {
+            if ($("#Password").val().length < 1)
+                $(".lpassword i").css("background", "url(/Images/Default/Home/icon-input-login.png) -95px -2px no-repeat");
+            $("#Password").css("background", "url(/Images/Default/Home/bg-login-input.png) 0px 0px no-repeat");
+
+        });
+       
+        $("#btnSub").click(function () {
+            $(".errorMessage").text("");
+            var uname = $("#UserName").val();
+            var upwd = $("#Password").val();
+
+            if (uname.trim().length < 4)
+            {
+                $(".errorMessage").text("用户名格式不正确");
+                $("#UserName").focus();
+                return false;
+            }
+            if (upwd.trim().length < 5) {
+                $(".errorMessage").text("密码格式不正确");
+                $("#Password").focus();
+                return false;
+            }
+        })
+         
+    })
+</script>
+
+
+

@@ -1,0 +1,368 @@
+﻿
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "音频中心";
+} 
+
+@using (Html.BeginForm())
+{
+    <div class="main-left fl">
+        <div class="lhead">
+            <div class="vhead vhead2"></div>
+            <a href="/Home/Index" class="indexUrl"></a>
+            <ul class="stationList">
+                <li class="li1">
+                    <a href="@Url.Action("Index", "Photo")"><i></i><span>照片中心</span></a>
+                </li>
+                @*<li class="li2">
+                    <a href="@Url.Action("Index", "Music")"><i></i><span>音频中心</span></a>
+                </li>*@
+                <li class="li3">
+                    <a href="@Url.Action("Index", "Video")"><i></i><span>视频中心</span></a>
+                </li>
+                <li class="li4">
+                    <a href="@Url.Action("Index", "Download")"><i></i><span>下载中心</span></a>
+                </li>
+                <li class="li5">
+                    <a href="@Url.Action("Index", "BTDownload")"><i></i><span>BT中心</span></a>
+                </li>
+                <li class="li6">
+                    <a href="@Url.Action("Index", "FileCenter")"><i></i><span>文件中心</span></a>
+                </li>
+                <li class="li7">
+                    <a href="@Url.Action("Index", "System")"><i></i><span>系统管理</span></a>
+                </li>
+                <li class="li7">
+                    <a href="@Url.Action("Index", "ThunderDownload")"><i></i><span>迅雷远程</span></a>
+                </li>
+            </ul>
+        </div>
+        <div class="lsearch">
+            <input type="text" value="搜索" onclick="if (this.value == '搜索') this.value = ''" onblur="    if (this.value == '') this.value = '搜索';" name="s" id="filter">
+            <i id="search"></i>
+        </div>
+        <div class="treelist lcontent">
+            <h5 class="suninfo_str">音频库</h5>
+            <ul id="library_list" class="fun_list">
+                <li name="view" keyid="library_0" class="selected"><i></i><span>所有音频</span></li>
+            </ul>
+            <h5 class="suninfo_str">播放列表</h5>
+        </div>  
+    </div>
+    <div class="main-right">
+        <div class="rt-content">
+            <div class="rhead clear">
+                <div class="fl clear">
+                    <div class="rLists fl">
+                        <div class="menu-hd" id="album_act"><span>播放操作</span><i></i></div>
+                        <ul id="album_act_list">
+                            <li><a id="Music_Add">新建</a></li>
+                            <li><a id="Music_Edit">编辑</a></li>
+                            <li class="disabled"><a id="Music_Delete">删除</a></li>
+                        </ul>
+                    </div>
+                    <div class="rLists fl">
+                        <div class="menu-hd" id="photo_act"><span>音频操作</span><i></i></div>
+                        <ul id="photo_act_list">
+                            <li><a id="Music_AddTo_list">添至列表</a></li>
+                            <li><a id="Music_Remove_list">移出列表</a></li>
+                            <li class="disabled"><a id="Delete">删除</a></li>
+                            <li class="disabled"><a id="Download">下载</a></li>
+                        </ul>
+                    </div>
+                    <div class="rLists fl">
+                        <div class="menu-hd" id="Music_upload"><span>上传音频</span></div>
+                    </div>
+                </div>
+                <div class="rt">
+                    <ul class="ulopertion clear">
+                        <li id="list"><i></i><span>详细列表</span></li>
+                        <li id="thumbnail"><i></i><span>缩略图</span></li>
+                        <li id="play"><i></i></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="hrhead clear">
+                <div class="fl"><span>相册列表</span><i>/</i><span id="sel_title" class="color_ye">所有音频</span></div>
+                <div class="rt list_checkAll">
+                    <i>全选</i>
+                    <div class="checkbox">
+                        <input id="checkAll1" type="checkbox" class="checkAll" name="checkAll">
+                        <label for="checkAll1"></label>
+                    </div>
+                </div>
+                <div class="rt"><span>共计 <span id="allnum" class="color_ye"></span> 首音乐 </span><span id="chkAll_thumbnail"></span> </div>
+            </div>
+            <div class="rtgy-box-center">
+                <div class="rtgy-cont">
+                    <div id="content" class="scrollbar">
+                        <table class="table_list" width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <thead>
+                                <tr class="title">
+                                    <td width="25">
+                                        <div class="checkbox">
+                                            <input id="checkAll" name="checkAll" class="checkAll" type="checkbox">
+                                            <label for="checkAll"></label>
+                                        </div>
+                                    </td>
+                                    <td width="40%">名称</td>
+                                    <td width="20%">专辑</td>
+                                    <td width="20%">艺术家</td>
+                                    <td width="20%">年份</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="checkbox">
+                                            <input id="check1" type="checkbox" name="checkOne">
+                                            <label for="check1"></label>
+                                        </div>
+                                    </td>
+                                    <td>名称</td>
+                                    <td>专辑</td>
+                                    <td>艺术家</td>
+                                    <td>年份</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="checkbox">
+                                            <input id="check2" type="checkbox" name="checkOne">
+                                            <label for="check2"></label>
+                                        </div>
+                                    </td>
+                                    <td>名称</td>
+                                    <td width="20%">专辑</td>
+                                    <td width="15%">艺术家</td>
+                                    <td width="10%">年份</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="checkbox">
+                                            <input id="check3" type="checkbox" name="checkOne">
+                                            <label for="check3"></label>
+                                        </div>
+                                    </td>
+                                    <td>名称</td>
+                                    <td width="20%">专辑</td>
+                                    <td width="15%">艺术家</td>
+                                    <td width="10%">年份</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <ul class="Thumbnail_list clear">
+                            <li>
+                                <div class="checkbox">
+                                    <input id="check11" type="checkbox" name="checkOne">
+                                    <label for="check11"></label>
+                                </div>
+                                <img src="/Images/Discuz/public/music_pic.png"><b>photo001</b>
+                            </li>
+                            <li>
+                                <div class="checkbox">
+                                    <input id="check21" type="checkbox" name="checkOne">
+                                    <label for="check21"></label>
+                                </div>
+                                <img src="/Images/Discuz/public/music_pic.png"><b>photo001</b>
+                            </li>
+                            <li>
+                                <div class="checkbox">
+                                    <input id="check31" type="checkbox" name="checkOne">
+                                    <label for="check31"></label>
+                                </div>
+                                <img src="/Images/Discuz/public/music_pic.png"><b>photo001</b>
+                            </li>
+                            <li>
+                                <div class="checkbox">
+                                    <input id="check41" type="checkbox" name="checkOne">
+                                    <label for="check41"></label>
+                                </div>
+                                <img src="/Images/Discuz/public/music_pic.png"><b>photo001</b>
+                            </li>
+                            <li>
+                                <div class="checkbox">
+                                    <input id="check51" type="checkbox" name="checkOne">
+                                    <label for="check51"></label>
+                                </div>
+                                <img src="/Images/Discuz/public/music_pic.png"><b>photo001</b>
+                            </li>
+                            <li>
+                                <div class="checkbox">
+                                    <input id="check61" type="checkbox" name="checkOne">
+                                    <label for="check61"></label>
+                                </div>
+                                <img src="/Images/Discuz/public/music_pic.png"><b>photo001</b>
+                            </li>
+                            <li>
+                                <div class="checkbox">
+                                    <input id="check71" type="checkbox" name="checkOne">
+                                    <label for="check71"></label>
+                                </div>
+                                <img src="/Images/Discuz/public/music_pic.png"><b>photo001</b>
+                            </li>
+                            <li>
+                                <div class="checkbox">
+                                    <input id="check81" type="checkbox" name="checkOne">
+                                    <label for="check81"></label>
+                                </div>
+                                <img src="/Images/Discuz/public/music_pic.png"><b>photo001</b>
+                            </li>
+                            <li>
+                                <div class="checkbox">
+                                    <input id="check91" type="checkbox" name="checkOne">
+                                    <label for="check91"></label>
+                                </div>
+                                <img src="/Images/Discuz/public/music_pic.png"><b>photo001</b>
+                            </li>
+                            <li>
+                                <div class="checkbox">
+                                    <input id="check101" type="checkbox" name="checkOne">
+                                    <label for="check101"></label>
+                                </div>
+                                <img src="/Images/Discuz/public/music_pic.png"><b>photo001</b>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+}
+
+@*新建播放列表*@
+<div id="popupLayer_Music_Add" class="popup-layer">
+    <div id="popupLayerBox_Music_Add" class="popup-layer-box downloadHttp w400">
+        <i id="closePopupLayer_Music_Add" class="close-Download">×</i>
+        <div class="downloadpup clear">
+            <h3 class="item_tit">新建播放列表：</h3>
+            <div class="photo_text">
+                <div class="group clear">
+                    <span class="caption  fl">列表标题：</span>
+                    <input type="text" class="w260">
+                    <span class="red-color fl">*</span>
+                </div>
+                <p class="msg"></p>
+            </div>
+            <div class="btnBox">
+                <a class="download" id="btnDownload">新建</a>
+                <a class="cancel" id="cancel">取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+@*编辑播放列表*@
+<div id="popupLayer_Music_Edit" class="popup-layer">
+    <div id="popupLayerBox_Music_Edit" class="popup-layer-box downloadHttp w400">
+        <i id="closePopupLayer_Music_Edit" class="close-Download">×</i>
+        <div class="downloadpup clear">
+            <h3 class="item_tit">编辑播放列表：</h3>
+            <div class="photo_text clear">
+                <span class="caption  fl">列表标题：</span>
+                <input type="text" class="w260">
+            </div>
+            <div class="btnBox">
+                <a class="download" id="btnDownload">确定</a>
+                <a class="cancel" id="cancel">取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+@*添至列表*@
+<div id="popupLayer_Music_AddTo_list" class="popup-layer">
+    <div id="popupLayerBox_Music_AddTo_list" class="popup-layer-box downloadHttp w400">
+        <i id="closePopupLayer_Music_AddTo_list" class="close-Download">×</i>
+        <div class="downloadpup clear">
+            <h3 class="item_tit">添加至列表：</h3>
+            <div class="photo_text clear">
+                <span class="caption  fl">列表标题：</span>
+                <select class="w260">
+                    <option>列表1</option>
+                    <option>列表2</option>
+                    <option>列表3</option>
+                    <option>列表4</option>
+                </select>
+            </div>
+            <div class="btnBox">
+                <a class="download" id="btnDownload">确定</a>
+                <a class="cancel" id="cancel">取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+@*移出列表*@
+<div id="popupLayer_Music_Remove_list" class="popup-layer">
+    <div id="popupLayerBox_Music_Remove_list" class="popup-layer-box downloadHttp w400">
+        <i id="closePopupLayer_Music_Remove_list" class="close-Download">×</i>
+        <div class="downloadpup clear">
+            <h3 class="item_tit">移出列表：</h3>
+            <div class="Warning clear">
+                <span class="Warn-icon  fl"></span>
+                <p class="Warn-text fl">列表<span class="remove-listName">“恐怖片”</span>将被移除</p>
+            </div>
+            <div class="btnBox">
+                <a class="download" id="btnDownload">确定</a>
+                <a class="cancel" id="cancel">取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+@*上传音频*@
+<div id="popupLayer_Music_upload" class="popup-layer">
+    <div id="popupLayerBox_Music_upload" class="popup-layer-box downloadHttp w400">
+        <i id="closePopupLayer_Music_upload" class="close-Download">×</i>
+        <div class="downloadpup clear">
+            <h3 class="item_tit">上传音频：</h3>
+            <div class="photo_Upload clear">
+                <div class="Upload-lf fl">
+                    <a class="Upload-Btn">选择文件</a>
+                </div>
+                <div class="Upload-Text rt">
+                    <span>说明：<br>1、文件名将过滤字符：'，"，%，# 。<br>2、如存在同名文件，新文件将不被保存。<br>3、0kb文件不会被上传。</span>
+                </div>
+            </div>
+            <div class="Upload-progress">
+                <span>上传进度：</span>
+            </div>
+            <div class="btnBox">
+                <a class="cancel" id="cancel">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        //新建
+        $("#Music_Add").click(function () {
+            Popup.init('closePopupLayer_Music_Add', 'popupLayer_Music_Add', 'popupLayerBox_Music_Add');
+            Popup.popup();
+        });
+
+        //编辑
+        $("#Music_Edit").click(function () {
+            Popup.init('closePopupLayer_Music_Edit', 'popupLayer_Music_Edit', 'popupLayerBox_Music_Edit');
+            Popup.popup();
+        });
+
+        //添至列表
+        $("#Music_AddTo_list").click(function () {
+            Popup.init('closePopupLayer_Music_AddTo_list', 'popupLayer_Music_AddTo_list', 'popupLayerBox_Music_AddTo_list');
+            Popup.popup();
+        });
+
+        //移出列表
+        $("#Music_Remove_list").click(function () {
+            Popup.init('closePopupLayer_Music_Remove_list', 'popupLayer_Music_Remove_list', 'popupLayerBox_Music_Remove_list');
+            Popup.popup();
+        });
+
+        //上传音频
+        $("#Music_upload").click(function () {
+            Popup.init('closePopupLayer_Music_upload', 'popupLayer_Music_upload', 'popupLayerBox_Music_upload');
+            Popup.popup();
+        });
+    });
+</script>
+
+
+
+

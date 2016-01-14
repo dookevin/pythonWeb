@@ -1,0 +1,84 @@
+﻿@{
+    ViewBag.Title = "WinViewConfig";
+    Layout = "~/Views/Templates/Discuz/Shared/_SystemLayout.cshtml";
+}
+
+<div class="road">
+    <span class="suninfo_str">首页 > 共享与权限 > Win访问设置</span>
+</div>
+<div class="rtgy-box">
+    <div class="rtgy-cont">
+        <h3>Win访问设置</h3>
+        <div class="contentLine">
+            <div class="checkbox mrt_10 fl">
+                <input id="enableWinSetting" type="checkbox" checked="checked">
+                <label for="enableWinSetting"></label>
+            </div>
+            <span class="suninfo_cont_str" ns="WinSetting">启动Windows文件服务</span>
+        </div>
+        <div class="set">
+            <h5>基础设置</h5>
+            <div class="group clear">
+                <label class="suninfo_cont_str">认证方式：</label>
+                <select id="securitylist">
+                    <option>匿名</option>
+                    <option>本机用户</option>
+                </select>
+                <span class="msg">只允许用户管理中的用户名访问。</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">NetBIOS名称：</label>
+                <input type="text" class="w200" value="mininas">
+                <span class="msg"><font>*</font>在网络中可以通过设置的NetBIOS名称查找到主机( 不确认时请使用默认值 )。</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">工作组：</label>
+                <input type="text" class="w200" value="MiniNAS">
+                <span class="msg"><font>*</font>设置主机在网络隶属于哪一个工作组( 不确认时请使用默认值 )。</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">描述：</label>
+                <input type="text" class="w200" value="MiniNAS Server">
+                <span class="msg">允许为空</span>
+            </div>
+            <div class="checkbox_group clear">
+                <div class="checkbox mrt_10 fl">
+                    <input id="localmaster" type="checkbox" checked="checked">
+                    <label for="localmaster"></label>
+                </div>
+                <span class="suninfo_cont_str" ns="WinSetting">允许尝试成为本地主浏览器</span>
+            </div>
+        </div>
+        <div class="set">
+            <h5><span class="icon-l"></span><span class="msg">高级设置</span></h5>
+            <div class="group clear">
+                <label class="suninfo_cont_str">发送缓冲区大小：</label>
+                <input type="text" class="w200" value="16384">
+                <span class="msg">发送缓冲区的大小( 缺省为16384字节 )。</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">接受缓冲区大小：</label>
+                <input type="text" class="w200" value="16384">
+                <span class="msg">接收缓冲区的大小( 缺省为16384字节 )。</span>
+            </div>
+            <div class="checkbox_group clear">
+                <div class="checkbox mrt_10 fl">
+                    <input id="largereadwrite" type="checkbox" checked="checked">
+                    <label for="largereadwrite"></label>
+                </div>
+                <span class="suninfo_cont_str" ns="WinSetting">启用大笔数据读／写 ( 使用 Windows 2000 之后新建的64K流选项 )</span>
+            </div>
+            <div class="checkbox_group clear">
+                <div class="checkbox mrt_10 fl">
+                    <input id="nullpasswords" type="checkbox" checked="checked">
+                    <label for="nullpasswords"></label>
+                </div>
+                <span class="suninfo_cont_str" ns="WinSetting">允许空密码的用户连接</span>
+            </div>
+        </div>
+        <div class="btnBox">
+            <a class="save">保存</a>
+        </div>
+    </div>
+</div>
+

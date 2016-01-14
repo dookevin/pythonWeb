@@ -1,0 +1,239 @@
+@charset "utf-8"; 
+@import url("");/*引用CSS*/
+
+/*** 头部右上角登录信息*/
+/*** 头部右上角登录信息*/
+.level { position: fixed; z-index: 100000; }
+/*css reset*/
+html { overflow:visible }
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, blockquote, textarea, p, th, td, table { margin:0; padding:0; }
+body, input, select, button, textarea { font-size: 12px; color:#333; font-family: "微软雅黑", Verdana, Helvetica, Sans-Serif; }/*统一不同浏览器字体大小*/
+table { border-collapse:collapse;  }
+button { cursor: pointer; }
+fieldset { border:0; }
+img { border:0 none; }/*图片去边框并居中*/
+address, caption, cite, code, dfn, em, th, var { font-style:normal; font-weight:normal; }
+ol, ul, li { list-style:none; }
+caption, th { text-align:left; }
+h1, h2, h3, h4, h5, h6 { font-size:100%; font-weight:normal; }
+p { text-align:left; }/*Sevnup add------文本左对齐*/
+i, cite, em { font-style:normal; font-weight:normal; }
+abbr, acronym { border:0; }
+a { text-decoration:none; color:#000; }
+a:focus { outline:none; -moz-outline:none }
+.plf_42 { padding-left:42px; }
+q:before, q:after { content:''; }  /*<q></q>标签之间的文字两头加上引号(")*/
+a { blr:expression(this.onFocus=this.blur());
+} /* IE Opera去掉点击链接时的虚线外框 */
+a { outline:none; } /* FF Opera去掉点击链接时的虚线外框 */
+    }
+area { blr:expression(this.onFocus=this.blur());
+} /* 图片热点去掉点击链接时的虚线外框 */
+a:focus { -moz-outline-style: none; /* FF去掉点击链接时的虚线外框 */ }
+article, aside, footer, header, section, footer, nav, figure, menu { display:block }/*HTML5在默认情况下表现为内联元素，对这些元素进行布局我们需要利用CSS手工把它们转为块状元素方便布局*/
+.none { display:none; }
+.clear:after { clear: both; content: ""; display:block; height:0; }
+.clear { clear: both; zoom: 1; }
+.fl { float:left; }
+.rt { float:right }
+.clearfix:after { clear: both; content: ""; display:block; height:0; }
+.clearfix { clear: both; zoom: 1; }
+.red { color:red; }
+.cursor { cursor:pointer; }
+html { scrollbar-face-color:#f6f6f6; scrollbar-highlight-color:#fff; scrollbar-shadow-color:#eeeeee; scrollbar-3dlight-color:#eeeeee; scrollbar-arrow-color:#000; scrollbar-track-color:#fff; scrollbar-darkshadow-color:#fff; }
+.btn { background-color:#13a8be; height:38px; border-radius:3px; width:300px; border:0px; color:white; font-size:16px; cursor:pointer; }
+input::-ms-clear {display:none;}/*去掉IE10文本框后面的XX*/
+.input { width:200px; height:30px; border:1px solid #ddd; padding:0px 10px; border-radius:3px; outline:none; }
+.input:hover { border:1px solid #999; }
+.checkbox { width: 16px; height: 16px; position: relative; float: left; }
+.checkbox input{position:absolute; left:2px; top:2px;}
+input[type="checkbox"]:checked + label:before,
+input[type="checkbox"]:not(:checked) + label:before {background: #f5f5f5 url(../images/Default/Home/check.png);content: " ";height: 16px; left: 0px;top: 0px;position: absolute; width: 16px; border-radius: 4px; }
+input[type="radio"]:checked + label:before,
+input[type="radio"]:not(:checked) + label:before {background: #f5f5f5 url(../images/Default/Home/check.png);content: " ";height: 16px; left: 0px;top: 0px;position: absolute; width: 16px; border-radius: 4px; }
+input[type="checkbox"]:not(:checked):focus + label:before,
+input[type="checkbox"]:not(:checked) + label:hover:before {    background-position: -18px 0;}
+input[type="radio"]:not(:checked) + label:hover:before {    background-position: -18px 0;}
+input[type="checkbox"]:checked + label:before {    background-position: -36px 0;}
+input[type="radio"]:checked + label:before {background-position: -36px 0;}
+input[type="checkbox"][disabled]:not(:checked) + label:before {    background-position: -48px 0;}
+input[type="radio"][disabled]:not(:checked) + label:before {    background-position: -48px 0;}
+input[type="checkbox"][disabled]:checked + label:before {    background-position: -64px 0;}
+input[type="radio"][disabled]:checked + label:before {    background-position: -64px 0;}
+input:-webkit-autofill{-webkit-box-shadow : 0 0 0px 1000px white inset ;border : 1px solid #CCC !important ;}
+
+
+.rw .all-rw #rwName li input[name="rw-name"]:checked + label:before, input[name="rw-name"]:not(:checked) + label:before{
+    background: #f5f5f5 url(../images/Default/Home/check.png);
+    content: " ";
+    height: 16px;
+    left: 10px;
+    top: 9px;
+    position: absolute;
+    width: 16px;
+    border-radius: 4px;
+}
+
+/**弹出层 Style **/
+.popup-layer { z-index: 99; position: fixed; top: 0; left: 0; display: none; cursor: auto; background: rgba(0, 0, 0, 0.15); -pie-background: rgba(0, 0, 0, 0.15);  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#4B000000, endColorstr=#4B000000);
+}
+.popup-layer-box { position: absolute; background: #f5f5f5;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;}
+.close-popupLayer { position: absolute; top: 10px; right:15px; cursor: pointer;z-index: 10; background:url(../images/Default/Home/index-float-close.png) -18px 2px no-repeat; width:24px; height:20px; }
+.close-popupLayer:hover { background:url(../images/Default/Home/index-float-close.png) 4px 2px no-repeat; }
+#uploader { margin-top: 35px; }
+.popup-layer .folderInfo { width: 600px; }
+.popup-layer .folderRestart { width: 400px; }
+.popup-layer .folderRestart .shoot-cont { height: auto; }
+.popup-layer .folderRestart .shoot-cont .Btn-bar { height: 34px; padding: 50px 0 30px 96px; }
+.popup-layer .folderRestart .shoot-cont .plf{ padding: 50px 0 30px 153px; }
+.popup-layer .folderRestart .shoot-cont a { text-align: center; vertical-align: middle; }
+.popup-layer .shoot-tit { line-height:40px; font-size: 14px; padding-left:20px; }
+.popup-layer .shoot-cont { padding-bottom:40px; padding-top:20px; }
+.popup-layer .shoot-cont h4 { background: #f3f3f3; line-height:30px; margin-bottom:20px; padding-left:20px; }
+.popup-layer .shoot-cont ul { padding:0 0 0 40px; }
+.popup-layer .shoot-cont ul li { line-height: 30px; }
+.popup-layer .shoot-cont table { width: 100%; margin-top:20px; }
+.popup-layer .shoot-cont table td { padding-left: 20px; line-height:30px; }
+.popup-layer .shoot-cont table .tab-tit { background: #f3f3f3; }
+.shoot-cont .sure_btn,.tabBox .sure_btn{text-align: center;}
+.shoot-cont .sure_btn a,.tabBox .sure_btn a{margin: 0 10px;}
+/*  忘记密码弹框  */
+.popup-layer .UpdatePwdSys {width: 550px;}
+.popup-layer .UpdatePwdSys .set .group label.suninfo_cont_str{width: 140px;}
+.popup-layer .UpdatePwdSys h3{text-align: center; font-size: 18px; line-height: 34px; margin: 20px 0;}
+.popup-layer .UpdatePwdSys .sure_btn{margin-left: 140px; text-align: left; margin-bottom: 20px;}
+.popup-layer .UpdatePwdSys .sure_btn a{width: 120px; height: 34px; line-height: 34px; background: #0cadc6; text-align: center; display: inline-block; margin: 0 8px 0 10px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;}
+/* 升级系统 加载 100%  */
+.Upgradepopup-layer { z-index: 99; position: fixed; top: 0; left: 0; cursor: auto; background: #23a7bb; width: 100%; height: 100%; }
+.loadbox canvas { position: absolute; top:0; left:0; width:210px; height: 210px; z-index: 10; }
+.loadbox .Nowjz-cont { line-height:196px; display:inline-block; width:196px; text-align:center; color: #333; font-size: 18px; }
+.bfbTex { position: absolute; z-index: 100; color: #fff; font-size: 36px; line-height: 40px; text-align: center; width: 354px; top: -70px; left: 0; }
+.upgradeTip { position: absolute; z-index: 100; color: #fff; font-size: 14px; line-height: 24px; text-align: center; width: 354px; bottom: -120px; left: 0; }
+.Upgradepopup-layer-box { width: 354px; height: 354px; background: #3bb1c2; position: absolute; left: 50%; top: 50%; margin-left: -177px; margin-top: -177px;
+    background: url("../images/Default/public/UpgradeBg1.png") no-repeat;}
+.loadbox { width: 210px; height: 210px; margin: 72px; position: relative; z-index: 10; overflow: hidden; }
+.loadCont { width:196px; height:196px; margin: 7px; overflow:hidden; position: absolute; top:0; left:0; z-index: 0;
+    background: url("../images/Default/public/UpgradeBg2.png") no-repeat;}
+/*是否删除弹框*/
+.popup-layer .del-popup-layer{width: 320px;}
+.popupLayer_WhetherDel .popup-layer-box{ position: absolute; background: #fff;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    -webkit-box-shadow:0 0 10px rgba(0, 0, 0, .3);
+    -moz-box-shadow:0 0 10px rgba(0, 0, 0, .3);
+    box-shadow:0 0 10px rgba(0, 0, 0, .3);}
+.popup-layer .del-popup-layer .shoot-tit{border-bottom: 1px solid #f5f5f5; color: #999;}
+.shoot-cont p.WhetherTip{text-align: center; line-height: 32px; color: #ff6666; font-size: 12px;}
+.shoot-cont p.WhetherTip i.WhetherTipIcon,.delFinish i.delFinishIcon,.delFali i.delFaliIcon{display: inline-block; width: 32px; height: 32px; vertical-align: bottom; margin-right: 10px;
+    background-image: url("../images/Default/public/tipIcon.png"); background-repeat: no-repeat; background-position: 0 0; }
+.popup-layer .del-popup-layer .shoot-cont{padding-bottom: 35px; padding-top: 15px;}
+.popup-layer .del-popup-layer .shoot-cont .WhetherBtn{text-align: center;}
+.popup-layer .del-popup-layer .shoot-cont .WhetherBtn a{text-align: center; margin: 25px 8px 0; width: 66px; height: 34px; border: 1px solid #eee; color: #737373; line-height: 34px; display: inline-block; background: #fff;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;}
+.popup-layer .del-popup-layer .shoot-cont .WhetherBtn a:hover{background: #12a7bd; color: #fff;}
+/*删除成功 or 失败弹框*/
+/*.delFinish,.delFali{padding: 30px 0; text-align: center; line-height: 32px; color: #333; font-size: 18px;}*/
+/*.delFinish i.delFinishIcon{background-position: -38px 0;}*/
+/*.delFali i.delFaliIcon{background-position: -76px 0;}*/
+/* 是否弹框Style  */
+.popupLayer_Whether .popup-layer-box{ position: absolute; background: #fff;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;}
+.Whether-BombBox{width: 350px; padding: 30px 0; text-align: center;}
+.Whether-BombBox p.WhetherTit{font-family: "黑体"; color: #333; font-size: 14px; line-height: 30px; text-align: center;}
+.Whether-BombBox p.WhetherTit span{font-size: 18px; color: #23a7bc;}
+.Whether-BombBox p.DowngradeTit span{color: #ff6666;}
+.Whether-BombBox p.WhetherTip{color: #ff6666;  line-height: 24px; text-align: center;}
+.Whether-BombBox a{display: inline-block; text-align: center; width: 58px; height: 34px; line-height: 34px; border: 1px solid #ccc; color: #333; font-size: 12px; margin: 15px 5px 0;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;}
+.Whether-BombBox a:hover{color: #23a7bc; border: 1px solid #23a7bc;}
+/*****  共享权限设置 弹框 Style *****/
+.share_qxsz{width: 870px;}
+.shareQxsz-bar{background: #fff; padding: 40px 70px 50px; width: 730px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -moz-box-shadow: 0 0 8px rgba(102, 102, 102, .1);
+    -webkit-box-shadow: 0 0 8px rgba(102, 102, 102, .1);
+    box-shadow: 0 0 8px rgba(102, 102, 102, .1);}
+.shareQxsz-bar h3{text-align: center; font-size: 18px; line-height: 34px; margin: 20px 0;}
+.popup-layer .shareQxsz-bar .group label.suninfo_cont_str{width: 80px;}
+.share-fileTex{width: 238px; height: 20px; border: 1px solid #ccc; background: #fff; padding: 4px 10px; color: #333; margin-left: 10px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;}
+.shareBtn{background: #eeb01b; display: inline-block; width: 260px; height: 30px; line-height: 30px; text-align: center; color: #fff; font-size: 14px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;}
+.shareBtn:hover{background: #f5ba2c;}
+/*磁盘操作引导*/
+.diskboot-layer{z-index: 2500;}
+.diskboot-box {background: #f3f3f3;}
+.diskboot-bar{padding: 30px 50px;}
+.diskboot-bar h3{text-align: center; font-size: 24px; color: #333; line-height: 40px;}
+.diskboot-flowTit{margin-top: 30px;}
+.diskboot-flowTit ul li{width: 150px; height: 40px; line-height: 40px; color: #999; font-size: 14px; text-align: center; background: #e5e5e5; float: left; cursor: pointer;}
+.diskboot-flowTit ul li.li1Bg{background: url("../images/Default/public/diskBootWorkflowBg.png") no-repeat left -120px;}
+.diskboot-flowTit ul li.li6Bg{background: url("../images/Default/public/diskBootWorkflowBg.png") no-repeat right  -160px;}
+.diskboot-flowTit ul li span{display: inline-block; text-align: center; font-family: Arial; line-height: 16px; font-size: 12px; margin-right: 5px; color: #fff; width: 16px; height: 16px; background: url("../images/Default/public/diskBootWorkflow_spanBg.png") no-repeat 0 0;}
+.diskboot-flowTit ul li.on span{background: url("../images/Default/public/diskBootWorkflow_spanBg.png") no-repeat 0 -20px; color: #13a7bd;}
+.diskboot-flowTit ul li.on{background: url("../images/Default/public/diskBootWorkflowBg.png") no-repeat left -40px; color: #fff; width: 180px; margin-left: -30px;}
+.diskboot-flowTit ul li.li1Bg.on{background: url("../images/Default/public/diskBootWorkflowBg.png") no-repeat left 0; margin-left: 0; width: 150px;}
+.diskboot-flowTit ul li.li6Bg.on{background: url("../images/Default/public/diskBootWorkflowBg.png") no-repeat left -80px;}
+.diskboot-tempWrap{ margin: 0 126px; overflow: hidden;}
+.diskboot-bd{padding-top: 20px; position: relative; width: 900px;}
+.diskboot-con{text-align: center;}
+.diskboot-con h4{line-height:38px; color: #333; font-size:16px; }
+.diskboot-con img{margin-top: 10px;}
+.diskboot-con .diskbootSetBtn{display: inline-block; width: 168px; height: 50px; background: #13a7bd; margin-top: 130px; line-height: 50px; text-align: center; color: #fff; font-size: 14px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+}
+.diskboot-pic img{width: 100%;}
+.diskboot-con .diskbootSetBtn:hover{background: #0cadc6;}
+.mtp_30{margin-top: 30px;}
+.mtp_50{margin-top: 50px;}
+.diskboot-bd .prevStop,.diskboot-bd .nextStop{display: none;}
+.diskboot-bd .prev{width: 40px; height: 67px; background: url("../images/Default/public/diskBootArrowIcon.png") no-repeat -40px 0;  position: absolute; left: 40px; top: 50%; margin-top: -34px;}
+.diskboot-bd .next{width: 40px; height: 67px; background: url("../images/Default/public/diskBootArrowIcon.png") no-repeat 0 0; position: absolute; right: 40px; top: 50%; margin-top: -34px;}
+#Myiframe{height: 697px; width: 1000px;}
+.diskboot-pic{padding: 0;}
+.diskboot-pic1{padding: 0;}
+@media screen and (max-width: 1400px){
+    #Myiframe{height: 560px; width: 980px;}
+}
+@media screen and (width: 980px){
+    .diskboot-pic{padding: 0 100px;}
+    .diskboot-pic1{padding: 0 140px;}
+    .diskboot-pic1 img{width: 100%;}
+    .diskboot-bar{padding: 30px 40px;}
+}
+/* IE 6/7/8 */
+@media \0screen\,screen\9 {
+    .popup-layer .aboutp1 { padding-top: 80px; }
+}
+/*ie7兼容*/
+*:first-child+html .loginMain ol { margin-left: 0px; padding-left: 55px; }
+*:first-child+html #recheck { top: -2px; }
+*:first-child+html .popup-layer form ol input { line-height: 30px; position: relative; top: 6px; }
+*:first-child+html .indexMain ul li a:hover { border: none; cursor: pointer; }
+
+/*ie8兼容*/
+@media \0screen {
+    .popup-layer form ol input { line-height: 30px; }
+}
+

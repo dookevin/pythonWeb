@@ -1,0 +1,341 @@
+﻿@{
+    ViewBag.Title = "DiskCouponManagement";
+    Layout = "~/Views/Templates/Discuz/Shared/_SystemLayout.cshtml";
+}
+
+<div class="road">
+    <span class="suninfo_str">首页 > 存储设置 > 磁盘卷管理</span>
+</div>
+<div class="rtgy-box">
+    <div class="rtgy-cont">
+        <h3>磁盘卷管理</h3>
+        <div class="rightCol">
+            <div class="tab_nav">
+                <ul class="clear">
+                    <li class="first_li cur">管理</li>
+                    <li class="last_li">I/O统计</li>
+                </ul>
+            </div>
+            <div class="tab_contBox">
+                <div class="tab_cont" style="display:block;">
+                    <div class="add_list add_mtp">
+                        <a class="add_btn" href="AddDiskCoupon"><i>+</i>新增磁盘卷</a>
+                    </div>
+                    <div class="tabBox">
+                        <table id="user_list" width="100%" border="0" cellspacing="0" cellpadding="0" class="tab01">
+                            <thead>
+                                <tr class="tab_mean">
+                                    <td width="10%">磁盘卷名称</td>
+                                    <td width="25%">物理空间</td>
+                                    <td width="10%">已用</td>
+                                    <td width="10%">有效</td>
+                                    <td width="10%">容量</td>
+                                    <td width="10%">状态</td>
+                                    <td width="25%" class="text-center">动作</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Disk1</td>
+                                    <td>ata-Hitachi_HUA722010CLA330_JPW9M0N12ZASUL</td>
+                                    <td>953869M</td>
+                                    <td>JPW9M0N12ZASUL</td>
+                                    <td>2</td>
+                                    <td>正在线上</td>
+                                    <td><p><a class="btn3" title="编辑" href="InsideEditDiskCoupon">编辑</a><a class="btn5" title="删除">删除</a></p></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--
+                <div class="tab_cont">
+                    <div class="set">
+                        <h6><span class="icon-l"></span><span class="msg">基础设置</span></h6>
+                        <span class="prompt_ora">磁盘卷管理提供的工具供专业的管理员使用，以便在紧急情况下对磁盘卷进行救急措施.<br>为了保证数据安全， 请小心操作！下列情况都会造成不可逆的数据丢失:<br>1) 使用工具中的下线功能下线raid0中的一块磁盘会立即导致该raid0损坏。<br>2) 使用工具中的下线功能下线处于降级状态的raid5中的一块磁盘会立即导致该raid5损坏。<br>3) 如果该raid还存有系统数据(例如swap分区等），还会导致系统不可用。请不要执行上述以及类似的操作！<br>数据无价，操作需谨慎！</span>
+                        <div class="group clear postion_box">
+                            <label class="suninfo_cont_str">命令</label>
+                            <div class="option_list">
+                                <span class="dropdown_Text">清理 (clear)</span>
+                                <a class="dropdownBtn"></a>
+                            </div>
+                            <span class="msg"></span>
+                            <div class="dropdown_cont">
+                                <span class="dropdown_mean dropdown_cur"><a class="cur_gou">清理</a></span>
+                                <span class="dropdown_mean2"><a>历史 (history)</a></span>
+                                <span class="dropdown_mean2"><a>下线 (offline)</a></span>
+                                <span class="dropdown_mean2"><a>上线 (online)</a></span>
+                                <span class="dropdown_mean2"><a>移除 (remove)</a></span>
+                                <span class="dropdown_mean2"><a>净化 (scrub)</a></span>
+                                <span class="dropdown_mean2"><a>升级 (upgrade)</a></span>
+                                <span class="dropdown_mean2"><a>分离 (detach)</a></span>
+                            </div>
+                        </div>
+                        <div class="group clear postion_box">
+                            <label class="suninfo_cont_str">选项</label>
+                            <div class="option_list">
+                                <span class="dropdown_Text">永不</span>
+                                <a class="dropdownBtn"></a>
+                            </div>
+                            <span class="msg"></span>
+                            <div class="dropdown_cont">
+                                <span class="dropdown_mean dropdown_cur"><a class="cur_gou">永不</a></span>
+                                <span class="dropdown_mean2"><a>休眠</a></span>
+                                <span class="dropdown_mean2"><a>待机</a></span>
+                                <span class="dropdown_mean2"><a>空闲</a></span>
+                            </div>
+                        </div>
+                        <div class="clear mtp_40 mlf_180">
+                            <a class="save">保存</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab_cont">
+                    <div class="set">
+                        <h6><span class="icon-l"></span><span class="msg">基础设置</span></h6>
+                        <span class="prompt_ora">没有可用的磁盘卷或者所有磁盘卷处于不健康状态。<br>没有可用的磁盘。</span>
+                        <div class="group clear postion_box">
+                            <label class="suninfo_cont_str">磁盘卷名称</label>
+                            <div class="option_list">
+                                <span class="dropdown_Text"></span>
+                                <a class="dropdownBtn"></a>
+                            </div>
+                            <span class="msg"></span>
+                            <div class="dropdown_cont">
+                                <span class="dropdown_mean dropdown_cur"><a class="cur_gou">磁盘卷名称</a></span>
+                            </div>
+                        </div>
+                        <div class="group clear postion_box">
+                            <label class="suninfo_cont_str">磁盘位置</label>
+                            <div class="option_list">
+                                <span class="dropdown_Text"></span>
+                                <a class="dropdownBtn"></a>
+                            </div>
+                            <span class="msg"></span>
+                            <div class="dropdown_cont">
+                                <span class="dropdown_mean dropdown_cur"><a class="cur_gou">磁盘位置</a></span>
+                            </div>
+                        </div>
+                        <div class="group clear postion_box">
+                            <label class="suninfo_cont_str">旧磁盘</label>
+                            <div class="option_list">
+                                <span class="dropdown_Text"></span>
+                                <a class="dropdownBtn"></a>
+                            </div>
+                            <span class="msg"></span>
+                            <div class="dropdown_cont">
+                                <span class="dropdown_mean dropdown_cur"><a class="cur_gou">旧磁盘</a></span>
+                            </div>
+                        </div>
+                        <div class="group clear postion_box">
+                            <label class="suninfo_cont_str">新磁盘</label>
+                            <div class="option_list">
+                                <span class="dropdown_Text"></span>
+                                <a class="dropdownBtn"></a>
+                            </div>
+                            <span class="msg"></span>
+                            <div class="dropdown_cont">
+                                <span class="dropdown_mean dropdown_cur"><a class="cur_gou">新磁盘</a></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab_cont">
+                    <div class="set">
+                        <h6><span class="icon-l"></span><span class="msg">基础设置</span></h6>
+                        <span class="prompt_ora">没有可用的磁盘卷或者所有磁盘卷处于不健康状态。<br>没有可用的磁盘。</span>
+                        <div class="group clear postion_box">
+                            <label class="suninfo_cont_str">磁盘卷名称</label>
+                            <div class="option_list">
+                                <span class="dropdown_Text"></span>
+                                <a class="dropdownBtn"></a>
+                            </div>
+                            <span class="msg"><font>*</font></span>
+                            <div class="dropdown_cont">
+                                <span class="dropdown_mean dropdown_cur"><a class="cur_gou">磁盘卷名称</a></span>
+                            </div>
+                        </div>
+                        <div class="group clear postion_box">
+                            <label class="suninfo_cont_str">磁盘卷类型</label>
+                            <div class="option_list">
+                                <span class="dropdown_Text">独享热备盘</span>
+                                <a class="dropdownBtn"></a>
+                            </div>
+                            <span class="msg"></span>
+                            <div class="dropdown_cont">
+                                <span class="dropdown_mean dropdown_cur"><a class="cur_gou">独享热备盘</a></span>
+                            </div>
+                        </div>
+                        <div class="group clear postion_box">
+                            <label class="suninfo_cont_str">磁盘位置</label>
+                            <div class="option_list">
+                                <span class="dropdown_Text"></span>
+                                <a class="dropdownBtn"></a>
+                            </div>
+                            <span class="msg">基于数据安全考虑，磁盘卷仅允许使用同一个机架上的磁盘</span>
+                            <div class="dropdown_cont">
+                                <span class="dropdown_mean dropdown_cur"><a class="cur_gou">磁盘位置</a></span>
+                            </div>
+                        </div>
+                        <div class="group clear postion_box">
+                            <label class="suninfo_cont_str">磁盘</label>
+                            <textarea class="w260 sext_w260"></textarea>
+                            <span class="msg"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab_cont">
+                    <div class="set">
+                        <h6><span class="icon-l"></span><span class="msg">基础设置</span></h6>
+                        <span class="prompt_ora">没有可用的磁盘卷或者所有磁盘卷处于不健康状态。<br>没有可用的磁盘。</span>
+                        <div class="group clear postion_box">
+                            <label class="suninfo_cont_str">磁盘卷名称</label>
+                            <div class="option_list">
+                                <span class="dropdown_Text"></span>
+                                <a class="dropdownBtn"></a>
+                            </div>
+                            <span class="msg"><font>*</font></span>
+                            <div class="dropdown_cont">
+                                <span class="dropdown_mean dropdown_cur"><a class="cur_gou">磁盘卷名称</a></span>
+                            </div>
+                        </div>
+                        <div class="group clear postion_box">
+                            <label class="suninfo_cont_str">磁盘卷类型</label>
+                            <div class="option_list">
+                                <span class="dropdown_Text">条带盘 RAID-0</span>
+                                <a class="dropdownBtn"></a>
+                            </div>
+                            <span class="msg"></span>
+                            <div class="dropdown_cont">
+                                <span class="dropdown_mean dropdown_cur"><a class="cur_gou">条带盘 RAID-0</a></span>
+                                <span class="dropdown_mean2"><a>镜像 RAID-1</a></span>
+                                <span class="dropdown_mean2"><a>单盘冗余 RAID-5</a></span>
+                                <span class="dropdown_mean2"><a>双盘冗余 RAID-6</a></span>
+                            </div>
+                        </div>
+                        <div class="group clear postion_box">
+                            <label class="suninfo_cont_str">磁盘位置</label>
+                            <div class="option_list">
+                                <span class="dropdown_Text"></span>
+                                <a class="dropdownBtn"></a>
+                            </div>
+                            <span class="msg">基于数据安全考虑，磁盘卷仅允许使用同一个机架上的磁盘</span>
+                            <div class="dropdown_cont">
+                                <span class="dropdown_mean dropdown_cur"><a class="cur_gou">磁盘位置</a></span>
+                            </div>
+                        </div>
+                        <div class="group clear postion_box">
+                            <label class="suninfo_cont_str">磁盘</label>
+                            <textarea class="w260 sext_w260"></textarea>
+                            <span class="msg"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab_cont">
+                    <div class="set">
+                        <h6><span class="icon-l"></span><span class="msg">磁盘卷</span></h6>
+                    </div>
+                    <div class="tabBox mtp_10">
+                        <table id="user_list" width="100%" border="0" cellspacing="0" cellpadding="0" class="tab01">
+                            <thead>
+                                <tr class="tab_mean">
+                                    <td width="10%">磁盘卷名称</td>
+                                    <td width="20%">物理空间</td>
+                                    <td width="10%">已用</td>
+                                    <td width="10%">有效</td>
+                                    <td width="10%">状态</td>
+                                    <td width="40%">挂载点</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="height:16px;"></tr>
+                                <tr>
+                                    <td>Disk1</td>
+                                    <td>ata</td>
+                                    <td>953869M</td>
+                                    <td>JPW9M0N12ZASUL</td>
+                                    <td>2</td>
+                                    <td>正在线上</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="set">
+                        <h6><span class="icon-l"></span><span class="msg">虚拟磁盘</span></h6>
+                    </div>
+                    <div class="tabBox mtp_10">
+                        <table id="user_list" width="100%" border="0" cellspacing="0" cellpadding="0" class="tab01">
+                            <thead>
+                                <tr class="tab_mean">
+                                    <td width="10%">名称</td>
+                                    <td width="20%">磁盘卷</td>
+                                    <td width="10%">类型</td>
+                                    <td width="60%">磁盘</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="height:16px;"></tr>
+                                <tr>
+                                    <td>Disk1</td>
+                                    <td>ata</td>
+                                    <td>953869M</td>
+                                    <td>JPW9M0N12ZASUL</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                -->
+                <div class="tab_cont">
+                    <div class="tabBox mtp_2">
+                        <table id="user_list" width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <thead>
+                                <tr class="tab_mean">
+                                    <td width="30%">统计项目</td>
+                                    <td width="10%">已使用</td>
+                                    <td width="10%">剩余空间</td>
+                                    <td width="10%">每秒读请求</td>
+                                    <td width="10%">每秒写请求</td>
+                                    <td width="10%">读带宽</td>
+                                    <td width="20%">写带宽</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>estor</td>
+                                    <td>160G</td>
+                                    <td>768G</td>
+                                    <td>0</td>
+                                    <td>2</td>
+                                    <td>85.7K</td>
+                                    <td>88.7K</td>
+                                </tr>
+                                <tr class="tdbg">
+                                    <td>ata-Hitachi_HUA722010CLA330_JPW9M0N12ZASUL</td>
+                                    <td>160G</td>
+                                    <td>768G</td>
+                                    <td>0</td>
+                                    <td>2</td>
+                                    <td>85.7K</td>
+                                    <td>88.7K</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+ 

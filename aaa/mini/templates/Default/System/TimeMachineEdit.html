@@ -1,0 +1,221 @@
+{% extends "Default/Shared/ContentMaster.html"%}
+
+<!--标题-->
+{% block title %}
+<title>编辑Time Machine - MiniNas管理系统</title>
+{% endblock %}
+<!--css-->
+{% block css %}
+{% endblock %}
+<!--javascript-->
+{% block javascript %}
+{% endblock %}
+
+{% block body %}
+<div class="road">
+    <span class="suninfo_str">首页 > 共享与权限 > Time Machine</span>
+</div>
+<div class="rtgy-box">
+    <h3>Time Machine - 编辑</h3>
+    <div class="systemRt-cont" id="systemRt-cont">
+        <div class="set">
+            <h6><span class="icon-l"></span><span class="msg">设置</span></h6>
+            <div class="group clear">
+                <label class="suninfo_cont_str">用户名</label>
+                <div class="option_list">
+                    <span class="dropdown_Text" id="txtmode"></span>
+                    <a class="dropdownBtn"></a>
+                </div>
+                <span class="msg"><font>*</font>(请选择用户)</span>
+                <div class="dropdown_cont" id="drpUser" style="top: 86px;">
+
+                </div>
+            </div>
+
+            <div class="group clear">
+                <label class="suninfo_cont_str">描述名</label>
+                <input type="text" class="w260" value="" id="txtName">
+                <span class="msg br"><font>*</font>(不能与共享重名)【中文、英文、数字、下划线、4-16个字符】</span>
+            </div>
+
+            <div class="group clear">
+                <label class="suninfo_cont_str">容量</label>
+                <input type="text" class="w260" value="" id="txtCapacity" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" maxlength="4">
+                <span class="msg"><font>*</font>单位：G</span>
+            </div>
+            <!--  <div class="Description_content mlf_60">
+                 <p><span>提示：新建用户密码是123456，请用户登录后立即修改密码！</span></p>
+             </div> -->
+        </div>
+        <div class="set none">
+            <h6><span class="icon-l"></span><span class="msg">高级设置</span></h6>
+            <div class="group clear">
+                <label class="suninfo_cont_str">配额：</label>
+                <input type="text" class="w260" value="">
+                <span class="msg">GB</span>
+                <span class="msg"><font>*</font>用户磁盘空间配额</span>
+            </div>
+        </div>
+        <div class="sure_btn mlf_180  pbt_50 mtp_48">
+            <a class="reboot mrt_20" id="btnAdd">更新</a>
+            <a class="shutdown" id="btnRes">取消</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block footerJavascript %}
+<script>
+    var uuid = getQueryString("id");
+    $(function() {
+        $('#systemRt-cont').niceScroll({
+            cursorcolor: "#999",
+            cursoropacitymax: 1,
+            touchbehavior: false,
+            cursorwidth: "5px",
+            cursorborder: "0",
+            cursorborderradius: "5px"
+        });
+        $("#btnAdd").click(function() {
+            //验证
+            var name = $("#txtName").val();
+            var capa = $("#txtCapacity").val();
+            if(name.length<1)
+            {
+                alert("描述名不能为空!");
+                $("#txtName").focus();
+                return false;
+            }
+            var patternUsername = /^[\u4e00-\u9fa50-9a-zA-Z_]{4,16}$/;    //中文、英文、数字、下划线、4-16个字符
+            var flagUserName = patternUsername.test(name);
+            if(!flagUserName)
+            {
+                alert("输入的描述名格式有误，请重新输入！")
+                return false;
+            }
+
+
+            var user =  $("#txtmode").text();
+            var datas={name:name,size:capa,user:user,uuid:uuid};
+            //alert(JSON.stringify(datas))
+            $.post("/default/system/tmedit",datas, function(data) {
+                var str="";
+                if (data.returncode=="100100000")
+                {
+                    window.location = "/default/system/timemachine";
+                }
+                else
+                {
+                    alert(data.message);
+                }
+
+            })
+        })
+        $("#btnRes").click(function() {
+            window.location = "/default/system/timemachine";
+        })
+
+        loading();
+
+        meanChoice();
+    })
+
+    function loading(){
+
+
+        $.ajax({
+            url: '/default/system/getsfuname',
+            type: 'post',
+            timeout: 15000,
+            async : false,
+            success: function(data, textStatus) {
+                var str="";
+                if (data.returncode=="100100000")
+                {
+                    var jsonObj = data.data;
+                    $.each(jsonObj, function (idx, item) {
+                        if(idx==0){
+                            str +='<span class="dropdown_mean2 dropdown_cur"><a class="cur_gou">'+item.name +'</a></span>';
+                            $("#txtmode").text(item.name)
+                        }
+                        else
+                            str +='<span class="dropdown_mean"><a>'+item.name +'</a></span>';
+                    });
+                }
+                else
+                {
+                    alert(data.message);
+                }
+                $("#drpUser").html("");
+                $("#drpUser").append(str);
+            }
+        });
+
+        $.ajax({
+            url: '/default/system/tmget',
+            type: 'post',
+            timeout: 15000,
+            async : false,
+            success: function(data, textStatus) {
+                var str="";
+                if (data.returncode=="100100000")
+                {
+
+                    $.each(data.list, function (idx, item) {
+
+                        if(item.TM_FOLDER_UUID==uuid){
+                           $("#txtName").val(item.TM_FOLDER_NAME);
+                           $("#txtCapacity").val(item.TM_FOLDER_SIZE);
+                            $("#txtmode").val(item.TM_FOLDER_USER);
+                        }
+                    });
+                }
+                else
+                {
+                    alert(data.message);
+                }
+                $("#drpUser").html("");
+                $("#drpUser").append(str);
+            }
+        });
+
+    }
+
+    // right 点击下拉菜单 jQuery
+    function meanChoice(){
+        $('.group').each(function (i) {
+            var $this = $(this);
+            $this.find(".dropdownBtn").click(function (event) {
+                $this.find(".dropdown_cont").toggle();
+                event.stopPropagation();
+            });
+            $this.find(".dropdown_cont span").click(function (event) {
+                var _this = $(this);
+                $this.find(".dropdown_Text").html(_this.text());
+                $this.find(".dropdown_cont").toggle();
+                event.stopPropagation();
+                if (_this.attr("prv") != null) {
+                    $this.find(".dropdown_Text").attr("prv", _this.attr("prv"));
+                }
+            });
+
+            $this.find(".dropdown_cont span").hover(function (event) {
+                $(this).addClass("dropdown_cur").siblings("span").removeClass("dropdown_cur");
+                $this.find(".dropdown_cont span").children("a").removeClass("cur_gou")
+                $(this).children("a").addClass("cur_gou");
+                event.stopPropagation();
+            });
+        });
+        //点击窗口任意地方 下拉菜单隐藏
+        $(document).click(function () {
+            $(".dropdown_cont").hide();
+            $(".tal_box").hide();
+        });
+    };
+
+</script>
+{% endblock %}
+
+
+

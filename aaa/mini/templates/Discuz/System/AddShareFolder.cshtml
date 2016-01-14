@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "AddShareFolder";
+    Layout = "~/Views/Templates/Discuz/Shared/_SystemLayout.cshtml";
+}
+
+<div class="road">
+    <span class="suninfo_str">首页 > 共享与权限 > 共享文件夹</span>
+</div>
+<div class="rtgy-box">
+    <div class="rtgy-cont">
+        <h3>共享文件夹 - 新建</h3>
+        <div class="set">
+            <h5>基础设置</h5>
+            <div class="group clear">
+                <label class="suninfo_cont_str">名称：</label>
+                <input type="text" class="w200" value="">
+                <span class="msg"><font>*</font>共享文件夹名称(不能与用户重名)。【英文, 数字, 下划线】</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">磁盘卷：</label>
+                <select id="securitylist" class="w200">
+                    <option>请选择</option>
+                </select>
+                <span class="msg"></span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">描述：</label>
+                <textarea class="text_box w200"></textarea>
+                <span class="msg">共享文件夹描述</span>
+            </div>
+        </div>
+        <div class="btnBox">
+            <a class="save">新建</a>
+            <a class="cancel">取消</a>
+        </div>
+    </div>
+</div>
+

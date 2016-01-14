@@ -1,0 +1,122 @@
+﻿@{
+    ViewBag.Title = "NetworkSetup";
+    Layout = "~/Views/Templates/Discuz/Shared/_SystemLayout.cshtml";
+}
+
+<div class="road">
+    <span class="suninfo_str">首页 > 系统设置 > 系统网络设置</span>
+</div>
+<div class="rtgy-box">
+    <div class="rtgy-cont">
+        <h3>系统网络设置</h3>
+        <div class="rightCol">
+            <div class="tab_nav">
+                <ul class="clear">
+                    <li class="first_li cur">TCP/IPv4</li>
+                    <!--
+                    <li>IPv6</li>
+                    <li class="last_li">聚合链路</li>
+                    -->
+
+                </ul>
+            </div>
+            <div class="tab_contBox">
+                <div class="tab_cont" style="display:block;">
+                    <div class="set">
+                        <h5 class="add_mtp">IP地址</h5>
+                        <div class="group clear">
+                            <label class="suninfo_cont_str">IP地址：</label>
+                            <input type="text" class="w200" value="192.168.1.250">
+                            <span class="msg"> <font>*</font></span>
+                        </div>
+                        <div class="group clear">
+                            <label class="suninfo_cont_str">子网掩码：</label>
+                            <input type="text" class="w200" value="24">
+                            <span class="msg"> <font>*</font>默认是 24 。【 1~32 】</span>
+                        </div>
+                        <div class="group clear">
+                            <label class="suninfo_cont_str">默认网关：</label>
+                            <input type="text" class="w200" value="192.168.1.1">
+                            <span class="msg"> <font>*</font></span>
+                        </div>
+                    </div>
+                    <div class="set">
+                        <h5 class="add_mtp">DNS 设置</h5>
+                        <div class="group clear">
+                            <label class="suninfo_cont_str">首选 DNS 服务器：</label>
+                            <input type="text" class="w200" value="">
+                            <span class="msg"></span>
+                        </div>
+                        <div class="group clear">
+                            <label class="suninfo_cont_str">备选 DNS 服务器：</label>
+                            <input type="text" class="w200" value="">
+                            <span class="msg"></span>
+                        </div>
+                    </div>
+                    <div class="btnBox">
+                        <a class="save">保存</a>
+                    </div>
+                </div>
+                <!--
+                    <div class="tab_cont">
+                    <div class="checkbox checkbox_height">
+                        <input id="checkAll" type="checkbox" class="checkAll" name="checkAll">
+                        <label for="checkAll"></label>
+                        <span class="msg" ns="WinSetting">启用IPv6</span>
+                    </div>
+                    <div class="set">
+                        <h6><span class="icon-l"></span><span class="msg">IP地址</span></h6>
+                        <div class="group clear">
+                            <label class="suninfo_cont_str">IP地址</label>
+                            <input type="text" class="w260" value="">
+                            <span class="msg"> <font>*</font></span>
+                        </div>
+                        <div class="group clear">
+                            <label class="suninfo_cont_str">子网前缀长度</label>
+                            <input type="text" class="w260" value="">
+                            <span class="msg"> <font>*</font>默认是 64 。【 1~128 】</span>
+                        </div>
+                        <div class="group clear">
+                            <label class="suninfo_cont_str">默认网关</label>
+                            <input type="text" class="w260" value="">
+                            <span class="msg"></span>
+                        </div>
+                        <h6><span class="icon-l"></span><span class="msg">DNS 设置</span></h6>
+                        <div class="group clear">
+                            <label class="suninfo_cont_str">首选 DNS 服务器</label>
+                            <input type="text" class="w260" value="">
+                            <span class="msg"></span>
+                        </div>
+                        <div class="group clear">
+                            <label class="suninfo_cont_str">备选 DNS 服务器</label>
+                            <input type="text" class="w260" value="">
+                            <span class="msg"></span>
+                        </div>
+                        <div class="clear mtp_40 mlf_180">
+                            <a class="save">保存</a>
+                        </div>
+                </div>
+                </div>
+                <div class="tab_cont">
+                    <div class="checkbox checkbox_height">
+                        <input id="checkAll2" type="checkbox" class="checkAll" name="checkAll">
+                        <label for="checkAll2"></label>
+                        <span class="msg" ns="WinSetting">启用聚合链路</span>
+                    </div>
+                    <div class="clear mtp_100 mlf_180">
+                        <a class="save">保存</a>
+                    </div>
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(".tab_nav li").click(function () {
+        $(this).addClass("cur").siblings("li").removeClass("cur");
+        var _index = $(this).index();
+        $(".tab_cont").eq(_index).show().siblings().hide();
+    });
+</script>

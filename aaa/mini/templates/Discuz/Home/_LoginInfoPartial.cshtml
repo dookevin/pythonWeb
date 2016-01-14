@@ -1,0 +1,38 @@
+﻿ 
+@{
+    Layout = null;
+}
+<div class="logininfo clear" id="logininfo">
+     
+    @{if (User.Identity.Name == null || User.Identity.Name == "")
+{
+    string url = Request.Url.ToString();
+    Response.Redirect(url);
+}
+else
+{
+    <span>@User.Identity.Name</span>
+}
+
+}
+    <i class="rt"></i>
+    <div class="fldiv">
+        <ul>
+            <li id="chpwd"><i class="i1"></i>变更密码</li>
+            <li id="chout"><i class="i2"></i>注销</li>
+            <li id="chabout"><i class="i3"></i>关于</li>
+        </ul>
+    </div>
+</div>
+<div id="popupLayer" class="popup-layer">
+    <div id="popupLayerBox" class="popup-layer-box changepwd">
+        <i id="closePopupLayer" class="close-popupLayer"> </i>
+        @Html.Action("ChangePassword", "Home")
+    </div>
+</div>
+<div id="popupLayer_about" class="popup-layer">
+    <div id="popupLayerBox_about" class="popup-layer-box about">
+        <i id="closePopupLayer_about" class="close-popupLayer"></i>
+        @Html.Partial("~/Views/Templates/Default/Home/_About.cshtml")
+    </div>
+</div>

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>移动文件夹</title>
+    <link href="/static/css/public.css" rel="stylesheet" />
+    <link href="/static/css/Default/PluginCss.css" rel="stylesheet" />
+    <script src="/static/js/jquery-1.8.2.min.js"></script>
+    <script src="/static/js/public.js"></script>
+    <script language=javascript>
+    <!--
+    window.onerror = function() {
+            return true;
+        }
+        // -->
+    var indexPath = "{{ UserName }}/";
+    var folderPath = "{{ UserName }}/";
+    var id = getQueryString("id"),
+        fname = unescape(getQueryString("fname")),
+        typee = getQueryString("type"),
+        oldpath = getQueryString("oldpath"),
+        tname = getQueryString("tname");
+        jQuery(function($) {
+
+
+        $(".fname").text(fname);
+        loadingfolderlist();
+
+
+        // right 点击下拉菜单 jQuery
+        $('.group').each(function(i) {
+            var $this = $(this);
+            $this.find(".dropdownBtn").click(function(event) {
+                $this.find(".dropdown_cont").toggle();
+                event.stopPropagation();
+            });
+
+            $this.find('.dropdown_cont').on('click', 'span', function(index, eleDom) {
+                //$this.find(".dropdown_cont span").click(function (event) {
+
+                var _this = $(this);
+
+                $this.find(".dropdown_Text").html(_this.text());
+                $this.find(".dropdown_cont").toggle();
+                event.stopPropagation();
+                if (_this.attr("prv") != null) {
+                    $this.find(".dropdown_Text").attr("prv", _this.attr("prv"));
+                }
+
+                if (_this.parent("div").attr("id") == "drFatherList") {
+
+                    theme = _this.attr("prv");
+
+                    loadingfolderlist(theme);
+                }
+            });
+
+            $this.find('.dropdown_cont').on('hover', 'span', function(index, eleDom) {
+                //  $this.find(".dropdown_cont span").hover(function (event) {
+
+                $(this).addClass("dropdown_cur").siblings("span").removeClass("dropdown_cur");
+                $this.find(".dropdown_cont span").children("a").removeClass("cur_gou");
+                $(this).children("a").addClass("cur_gou");
+                event.stopPropagation();
+            });
+        });
+        $(document).click(function() {
+            $(".dropdown_cont").hide();
+            $(".tal_box").hide();
+        });
+
+
+        //添加文件夹
+        $("#btnNew").click(function() {
+
+                // var oldtxt = $(this).parent().pre('div').find('.checked').attr('pt');
+                var count = 0;
+                $(".treelist ul li").each(function() {
+
+                if ($(this).hasClass("checked")) {
+                    var avl = $(this).parent().attr("avl") == null ? 0 : $(this).parent().attr("avl");
+                    if (avl == "4") {
+                        alert("目前最多只支持创建5级目录!");
+                        count++;
+                        return;
+                    }
+                    var margin = 20;
+                    avl = parseInt(avl) + 1;
+
+                    /*单个文件夹新建子文件夹*/
+                    if ($(this).hasClass('checked') && $(this).children("i").hasClass('ico-se')) {
+                        var pt = $(this).attr("pt");
+                        $(this).after("<div pt='" + pt + "'></div>");
+                    }
+
+                    $(this).next("div").prepend("<li pt=''><i class=\"ico\" style='margin-left:" + (margin * avl) + "px;'></i><input type='text' id='newtext'></li>");
+                    count++;
+
+                }
+            });
+
+            if (count < 1) {
+                // $(".treelist ul").prepend("<li ><i class=\"ico\"></i><input type='text' id='newtext'></li>");
+                alert('请选择目标文件夹!')
+            }
+            $("#newtext").focus();
+            $("#newtext").bind('blur', AddNewtext);
+        });
+
+
+
+
+
+        //按钮事件
+
+        $("#btnClear").click(function() {
+            parent.parentClickbyMove();
+        })
+
+        $("#btnSub").click(function() {
+
+           var newfolder = $(this).prev('div').find('.checked')
+           var newfolderFocus = newfolder.find(':focus')
+
+            var opath = $(this).parent().prev('div').find('.checked').attr("pt"); //老路径
+            if (opath == null) {
+                alert("请选择目标文件夹!");
+                return;
+            }
+
+            /*新建文件夹时点击确定按钮移动*/
+            var newfolder = $(this).parent().prev('div').find('.checked').next('div').find("input").attr("id");
+             if(newfolder == "newtext" ){
+               var opath = opath + '/' + $(this).parent().prev('div').find('.checked').next('div').find("input").attr('value'); //老路径
+              }  
+             var npath = indexPath + opath + "/"; //移动的新路径
+
+             
+
+            /*移动文件的类型判断是否可以移动*/
+            var g = npath.split('/')[1]; // 获取当前点击文件顶级目录名称
+
+            //移动新路径和老路径相同时
+            if (oldpath == npath) {
+                alert('路径相同，不能移动！')
+                    // parent.parentClickbyMove();
+                return;
+            }
+
+            var datas = {
+                    fids: id,
+                    npath: npath
+                }
+                // alert(indexPath + opath +"/" )
+
+
+            var fileRootType = g.toLocaleLowerCase(); // 该文件顶级目录名称 
+            var fileType = typee.toLocaleLowerCase(); // fileType 为当前文件类型
+
+            // 所有文件类型
+            var typeList = {
+                music: [".mp3", ".wav", ".wma"],
+                photo: [".jpg", ".gif", ".png", ".jpeg", ".bmp"],
+                video: [".mp4", ".flash", ".mid", ".3gp", ".wma", ".avi", ".rmvb", ".rm", ".mkv", ".mov", ".wmv"]
+            }
+
+            // 此处$.inArray方法
+            var itemIndex = $.inArray(fileType, typeList[fileRootType]);
+
+
+            if (itemIndex > -1) {
+                moveFile(datas);
+
+            } else {
+                if (fileRootType !== "music" && fileRootType !== "video" && fileRootType !== "photo") {
+                    moveFile(datas);
+                } else
+                    alert('文件类型不匹配，无法移动！');
+            }
+
+        });
+
+        function moveFile(d) {
+            $.post("/default/photom/", d, function(data) {
+                if (data.returncode == "100100000") {
+                    alert("移动成功");
+                    parent.parentClickbyMove();
+                } else {
+                    alert(data.message);
+                }
+            })
+        }
+
+
+
+
+        $('.treelist ul').on('click', 'li', function(index, eleDom) {
+
+            //解决ibtn-edit与li的 click事件冲突
+            if ($(this).children("input").attr("id") == "newtext") {
+                $(this).removeClass('checked');
+                return false;
+            }
+
+
+            $('.treelist ul li').each(function() {
+
+                if ($(this).children("i").hasClass("ico-open-se")) {
+                    $(this).children("i").removeClass("ico-open-se");
+                    $(this).children("i").addClass("ico-open");
+
+                }
+                if ($(this).children("i").hasClass("ico-close-se")) {
+                    $(this).children("i").removeClass("ico-close-se");
+                    $(this).children("i").addClass("ico-close");
+                }
+
+                $(this).children("i").removeClass("ico-se");
+                $(this).removeClass('checked');
+
+            })
+
+
+
+            var tagName = "";
+
+            if ($(this).next().get(0) != null)
+                var tagName = $(this).next().get(0).tagName.toLowerCase();
+
+            if (tagName == "div") {
+
+                $(this).children("i").removeClass("ico-open").addClass("ico-close");
+                $(this).next("div").remove("div"); //移除中间元素防止重复
+
+            } else {
+
+
+                if ($(this).children("i").attr("class") != "ico" && $(this).children("i").attr("class").indexOf("ico-se") < 0) {
+
+                    var avl = $(this).parent().attr("avl"); //获取当前等级
+                    var margin = 20; //下一级位移的默认值
+                    $(this).next("div").remove("div"); //移除中间元素防止重复
+                    // if(!$(id).children("i").hasClass("ico-close-se"))
+                    $(this).children("i").removeClass("ico-close");
+                    $(this).children("i").addClass("ico-open-se");
+
+                    $(".treelist ul li").each(function() {
+                        $(".treelist ul li").removeClass("checked");
+                    });
+
+                    $(this).addClass("checked");
+
+                    if (avl == null) {
+                        avl = 1;
+                    } else {
+                        avl = parseInt(avl) + 1;
+                    }
+                    var tempStr = "";
+                    var uppath = $(this).attr("pt");
+                    var id = this;
+
+                    datas = {
+                        filePath: indexPath + uppath + "/"
+                    };
+
+                    $.post("/default/filecenter/getfolderlist", datas, function(data, result) {
+
+                        if (data.returncode == "100100000") {
+
+                            var dataObj = data.data;
+
+                            // alert(JSON.stringify(data));
+                            $.each(dataObj, function(idx, item) {
+                               
+
+                                if (item.subfolder > 0) {
+
+                                    tempStr += "<li pt=\"" + uppath + "/" + item.foldername + "" + "\" nv=\"" + item.foldername + "\"><i class=\"ico-close\" style='margin-left:" + (margin * avl) + "px;'></i>" + item.foldername.substr(0, 15);
+                                    tempStr += "<div>";
+                                    tempStr += "<i class=\"ibtn-edit mtp_10\"></i>";
+                                    tempStr += "<i class=\"ibtn-delete mtp_10\"></i>";
+                                    tempStr += "</div></li>";
+
+
+
+                                } else {
+                                    tempStr += "<li pt=\"" + uppath + "/" + item.foldername + "" + "\" nv=\"" + item.foldername + "\"><i class=\"ico\" style='margin-left:" + (margin * avl) + "px;'></i>" + item.foldername.substr(0, 15);
+                                    tempStr += "<div>";
+                                    tempStr += "<i class=\"ibtn-edit mtp_10\"></i>";
+                                    tempStr += "<i class=\"ibtn-delete mtp_10\"></i>";
+                                    tempStr += "</div></li>";
+                                } 
+                            });
+                            $(id).next("div").remove("div");
+                            $(id).after("<div pt=\"" + uppath + "\"  avl=\"" + avl + "\">" + tempStr + "</div>");
+                        }
+                    }, 'json');
+                } else {
+                    $(this).children("i").addClass("ico-se");
+                    $(this).addClass('checked');
+                }
+
+
+            }
+
+
+            folderPath = indexPath + $(this).attr("pt") + "/";
+            $("#selectFolder").text("/" + $(this).attr("pt"));
+
+            lodingList(folderPath, 10, 1, indexType, keyword);
+
+        });
+    });
+    //新增文件夹操作
+    function AddNewtext() {
+        var txt = $("#newtext").val().trim();
+        if (txt.length < 1) {
+            $("#newtext").parent().remove();
+        } else {
+            if (txt.length < 3) {
+                alert("新增目录名称必须大于3个字符");
+                $("#newtext").focus();
+            } else if (txt.length > 30) {
+                alert("新增目录名称必须小于30个字符");
+                $("#newtext").focus();
+            } else if (txt.toLocaleLowerCase() == "downloads") {
+                alert("Downloads为专用文件夹,不允许添加!");
+                $("#newtext").focus();
+            } else {
+                // alert(2);
+                var pt = $("#newtext").parent().parent().attr("pt") == null ? "" : $("#newtext").parent().parent().attr("pt") + "/";
+
+                var datas = {
+                    name: indexPath + pt + txt
+                };
+                // alert(indexPath+ pt + txt);
+                $.post("/default/photoa/", datas, function(data) {
+
+                    if (data.returncode == "100100000")
+                        loadingfolderlist();
+                    else
+                        alert(data.message);
+                }, 'json');
+
+            }
+        }
+    }
+
+
+    //-----------------------------------判断是否可以移动--------------------------------------
+    Array.prototype.in_array = function(e) {
+        for (i = 0; i < this.length && this[i] != e; i++);
+        return !(i == this.length);
+    }
+
+    function test(file_name) {
+        var result = /\.[^\.]+/.exec(file_name);
+        return result;
+    }
+
+    function HasType(p, t) {
+        var photo = [".jpg", ".gif", ".png", ".jpeg", ".bmp"];
+        var music = [".mp3", ".wav", ".wma"];
+        var vedio = [".mp4", ".flash", ".mid", ".3gp", ".wma", ".avi", ".rmvb", ".rm", ".mkv", ".mov"];
+        var ext = test(p);
+        ext = String(ext).toLowerCase(); //转成小写
+        var flag = false;
+        switch (t) {
+            case "PHOTO":
+                flag = photo.in_array(ext);
+                break;
+            case "MUSIC":
+                flag = music.in_array(ext);
+                break;
+            case "VIDEO":
+                flag = vedio.in_array(ext);
+                break;
+        }
+        return flag;
+    }
+    //--------------------------------------------------------------------
+    function loadingfolderlist() {
+
+        var datas = {
+            filePath: indexPath 
+        };
+ 
+        // alert(JSON.stringify(datas));
+        $.ajax({
+            url: "/default/filecenter/getfolderlist",
+            data: datas,
+            datatype: "json",
+            type: "post",
+            beforeSend: function(XMLHttpRequest) {
+                //加载状态显示
+               
+                $("#popo").removeClass('none')
+            },
+             success: function(data, textStatus) {
+ 
+                if (data.returncode == "100100000") {
+                    var dataObj = data.data;
+                    $(".treelist ul li").remove();
+                    var t = "", tempFolder="";
+                    $.each(dataObj, function(idx, item) {
+
+                    if(item.foldername == tname){ tempFolder = item.foldername;
+                        if (item.subfolder > 0) {
+                            t += "<li pt=\"" + item.foldername + "\" nv=\"" + item.foldername + "\"><i class='ico-close'></i>" + item.foldername.substr(0, 20);
+                            t += "<div>";
+                            t += "<i class=\"ibtn-edit mtp_10\"></i>";
+                            t += "<i class=\"ibtn-delete mtp_10\"></i>";
+                            t += "</div></li>";
+                        } else {
+                            t += "<li pt=\"" + item.foldername + "\" nv=\"" + item.foldername + "\"><i class='ico'></i>" + item.foldername.substr(0, 20);
+                            t += "<div>";
+                            t += "<i class=\"ibtn-edit mtp_10\" title=\"编辑\"></i>";
+                            t += "<i class=\"ibtn-delete mtp_10\" title=\"删除\"></i>";
+                            t += "</div></li>";
+                        }
+                 }
+                    });
+                    $(".treelist ul").append(t);
+                       /* 初始化默认选中第一个文件夹 */
+                        // var nowpt = $('.treelist ul li:eq(0)').attr('pt')
+                        // var nowclass = $('.treelist ul li:eq(0)').children('i')
+                        // if(nowpt == tempFolder){
+                        //     $('.treelist ul li:eq(0)').addClass('checked')
+                        //     if(nowclass.hasClass('ico-close')){
+                        //         nowclass.removeClass('ico-close');
+                        //         nowclass.addClass('ico-open-se');
+                        //     }
+                        //     if(nowclass.hasClass('ico')) {
+                        //         nowclass.addClass('ico-se')
+                        //     }
+                        // }
+
+                        // //初始化
+                        // lodingList(folderPath + tempFolder +"/", 10, 1,indexType,keyword);
+                        // if(tempFolder.length>0)
+                        // {
+                        //     $("#selectFolder").text("/" + tempFolder);
+
+                        // }
+                }
+            },
+            complete: function(XMLHttpRequest, textStatus) {
+                // $("#viewText").text("执行完成!!!");
+                //  window.location = "userlist.html";
+                $("#popo").addClass("none");
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+
+            }
+
+        })
+
+
+    }
+
+    document.onkeydown = function (event) {
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+
+
+        if (e && e.keyCode == 13) { // enter 键
+
+            if(document.activeElement.id=='newtext'){
+
+                AddNewtext();
+            }
+            else{
+                //要做的事情
+                $("#btnSearch").click(); return false;
+            }
+        }
+    };
+    // ---------------------------------------------
+    </script>
+</head>
+
+<body>
+    <div class="moveFolder-cont">
+        <h3 class="shoot-tit">文件夹 - 移动文件 <span class="fname"></span>至</h3>
+        <!-- <h4>******文件移至</h4> -->
+        <div class="shoot-cont">
+            <div class="moveList clear">
+                <div class="treelist" id="treelist" avl="0">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="sure_btn mlf_170">
+            <a class="reboot mrt_20 new" id="btnNew">+新建文件</a>
+            <a class="reboot mrt_20" id="btnSub">确定</a>
+            <a class="shutdown" id="btnClear">取消</a>
+        </div>
+    </div>
+    <div id="popo" style="position:absolute; top:45%; left:45%;" /*class="none" */><img src="/static/images/Default/public/move-loading.gif"></div>
+</body>
+
+</html>

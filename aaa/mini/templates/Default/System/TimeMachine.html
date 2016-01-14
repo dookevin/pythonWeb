@@ -1,0 +1,117 @@
+
+{% extends "Default/Shared/ContentMaster.html"%}
+
+<!--标题-->
+{% block title %}
+<title>新建用户组 - MiniNas管理系统</title>
+{% endblock %}
+<!--css-->
+{% block css %}
+{% endblock %}
+<!--javascript-->
+{% block javascript %}
+{% endblock %}
+
+{% block body %}
+<div class="user_add">
+        <div class="user_add_lf user_add_bg"></div>
+        <div class="user_add_ct">
+            <a id="add_btn" class="add_btn" ns="User" href="addtimemachine.html">新建Time Machine</a>
+        </div>
+        <div class="user_add_rt user_add_bg"></div>
+    </div>
+    <div class="road">
+        <span class="suninfo_str">系统管理 > 共享与权限 > Time Machine</span>
+    </div>
+    <div class="rtgy-box">
+        <h3>Time Machine</h3>
+        <div class="systemRt-cont2" id="systemRt-cont">
+            <div class="tabBox mtp_10 userTab">
+                <table id="user_list" width="100%" border="0" cellspacing="0" cellpadding="0" class="tab01">
+                    <thead>
+                    <tr class="tab_mean">
+                        <td class="DirectoryName" style="width:15%;">目录名</td>
+                        <td class="UserName" style="width:15%;">账户</td>
+                        <td class="DescribeName" style="width:30%;">容量</td>
+                        <td class="DescribeName" >操作</td>
+                    </tr>
+                    <tr style="height:16px;"></tr>
+
+                    </thead>
+                    <tbody id="timeList">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block popup %}
+
+{% endblock %}
+
+
+{% block footerJavascript %}
+
+<script type="text/javascript">
+    // 开启闭合按钮
+    $(function () {
+        $(".dlna_img").on('click',function(){
+            if($(this).hasClass('dlna_img_off')) {
+                $(this).removeClass('dlna_img_off');
+            } else {
+                $(this).addClass('dlna_img_off');
+            }
+        });
+
+        loading();
+
+        $('#timeList').on('click', '.btnDel', function (index, eleDom) {
+            var id = $(this).parents("tr").attr("prv");
+            var datas = {
+                uuid: id
+            };
+
+            if (confirm("您确定要删除Time Machine文件夹吗?")) {
+                $.post("/default/system/tmdel", datas, function(data) {
+                    if(data.returncode=="100100000")
+                    {
+                        alert("删除成功!");
+                        loading();
+                    }
+                    else if(data.returncode == "100102246"){
+                        alert(data.message)
+                        window.parent.location = "/";
+                    }
+                    else
+                    {alert(data.message);}
+                });
+            }
+        });
+    });
+
+    function loading(){
+        $.post("/default/system/tmget", function(data) {
+            if(data.returncode=="100100000")
+            {
+                var str="";
+                $.each(data.list, function (idx, item) {
+                    str+=' <tr prv="'+ item.TM_FOLDER_UUID  +'">';
+                    str+=' <td class="DirectoryName">'+item.TM_FOLDER_NAME+'</td>';
+                    str+=' <td class="UserName" id="cusername1">'+item.TM_FOLDER_USER+'</td>';
+                    str+=' <td class="DescribeName">'+item.TM_FOLDER_SIZE+'</td>';
+                    str+="<td class=\"operation\"><a class=\"btn3\" title=\"编辑\" href=\"/default/system/timemachineedit/?id="+ item.TM_FOLDER_UUID  +"\">编辑</a> <a class=\"btn5 btnDel\" title=\"删除\">删除</a> </td>";
+                    str+=' </tr>';
+                })
+                $("#timeList").html("");
+                $("#timeList").append(str);
+            }
+            else{
+                alert(data.message);
+            }
+        });
+    }
+</script>
+
+{% endblock %}

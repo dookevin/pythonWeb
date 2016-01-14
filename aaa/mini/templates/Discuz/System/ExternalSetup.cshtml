@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "ExternalSetup";
+    Layout = "~/Views/Templates/Default/Shared/_SystemLayout.cshtml";
+}
+
+<div class="road">
+    <span class="suninfo_str">系统管理 > 系统设置 > 外接设备设置</span>
+</div>
+<div class="rtgy-box">
+    <div class="rtgy-cont">
+        <h3>外接设备设置</h3>
+        <div class="tabBox">
+            <table id="user_list" width="100%" border="0" cellspacing="0" cellpadding="0" class="tab01">
+                <thead>
+                    <tr class="tab_mean">
+                        <td width="30%">U盘名称</td>
+                        <td width="10%">总容量</td>
+                        <td width="10%">U盘类别</td>
+                        <td width="10%">状态</td>
+                        <td width="40%">动作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="height:16px;"></tr>
+                    <tr>
+                        <td>Disk1</td>
+                        <td>ata</td>
+                        <td>953869M</td>
+                        <td>正在线上</td>
+                        <td><a class="btn3" title="编辑" id="EditInfo">编辑</a><a class="btn5" title="删除">删除</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div id="popupLayer_EditInfo" class="popup-layer">
+    <div id="popupLayerBox_EditInfo" class="popup-layer-box folderInfo">
+        <i id="closePopupLayer_EditInfo" class="close-popupLayer"></i>
+        <h3 class="shoot-tit">外接设备 - 编辑</h3>
+        <div class="shoot-cont">
+            <h4>基础设置</h4>
+            <div class="set">
+                <div class="group clear">
+                    <label class="suninfo_cont_str">U盘名称</label>
+                    <input type="text" class="w260" maxlength="15" value="aa">
+                    <span class="msg"> <font>*</font></span>
+                </div>
+                <div class="group clear">
+                    <label class="suninfo_cont_str">总容量</label>
+                    <input type="text" class="w260" maxlength="15" value="aa">
+                    <span class="msg"> <font>*</font></span>
+                </div>
+                <div class="group clear postion_box">
+                    <label class="suninfo_cont_str">U盘类别</label>
+                    <div class="option_list">
+                        <span class="dropdown_Text"></span>
+                        <a class="dropdownBtn"></a>
+                    </div>
+                    <span class="msg"> </span>
+                    <div class="dropdown_cont">
+                        <span class="dropdown_mean dropdown_cur"><a class="cur_gou">U盘类别</a></span>
+                        <span class="dropdown_mean2"><a>U盘类别</a></span>
+                    </div>
+                </div>
+                <div class="group clear postion_box">
+                    <label class="suninfo_cont_str">状态</label>
+                    <div class="option_list">
+                        <span class="dropdown_Text"></span>
+                        <a class="dropdownBtn"></a>
+                    </div>
+                    <span class="msg"></span>
+                    <div class="dropdown_cont">
+                        <span class="dropdown_mean dropdown_cur"><a class="cur_gou">正在线上</a></span>
+                        <span class="dropdown_mean2"><a>正在线上</a></span>
+                    </div>
+                </div>
+                <div class="sure_btn mlf_180">
+                    <a class="reboot mrt_20">保存</a>
+                    <a class="shutdown">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#EditInfo").click(function () {
+        Popup.init('closePopupLayer_EditInfo', 'popupLayer_EditInfo', 'popupLayerBox_EditInfo');
+        Popup.popup();
+    })
+</script>

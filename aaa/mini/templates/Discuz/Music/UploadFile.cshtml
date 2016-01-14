@@ -1,0 +1,101 @@
+﻿@{
+    Layout = null;
+    
+}
+<!DOCTYPE html> 
+<html>
+<head>
+    <title>多文件上传</title>
+    <!-- Load Queue widget CSS and jQuery -->
+
+    <link href="~/Scripts/plupload-2.1.2/jquery.ui.plupload/css/jquery.ui.plupload.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+
+
+    <script src="~/Scripts/plupload-2.1.2/jquery.ui.1.8.23/jquery-ui-1.8.23.custom.min.js"></script>
+    <link href="~/Scripts/plupload-2.1.2/jquery.ui.1.8.23/jquery-ui-1.8.23.custom.css" rel="stylesheet" />
+
+    <script src="~/Scripts/plupload-2.1.2/browserplus-min.js"></script>
+    <script src="~/Scripts/plupload-2.1.2/plupload.full.min.js"></script>
+    <script src="~/Scripts/plupload-2.1.2/i18n/zh_CN.js"></script>
+    <script src="~/Scripts/plupload-2.1.2/jquery.ui.plupload/jquery.ui.plupload.js"></script> 
+    <script type="text/javascript">
+    // Convert divs to queue widgets when the DOM is ready
+    $(function () {
+        var fname = '@ViewBag.act';
+        $("#uploader").plupload({
+            // gears,flash,silverlight,browserplus,html5,这里是说用什么技术引擎，由于国内浏览器问题这里一般使用flash即可。其他的可以删除掉。
+            runtimes: 'html5,flash',
+            url: '@Url.Action("Swfupload")', // 服务端上传路径
+                max_file_size: '50mb', // 文件上传最大限制。
+              //  chunk_size: '1mb', // 上传分块每块的大小，这个值小于服务器最大上传限制的值即可。
+                unique_names: false, // 上传的文件名是否唯一
+                //// 是否生成缩略图（仅对图片文件有效）
+                //resize: { width: 320, height: 240, quality: 90 },
+                ////  这个数组是选择器，就是上传文件时限制的上传文件类型
+                // filters: [{ title: "All files", extensions: "doc,docx,ppt,pptx,xls,xlsx,vsd,pot,pps,rtf,wps,et,dps,pdf,txt,epub" }],
+                filters: [              //文件类型限制
+
+               { title: "音乐文件", extensions: "mp3,wmv,wav" } 
+
+                ],
+                // Flash文件 的所在路径
+                flash_swf_url: '/Scripts/plupload-2.1.2/Moxie.swf',
+                // silverlight文件所在路径
+                silverlight_xap_url: '/Scripts/plupload-2.1.2/Moxie.xap',
+                multipart_params: {
+                    folderName:fname
+                },
+                init: {
+                    UploadComplete: function (up, file) {
+                        parent.parentClick();
+                    },
+                    Error: function (up, args) {
+                        //发生错误
+                        if (args.file) {
+                            alert('文件错误:' + args.file);
+                        } else {
+                            alert('出错' + args);
+                        }
+                    }
+                }
+            });
+
+
+            // 这一块主要是防止在上传未结束前表带提交，具体大家可酌情修改编写
+            $('form').submit(function (e) {
+                var uploader = $('#uploader').pluploadQueue();  // 取得上传队列
+                if (uploader.files.length > 0) {  // 就是说如果上传队列中还有文件
+                    uploader.bind('StateChanged', function () {
+                        if (uploader.files.length === (uploader.total.uploaded + uploader.total.failed)) {
+                            $('form')[0].submit(); //表单提交
+                        }
+                    });
+                    uploader.start();
+                } else {
+                    alert('队列中必须至少要有一个文件!');
+                }
+                return false;
+            });
+
+
+        });
+
+    </script>
+    <style>
+        #uploader {
+            margin-top:35px
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" >         
+        <div id="uploader" style="width: 600px">
+            <p>
+                你的浏览器没有Flash支持，请安装最新的Flash！
+            </p>
+        </div>
+         
+    </form>
+</body>
+</html>

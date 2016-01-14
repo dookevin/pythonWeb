@@ -1,0 +1,1148 @@
+﻿
+a {
+    cursor: pointer;
+}
+/*left 下拉菜单Style  Star*/
+.ztree_in_ul{display: none;}
+.left-panel dl a{color: #666; font-family:"Microsoft YaHei"; display: block;}
+.left-panel dl a:hover, .ztree_cur,.left-panel .zl-tit a:hover{background: #f5f5f5;}
+.left-panel .zl-tit a{line-height: 38px; color:#333; font-size: 18px; padding-left: 30px; display: block;}
+.left-panel dl dt{line-height: 34px; height: 34px; font-size: 14px; margin-top: 10px;}
+.left-panel dl dt a{padding-left: 30px;}
+.left-panel dl dd.dd_show{display: block;}
+.left-panel dl dt .ztree_icon{ width:16px; height: 14px; display: block; margin-top: 10px; float: left; margin-right: 10px;
+    background-image: url("../../images/Default/public/icon-left-list-file.png"); background-position: -88px 0; background-repeat: no-repeat;}
+.left-panel dl dt a.open .ztree_icon{background-image: url("../../images/Default/public/icon-left-list-file.png"); background-position: 0 0; background-repeat: no-repeat;}
+.left-panel dl dd{line-height: 44px; height: 44px; font-size: 12px;display: none;}
+.left-panel dl dd a {padding-left:56px; position: relative; height: 44px;}
+.left-panel dl dd a i.NewsupIcon{display: block; background: url("../../images/Default/public/UpgradeIcon.png") no-repeat 0 0; width: 15px; height: 18px; position: absolute; left: 150px; top: 5px;}
+/***  left 下拉菜单 Icon background  Styel   ***/
+.left-panel dl dd a .ztree_in_ico { width:24px; height:24px; float: left; margin: 10px 10px 0 0;
+    background-image: url(../../images/Default/public/icon_sts.png); background-repeat: no-repeat;}
+.left-panel dl dd a .ztree1_in_ico {background-position: 0 0;}
+.left-panel dl dd a .ztree2_in_ico {background-position: -30px 0;}
+.left-panel dl dd a .ztree3_in_ico {background-position: -60px 0;}
+.left-panel dl dd a .ztree4_in_ico {background-position: -90px 0;}
+.left-panel dl dd a .ztree5_in_ico {background-position: -120px 0;}
+.left-panel dl dd a .ztree6_in_ico {background-position: -180px -30px;}
+.left-panel dl dd a .ztree7_in_ico {background-position: -150px -30px;}
+.left-panel dl dd a .ztree8_in_ico {background-position: -120px -30px;}
+.left-panel dl dd a .ztree9_in_ico {background-position: -240px -30px;}
+.left-panel dl dd a .ztree10_in_ico {background-position: -90px -30px;}
+.left-panel dl dd a .ztree11_in_ico {background-position: -30px -30px;}
+.left-panel dl dd a .ztree12_in_ico {background-position: 0 -30px;}
+.left-panel dl dd a .ztree13_in_ico {background-position: -300px -30px;}
+.left-panel dl dd a .ztree14_in_ico {background-position: -270px -30px;}
+.left-panel dl dd a .ztree21_in_ico {background-position: -330px 0px;}
+.left-panel dl dd a .ztree22_in_ico {background-position: -330px -30px;}
+/* left 下拉菜单Style  End */
+/* right style  Star */
+/* title style */
+.road {padding:0 0 20px 42px; border-top:1px solid #fff;}
+.road .suninfo_str {line-height: 32px; font-size: 12px; font-family: Arial; color:#ccc; display:block;}
+
+.zl_content {overflow: hidden;}
+.zl_content h3, .rtgy-box h3, .rtgy-cont h3{font-size: 14px; color: #333; background: url(../../images/Default/public/zl_Tit_icon.png) no-repeat 0 center; line-height: 30px; text-indent: 15px;}
+.funlist {clear: both;    overflow: hidden;    margin: 12px 0 20px;}
+.tabBox h3{margin-left: 20px;}
+    .funlist li {
+        float: left;
+        margin-right: 20px;
+        display: inline;
+        width: 104px;
+        text-align: center;
+    }
+        .funlist li a {
+            display: block;
+            height: 117px;
+        }
+            .funlist li a span {
+                margin-top: 10px;
+            }
+            .funlist li a .span_img, .contentLine .rtset_img,.yyqx-bar ul li .span_img {
+                display: inline-block;
+                width: 64px;
+                height: 64px;
+                background-image: url(../../images/Default/public/icon_sts_big.png);
+                background-repeat: no-repeat;
+            }
+            .funlist li a .span_txt,.yyqx-bar ul li .span_txt {
+                display: block;
+                font-size: 12px;
+                color: #666;
+                line-height: 32px;
+            }
+
+span#photoDlna {
+    margin-top: 15px;
+}
+.rtgy-box .dlna li a .span_txt, .yyqx-bar ul li .span_txt{line-height: 10px;}
+.rtgy-box .dlna{height: 150px;}
+.rtgy-box .dlna li a:hover { background-image:none!important;}
+.rtgy-box .timemachine li { margin-left: 248px;}
+.rtgy-box .timemachine li a:hover { background-image:none!important;}
+.funlist li a:hover {background: url(../../images/Default/public/bg_list_sts.png) no-repeat 0 0;}
+.funlist li a:hover span {color: #333;}
+.funlist li a .span_img1, .contentLine .img1 {background-position: 0 -140px;}
+.funlist li a .span_img2, .contentLine .img2 {background-position: -210px -210px;}
+.funlist li a .span_img3 {background-position: -70px -210px;}
+.funlist li a .span_img4 {background-position: -140px -210px;}
+.funlist li a .span_img5 {background-position: 0 -210px;}
+.funlist li a .span_img6 {background-position: -140px -140px;}
+.funlist li a .span_img7 { background-position: -70px -140px;}
+.funlist li a .span_img8 {background-position: -70px -70px;}
+.funlist li a .span_img9 { background-position: -140px -70px;}
+.funlist li a .span_img10 {background-position: -210px -280px;}
+.funlist li a .span_img11 {background-position: -70px -280px;}
+.funlist li a .span_img12 {background-position: 0 -280px;}
+.funlist li a .span_img13 {background-position: 0 -350px;}
+.funlist li a .span_img14 {background-position: 0 -70px;}
+.funlist li a .span_img21 {background-position: -140px -350px;}
+.funlist li a .span_img22 {background-position: -210px -350px;}
+.funlist li a .span_img23 {background-position: 0px 0px;}
+.funlist li a .span_img24 {background-position: -70px 0px;}
+.funlist li a .span_img25 {background-position: -140px 0px;}
+.funlist li a .span_img26 {background-position: -210px 0px;}
+.funlist li a .span_img27 {background-position: -210px -140px;}
+.funlist li a .span_img28 {background-position: -210px -350px;}
+.funlist li a .span_img16, .contentLine .img16 {background-position: 0 0;}
+.funlist li a .span_img17, .contentLine .img17 {background-position: -70px 0;}
+.funlist li a .span_img18, .contentLine .img18 {background-position: -140px 0;}
+.funlist li a .span_img19, .contentLine .img19 {background-position: -210px 0;}
+.funlist li a .span_img20, .contentLine .img20 {background-position: -210px -140px;}
+
+.funlist li a .dlna_img {
+    background-image: url(../../images/Default/public/on-off.png);
+    display: inline-block;
+    width: 51px;
+    height: 25px;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+}
+
+.funlist li a .dlna_img_off {
+    background-position: -56px 0;
+}
+
+.rw {
+    width: 580px;
+    margin-left: 180px;
+    padding-bottom: 15px;
+    margin-top: 15px;
+     overflow: hidden;
+}
+
+.rw>ul {
+    float: left;
+
+}
+
+.rw .all-rw {
+    border-right: 1px dashed #ccc;
+    width: 289px;
+    padding-bottom: 15px;
+    margin-right: 37px;
+}
+
+.rw .pubre .all-rw-list {
+    width: 250px;
+    border: 1px solid #CCC;
+    margin-top: 15px;
+    border-bottom: none;
+    display: none;
+}
+
+
+.rw .pubre .all-rw-list li {
+    height: 35px;
+    border-bottom: 1px solid #ccc;
+    position: relative;
+    line-height: 35px;
+}
+
+.all-rw-list li>span {
+    display: block;
+    line-height: 35px;
+    margin-left: 10px;
+    color: #999;
+}
+
+.all-rw-list li input {
+    margin: 0 11px;
+}
+
+.rw .pubre #rwName li input[name="rw-name"]:checked + label:before, input[name="rw-name"]:not(:checked) + label:before{
+    background: #f5f5f5 url(../../images/Default/Home/check.png);
+    content: " ";
+    height: 16px;
+    left: 10px;
+    top: 9px;
+    position: absolute;
+    width: 16px;
+    border-radius: 4px;
+}
+
+.rw .pubre #rwName li input[name="rw-name"]:checked + label:before {
+    background-position: -36px 0;
+}
+
+.rw  .pubre .rw-on-off {
+     background-image: url(../../images/Default/public/on-off.png);
+     display: inline-block;
+     width: 51px;
+     height: 25px;
+     background-repeat: no-repeat;
+     background-position: 0 0;
+     position: relative;
+    top: 6px;
+    left: 10px;
+    cursor: pointer;
+}
+
+.rw  .pubre .rw-on {
+    background-image: url(../../images/Default/public/on-off.png);
+    display: inline-block;
+    width: 51px;
+    height: 25px;
+    background-repeat: no-repeat;
+    background-position: -56px 0;
+    position: relative;
+    top: 6px;
+    left: 10px;
+    cursor: pointer;
+}
+
+.rw .other-r{display: none;}
+.yyqx-bar ul li .span_img1{background-position: 0 0;}
+.yyqx-bar ul li .span_img2{background-position: -70px 0;}
+.yyqx-bar ul li .span_img3{background-position: -140px 0;}
+.yyqx-bar ul li .span_img4{background-position: -210px 0;}
+.yyqx-bar ul li .span_img5{background-position: -210px -140px;}
+.yyqx-bar ul li .span_img6{background-position: 0 -350px;}
+.yyqx-bar ul li .span_img7{background-position: -70px -350px;}
+.yyqx-bar ul li .span_img8{background-position: 0 -210px;}
+.yyqx-bar ul li .checkbox{margin-left: 24px;}
+
+.rtgy-box {padding-left: 42px;}
+
+/*-- Win访问设置 --*/
+.contentLine { width:500px;    text-align:center;    padding-top: 10px; position: relative;}
+.pic {    margin-bottom: 15px;}
+.pic span {    display: block;}
+.contentLine .lf-postion1 {margin-left: -70px; width:160px;}
+.contentLine .lf-postion2 {margin-left: -92px; width:190px;}
+.contentLine .lf-postion3 {margin-left: -50px;}
+.contentLine .checkbox {left: 50%; position: absolute;}
+.checkbox  .msg {
+    margin-left:20px;
+}
+.suninfo_cont_str {
+    margin-left: 8px;
+}
+.mtp_48 {
+    margin-top: 48px;
+}
+.reboot{border:none;}
+
+.getBtn,.unbindBtn{border: 0; cursor: pointer; outline:none; float: left;}
+.jumpBtn{float: left;}
+.sure_btn a,.reboot ,.getBtn,.unbindBtn,.RestartBtn,.cancelBtn {
+    width: 94px;
+    height: 34px;
+    background: url(../../images/Default/public/win_rt_btn.png) no-repeat 0 0;
+    display:inline-block;
+    text-align:center;
+    line-height:34px;
+    color:#fff;
+    font-size:14px;
+}
+.save{width:260px;
+    height:34px;
+    background: url(../../images/Default/public/win_rt_btn.png) no-repeat -100px 0;
+    color:#fff;
+    font-size:14px;
+    text-align:center;
+    line-height:34px;
+    display:block;border: 0px;
+}
+.save:hover {
+    background-position: -100px -40px;
+}
+    .sure_btn a:hover,.reboot:hover {
+        background-position: 0 -40px;
+    }
+.win_img {
+    width: 64px;
+    height: 64px;
+    background-image: url(../../images/Default/public/icon_sts_big.png);
+    background-repeat: no-repeat;
+}
+.set {
+    width: 100%;
+}
+    .set h5, .set h6 {
+        background: url(../../images/Default/public/bg_rtcont_h5.png) repeat-x 0 bottom;
+        font-size: 16px;
+        line-height: 36px;
+        margin-top: 30px;
+        padding: 0 0 12px 15px;
+    }
+        .set h5 .icon-l,.set h6 .icon-l {
+            width: 2px;
+            height: 16px;
+            background: #13a7bd;
+            float: left;
+            margin-top: 10px;
+        }
+        .set h5 .msg,.set h6 .msg {
+            margin-left: 10px;
+        }
+    .set h6 {
+        font-size:14px;
+        background:none;
+        padding-bottom:0;
+        margin-top:10px;
+    }
+    .set .group {
+        margin-top: 10px;
+        line-height: 30px;
+    }
+        .set .group label.suninfo_cont_str {
+            width: 170px;
+            display: block;
+            height: 30px;
+            text-align: right;
+            float: left;
+            color: #333;
+            margin-left: 0;
+        }
+        .set .group .option_list {
+            width: 140px;
+            height: 30px;
+            background: url(../../images/Default/public/input_bg_sts.png) no-repeat 0 0;
+            float: left;
+            margin: 0 10px;
+            padding-left: 10px;
+        }
+            .set .group .option_list .dropdown_Text {
+                float: left;
+                width: 100px;
+                height:30px;
+                overflow:hidden;
+            }
+            .set .group .option_list .dropdownBtn {
+                display: block;
+                width: 30px;
+                height: 30px;
+                float: right;
+            }
+.set .group .option_list_w {
+    width: 250px;
+    background-position:0 -220px;
+}
+    .set .group .option_list_w .dropdown_Text {
+        width: 210px;
+    }
+.postion_box {
+    position: relative;
+}
+.dropdown_cont {
+    width: 150px;
+    position: absolute;
+    left: 180px;
+    top: 29px;
+    display: none;
+    z-index: 1000;
+}
+.dropdown_cont a {
+    display: block;
+    text-align: center;
+    width: 150px;
+    height: 30px;
+}
+    .dropdown_cont a.cur_gou {
+        background: url(../../images/Default/public/dropdown_cur.jpg) no-repeat 15px center;
+        color: #fff;
+    }
+    .dropdown_cont span{
+        display: block;
+        width: 150px;
+        height: 30px;
+        font-size: 12px;
+        color: #666;
+        background-image: url(../../images/Default/public/input_bg_sts.png);
+        background-repeat: no-repeat;
+    }
+.dropdown_cont .dropdown_mean {
+    background-position: 0 -80px;
+}
+.dropdown_cont .dropdown_mean2 {
+    background-position: 0 -110px;
+}
+.dropdown_cont .dropdown_cur {
+    background-position: 0 -140px;
+}
+.set .group .msg, .set .checkbox .msg {
+    font-family: "微软雅黑";
+    color: #999;
+    margin-left:10px;
+}
+.set .group .w260{
+    width:240px;
+    height:20px;
+    border:0;
+    background: url(../../images/Default/public/input_bg_sts.png) no-repeat 0 -180px;
+    float:left;
+    margin-left:10px;
+    padding:5px 10px;
+}
+.set .group .w160{width: 140px; height:20px; background: none;  padding: 5px 10px; margin-left:10px; border: 1px solid #ccc;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;}
+.w400{width: 400px; float: left;}
+.set .group .msg font {
+    color: #ce0404;
+    margin-right:10px;
+}
+.set .group input {
+    line-height: 20px;
+}
+.mlf_100 {
+    margin-left:100px;
+}
+.mlf_180 {
+    margin-left:180px;
+}
+.mlf_10 {
+    margin-left:10px;
+}
+.mlf_60 {
+    margin-left:60px;
+}
+.mrt_20 {
+    margin-right: 20px;
+}
+.mrt_10 {
+    margin-right: 10px;
+}
+.mtp_10 {
+    margin-top: 10px;
+}
+.mbt_10 {
+    margin-bottom: 10px;
+}
+.mtp_20 {
+    margin-top: 20px;
+}
+.mtp_40 {
+    margin-top: 40px;
+}
+.mtp_100 {
+    margin-top: 100px;
+}
+.pbt_50 {
+    padding-bottom: 50px;
+}
+.disabled{background: #ccc;}
+
+/*-- FTP访问设置 --*/
+.msg_bottom {
+    margin-top: 65px;
+}
+/*--- 用户 ---*/
+.user_add {
+    padding: 12px 0 12px 42px;
+    border-bottom: 1px solid #e5e5e5;
+    height:32px;
+}
+    .user_add .user_add_bg {
+        background-image: url(../../images/Default/public/add_Btn_bg.png);
+        background-repeat: no-repeat;
+        float: left;
+    }
+    .user_add .user_add_lf {
+        width: 34px;
+        height: 32px;
+        background-position:0 0;
+    }
+    .user_add .user_add_ct {
+        padding: 0 10px;
+        background: url(../../images/Default/public/add_Btn_ct_bg.jpg) repeat-x;
+        float:left;
+    }
+    .user_add .user_add_rt {
+        width: 8px;
+        height: 32px;
+        background-position: 0 -32px;
+    }
+    .user_add .add_btn {
+        line-height: 32px;
+        display: block;
+        font-family: arial;
+        color: #666;
+    }
+.tabBox {
+    width: 100%;
+}
+    .tabBox tbody td {
+        color: #333;
+    }
+    .tabBox tr td {
+        text-align: center;
+        font-size: 12px;
+        color: #666;
+        line-height: 30px;
+        height:30px;
+    }
+    .tabBox tr:hover, .tab_mean {
+        background: #e5e5e5;
+    }
+        .tabBox td a {
+            display: block;
+            width:20px;
+            height:20px;
+            background-image:url(../../images/Default/public/tab_act_Btn.png);
+            background-repeat:no-repeat;
+            text-indent:-9999px;
+            margin-right:8px;
+            float:left;
+        }
+            .tabBox td a.btn1 {
+                background-position: 0 0;
+            }
+                .tabBox td a.btn1:hover {
+                    background-position: -20px 0;
+                }
+            .tabBox td a.btn2 {
+                background-position: -40px 0;
+            }
+                .tabBox td a.btn2:hover {
+                    background-position: -60px 0;
+                }
+            .tabBox td a.btn3 {
+                background-position: -80px 0;
+            }
+                .tabBox td a.btn3:hover {
+                    background-position: -100px 0;
+                }
+            .tabBox td a.btn4 {
+                background-position: -120px 0;
+            }
+                .tabBox td a.btn4:hover {
+                    background-position: -140px 0;
+                }
+            .tabBox td a.btn5 {
+                background-position: -160px 0;
+            }
+                .tabBox td a.btn5:hover {
+                    background-position: -180px 0;
+                }
+.tabBox td a.btn6 {
+    background-position: -200px 0;
+}
+.tabBox td a.btn6:hover {
+    background-position: -220px 0;
+}
+/*-- 磁盘管理 --*/
+.add_disk {
+    margin-right: 30px;
+}
+.add_disk, .Import_disk {
+    float: left;
+}
+.diskHelp{float: left; color: #d9d9d9; font-size: 12px; line-height: 32px; cursor: pointer;}
+.diskHelp:hover{color: #13a7bd;}
+.diskHelp:hover span.diskHelpIcon{background-position: -16px 0;}
+.diskHelp span.diskHelpIcon{width: 16px; height: 16px; display:block; float: left; background: url("../../images/Default/public/diskHelpIcon.png") no-repeat 0 0; margin: 8px 5px 0 0;}
+.tab_nav {
+    height:29px;
+    border-bottom:1px solid #e5e5e5;
+}
+    .tab_nav ul li {
+        float: left;
+    }
+        .tab_nav ul li a {
+            display: block;
+            height: 29px;
+            padding: 0 20px;
+            border-right: 1px solid #e5e5e5;
+            border-left: 1px solid #fff;
+            text-align: center;
+            line-height: 18px;
+            font-size: 16px;
+            color: #333;
+        }
+        .tab_nav ul li.first_li a {
+            border-left: none;
+        }
+        .tab_nav ul li.last_li a {
+            border-right: none;
+        }
+        .tab_nav ul li.cur a,.tab_nav ul li a:hover {
+            background: url(../../images/Default/public/tab_nav_liBg.jpg) no-repeat center 0;
+        }
+        .tab_contBox{border-top: 1px solid #fff;}
+.tab_cont {
+    width: 100%;
+    display:none;
+}
+.checkbox_height {
+    width:100%;
+    height:30px;
+    margin:20px 0 30px;
+}
+.checkbox_postion {
+    margin:7px 30px 0 10px;
+}
+/*-- 磁盘卷管理 --*/
+.prompt_ora {
+    line-height: 24px;
+    padding: 10px 0 20px 15px;
+    display:block;
+}
+.set h5.h5_mtp_10 {
+    margin-top: 10px;
+}
+/*-- 时间区域设置 --*/
+.nowTime {
+    margin: 20px 0 20px 50px;
+    line-height:24px;
+}
+.checkbox_marg {
+    margin: 20px 0 0 180px;
+}
+/*-- 内部标题 Description_tit --*/
+.set .Description_tit {
+    border-bottom: 1px solid #e5e5e5;
+    height:25px;
+    margin-top:30px;
+}
+    .set .Description_tit span.Description_tit_lt, .set .Description_tit span.Description_tit_rt {
+        width: 8px;
+        height: 20px;
+        background-image: url(../../images/Default/public/Description_tit_x.jpg);
+        background-repeat: no-repeat;
+        float: left;
+        margin-top:5px;
+    }
+    .set .Description_tit span.Description_tit_lt {
+        background-position: 0 0;
+    }
+    .set .Description_tit span.Description_tit_ct {
+        padding: 0 15px;
+        line-height: 20px;
+        float: left;
+        margin-bottom:5px;
+    }
+    .set .Description_tit span.Description_tit_rt {
+        background-position: -8px 0;
+    }
+    .cues{margin-top: 14px; color: #f00;}
+.Description_content {
+    margin-top: 14px;
+    padding-left:60px;
+    padding-right:20%;
+}
+    .Description_content p {
+        line-height: 28px;
+        text-indent: 2em;
+        color:#666;
+    }
+        .Description_content p span {
+            color: #f00;
+        }
+/*-- 升级系统 --*/
+.Upgrade-cont{margin: 50px 0 0 40px;}
+.current-bar{float: left; min-width: 32%; max-width: 40%; margin-right: 80px;}
+.current-bar p{font-size: 14px; color: #333; line-height: 20px; padding: 7px 0;}
+.current-bar p span{color: #ff6666;}
+.current-bar p i.OtherVersionIcon{display: block; margin-top: 30px; color: #23a7bb; cursor: pointer;}
+.Newest-cont{float: left; position: relative; width: 280px;}
+.Newest-cont .Newest  p{font-size: 18px; width: 255px; color: #333; line-height: 34px; float: left; position: relative;}
+.Newest-cont .Newest i{display: block; background-image: url("../../images/Default/public/UpgradeIcon.png"); background-repeat: no-repeat;}
+.Newest-cont .Newest i.NewsupIcon{width: 15px; height: 18px; background-position: 0 0; position: absolute; right: 0; top: -10px;}
+.Newest-cont .Newest i.aboutIcon{width: 18px; height: 18px; background-position: -20px 0; margin-top: 8px; cursor: pointer; float: right;}
+.Newest-cont a#btnUpdate{width: 94px; height: 34px; background: url(../../images/Default/public/win_rt_btn.png) no-repeat 0 0; display: inline-block; text-align: center; line-height: 34px; color: #fff; font-size: 14px; margin-top: 64px;}
+.Newest-cont  p.No-Upgrade{color: #999; font-size: 14px; display: none;}
+/* hover---更新内容  Style   */
+.UpdateContent-box{ width: 490px; position: absolute; right: 0; top: 0; z-index: 300; display: none;}
+.UpdateContentTop{width: 490px; height: 30px; background: url("../../images/Default/public/UpdateContentBgTop.png") no-repeat; margin-top: 30px;}
+.UpdateContentCenter{width: 400px; background: url("../../images/Default/public/UpdateContentBgCenter.png") repeat-y; padding: 0 45px 40px;}
+.UpdateContentCenter .UpdateContentTitle{border-bottom: 1px solid #ccc; position: relative}
+.UpdateContentCenter .UpdateContentTitle h4{text-align: center; font-size: 18px; color: #333; line-height: 38px;}
+.UpdateContentCenter .UpdateContentTitle span.ReleaseDate{font-size: 12px; color: #666; line-height: 32px; position: absolute; right: 0; top: 6px;}
+/*更新内容 list*/
+.UpdateList{margin: 10px 0 0 10px;}
+.UpdateList li span{color: #333;}
+.UpdateList li{line-height: 30px; color: #666; font-size: 12px; text-align: left;}
+.UpdateContentBottom{width: 490px; height: 16px; background: url("../../images/Default/public/UpdateContentBgBottom.png") no-repeat;}
+/*其他版本 list Style*/
+.mlf_90{margin-left: 90px;}
+.OtherVersion-bar{background: #fff; padding: 40px 0 50px; width: 760px; margin-left: 40px; margin-top: 20px; display: none; position: relative;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -moz-box-shadow: 0 0 8px rgba(102, 102, 102, .1);
+    -webkit-box-shadow: 0 0 8px rgba(102, 102, 102, .1);
+    box-shadow: 0 0 8px rgba(102, 102, 102, .1);}
+.OtherVersion-bar h4{line-height: 38px;color: #333; font-size: 18px; text-align: center; border-bottom: 1px solid #ccc; margin: 0 50px;}
+#VersionList_tab{ padding: 0 50px; min-height: 200px; max-height: 400px;}
+.OtherVersion-bar table{text-align: center; font-size: 14px;}
+.OtherVersion-bar table tr td p{height: 46px; line-height: 46px; color: #333; font-weight: normal; text-align: center; border-bottom: 1px solid #ccc; margin-bottom: 10px;}
+.OtherVersion-bar table tr td{height: 34px; line-height: 34px; color: #666;}
+.OtherVersion-bar table tr td.UpdateContent,.OtherVersion-bar table tr td.Upgrade{color: #23a7bc; cursor: pointer;}
+.OtherVersion-bar table tr td.Current{color: #1dad9c;}
+.OtherVersion-bar table tr td.Downgrade{color: #ff6666; cursor: pointer;}
+.OtherVersion-bar table tr td.UpdateContent{position: relative;}
+/* 版本翻页 */
+.page{text-align: center; margin-top: 30px;}
+.page a{display: inline-block; width: 31px; height: 31px; line-height: 31px; color: #999; font-size: 14px; background-image: url("../../images/Default/public/pageIconBg.png"); background-repeat: no-repeat; margin: 0 5px; overflow: hidden;}
+.page a:hover,.page a.cur{background-position: 0 -62px; color: #333;}
+.page a{background-position: -31px -62px;}
+.page a.Previous{background-position: 0 0;  width: 0; padding-left: 31px;}
+.page a.Next{background-position: -31px -31px;  width: 0; padding-left: 31px;}
+.page a.Previous:hover{background-position: 0 -31px;}
+.page a.Next:hover{background-position: -31px 0}
+/*  点击----查看更新的内容 Style   */
+.UpdateContent-bar{position:absolute; width: 398px;  z-index: 300; left:-84px; top: 20px;}
+.UpdateContentBg_t{width: 398px; height: 30px; background: url("../../images/Default/public/UpdateContentBg_t.png") no-repeat;}
+.UpdateContentBg_c{width: 298px; min-height: 170px; background: url("../../images/Default/public/UpdateContentBg_c.png") repeat-y; padding: 20px 50px;}
+.UpdateContentBg_b{width: 398px; height: 20px; background: url("../../images/Default/public/UpdateContentBg_b.png") no-repeat;}
+.UpdateContent-bar .close-popupLayer{top: 30px;}
+.file-box {
+    position: relative;
+    width: 260px;
+    float:left;
+    margin-left:10px;
+    display:inline;
+}
+    .file-box .txt {
+        height: 28px;
+        border: 1px solid #cdcdcd;
+        width: 180px;
+    }
+    .file-box .xzwj_Btn {
+        height: 30px;
+        width: 70px;
+        background-color: #fff;
+        border: 1px solid #cdcdcd;
+        
+    }
+    .file-box .file {
+        position: absolute;
+        top: 0;
+        left:0;
+        height: 30px;
+        filter: alpha(opacity:0);
+        opacity: 0;
+        width: 260px;
+        cursor:pointer;
+    }
+
+.sel_style {
+    width: 420px;
+    height:30px;
+    border:1px solid #ccc;
+    border-radius: 3px; 
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px; 
+    background:none;
+    text-indent:5px;
+    line-height:30px;
+}
+.no_disk_text {
+    width: 200px;
+    margin-top:20px;
+    
+}
+.no_disk_text p {
+    text-align:right;
+}
+
+.yy-box {
+    text-align: center;
+    margin-top: 20px;
+    height:300px;
+}
+
+.table-bor,.table-bor tr td {
+    border: 1px solid #ccc;
+}
+
+/*.table-bor {border: 1px solid #ccc; text-align: center;}*/
+/*.table-bor tr td{line-height: 38px; border-top: 1px solid #ccc;}*/
+.userOperationList{width: 480px; max-height: 369px;}
+.userList tr td{ border:1px solid #ccc; text-align: center; line-height: 36px; border-top: none; border-right: none;}
+.mlf_52{margin-left:52px;}
+
+/* Right 相册列表 style */
+.thumbnail-view{padding:0 0 30px 42px;}
+.contentwrapper {
+    position: relative;
+    top: 0px;
+    width: 100%;
+    display: block;
+    padding: 0px;
+    left: 0px;
+}
+.thumb-wrap {
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    position: relative;
+    cursor:pointer;
+}
+.thumb-hover{display:none;}
+.thumb-wrap .thumb-check{position:absolute; left:10px; top:10px; z-index:100;}
+.thumb-wrap .caption{position:absolute; left:0; bottom:10px; width:100%; z-index:100;}
+.thumb-wrap .caption p{color:#fff; padding-left:10px; width:60%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
+.thumb-wrap .caption .btns{float:right; margin-right:10px;}
+.thumb-wrap .caption .btns span {margin-right: 10px;}
+.thumb-bg{width:100%; height:100%; position:absolute; left:0; top:0; background:rgba(0,0,0,0.5); z-index:0;}
+#systemRt-cont{
+    min-width: 660px;
+    overflow: hidden;
+    position: relative;
+}
+.systemRt-cont3{margin-top:30px; position: relative;}
+#container {
+    padding-right: 30px;
+    height: 430px;
+    margin-top: 25px;
+    min-width: 660px;
+    overflow:hidden;
+}
+#UserGroupBox{height: 120px;}
+/* 表格table td 宽度   */
+.main-content .main-right .listItems table .ck{width:25px; padding-left:15px;}
+.UserGroupBox table tr td{padding-left: 15px;}
+.UserGroupBox table tr td.ck{width:25px;}
+.UserGroupBox table tr td.GroupName{width: 100px; float: left;}
+.tabBox .UserGroupBox table tbody tr td.GroupName{  min-width: 60px; max-width: none;}
+
+.UserGroupBox table tr td.Description{width: 400px; overflow:hidden;  white-space: nowrap;text-overflow: ellipsis; }
+/*.main-content .main-right .listItems .listFileName{padding:0 15px; text-align:left;}
+.main-content .main-right .listItems .listFileName table.i{table-layout: fixed; width: 100%;}
+.main-content .main-right .listItems .listFileName table .tf{text-overflow: ellipsis; white-space: nowrap; overflow: hidden;}*/
+.main-content .main-right .listItems table .txt_hidden{width:100%; text-align:left;}
+.main-content .main-right .listItems table .txt_hidden {float: left; overflow: hidden;  white-space: nowrap; text-overflow: ellipsis;}
+/*.main-content .main-right .listItems table th {min-width: 24px;}*/
+.main-content .main-right .listItems table td {min-width: 24px;}
+.main-content .main-right .photoTab .creator{min-width: 50px;}
+.main-content .main-right .photoTab .upload-time{min-width: 50px;}
+
+th#listfilename{min-width: 70px;}
+/* photo 表格table td 宽度   */      
+@media screen\0 { /* IE 8/9/10 & Opera */
+/*.main-content .main-right  th.tf{min-width: 49px; }    */
+}
+/* Chrome, Safari 3+ */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  .main-content .main-right  th.tf{min-width: 50px;}   
+}
+/* Firefox 3.6+ */
+@media screen and (-moz-images-in-menus:0) {
+ .main-content .main-right  th.tf{min-width: 50px;}          
+}
+/*ie8*/
+@media \0screen {
+     .rtgy-cont table {
+        table-layout:fixed; /*解决th文字溢出问题*/
+    }   
+}
+/*thunder*/
+.main-content .main-right .thunder .tyle{width:20% !important;}
+.main-content .main-right .thunder .size{width:30% !important; }
+
+/*photo*/
+.main-content .main-right .photoTab th#listfilename {max-width: 70px; }
+.main-content .main-right .photoTab .tyle{width:15%;max-width: 25px; }
+.main-content .main-right .photoTab .size{width:15%;max-width: 25px; }
+.main-content .main-right .photoTab .creator{width:15%;max-width:30px; }
+.main-content .main-right .photoTab .upload-time{width:20%;max-width: 50px; }
+.main-content .main-right .photoTab .operation{ text-align:left;    min-width: 140px; width:140px; max-width: 41px;}
+
+/* music 表格table td 宽度   */
+.main-content .main-right .musicTab th#listfilename {max-width: 70px; min-width: 70px;}
+.main-content .main-right .musicTab .tyle{width:10%; max-width: 25px;}
+.main-content .main-right .musicTab .size{width:10%; max-width: 25px;}
+.main-content .main-right .musicTab .Singing{width:10%;  max-width: 25px;}
+.main-content .main-right .musicTab .musicAlbum{width:10%; max-width: 25px;}
+.main-content .main-right .musicTab .sect{width:10%;  max-width: 25px;}
+.main-content .main-right .musicTab .musicYear{width:10%; max-width: 25px;}
+.main-content .main-right .musicTab .takesTime{width:10%; max-width: 25px;}
+.main-content .main-right .musicTab .operation{/*width:20px;*/ text-align:left; min-width: 140px; width:140px; max-width: 41px;}
+
+
+/* Download 表格table td 宽度   */
+.main-content .main-right .downloadTab .rtgy-cont th {overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.main-content .main-right .downloadTab th#listfilename{max-width: 70px;}
+.main-content .main-right .downloadTab .tyle{width:10%; max-width: 22px;}
+.main-content .main-right .downloadTab .size{width:12%; max-width: 55px; min-width: 55px;}
+.main-content .main-right .downloadTab .Finish{ width:10%;   max-width: 65px; min-width: 48px;}
+.main-content .main-right .downloadTab .cstatus{width:12%; max-width:45px; min-width: 45px;}
+.main-content .main-right .downloadTab .OperationUser{width:10%; max-width: 55px;    min-width: 50px;}
+.main-content .main-right .downloadTab .DownloadTime{width:12%; max-width: 55px;    min-width: 47px;}
+.main-content .main-right .downloadTab .operation{/*width:120px;*/ text-align:left;min-width: 90px; width:90px; max-width: 41px;}
+
+/* BTDownload 表格table td 宽度   */
+.main-content .main-right .BTDownloadTab th#listfilename {max-width: 70px; min-width: 70px;}
+.main-content .main-right .BTDownloadTab .size{width:10%; max-width: 25px;}
+.main-content .main-right .BTDownloadTab .Finish{width:10%; max-width: 25px;}
+.main-content .main-right .BTDownloadTab .cstatus{width:10%;max-width: 25px;}
+.main-content .main-right .BTDownloadTab .resources{width:10%;  max-width: 25px;}
+.main-content .main-right .BTDownloadTab .y-Uploaded{width:10%; max-width: 25px;}
+.main-content .main-right .BTDownloadTab .y-Download{width:10%;  max-width: 25px;}
+.main-content .main-right .BTDownloadTab .UploadSpeed{width:13%; max-width: 25px;}
+.main-content .main-right .BTDownloadTab .DownloadSpeed{width:13%; max-width: 25px;}
+.main-content .main-right .BTDownloadTab .operation{text-align:left;min-width: 90px; width:90px; max-width: 60px;}
+
+
+/* 磁盘管理 表格table td 宽度   */
+.tabBox table.i{width: 100%;}
+.tabBox table td{ overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+.tabBox table thead td{min-width: 60px;}
+.tabBox table tbody td{max-width: 60px;}
+.tabBox table .txt_hidden{ text-align:left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+.cpTab .sbName{padding:0 15px; cursor:pointer; text-align:left;}/*当前设备名*/
+.cpTab .sequenceNum{padding:0 15px; cursor:pointer; text-align:left;}/*序列号*/
+.cpTab .cpName{width:80px; text-align: left; padding-left: 15px;}
+.cpTab .space{width:110px;}
+.cpTab .zSpeed{width:80px;}
+.cpTab .busInterface{width:80px;}
+.cpTab .State{width:100px;}
+.cpTab .operation{width:100px; text-align:left;}
+/* 磁盘券管理 表格table td 宽度   */
+.cpqTab .cpqName{width:110px; text-align: left; padding-left: 15px;}
+.cpqTab .space{width:260px;}
+.cpqTab .hasUsed{width:160px;}
+.cpqTab .Free{width:160px;}
+.cpqTab .Description{padding:0 15px; text-align:left;}
+.cpqTab .operation{width:240px; text-align:left;}
+/* 磁盘券管理 统计 表格table td 宽度   */
+.cpqtjTab .statisticsItems{padding:0 15px; text-align:left;}
+.cpqtjTab .hasUsed{width:180px;}
+.cpqtjTab .sySpace{width:180px;}
+.cpqtjTab .secondRead{width:180px;}
+.cpqtjTab .secondWirte{width:180px;}
+.cpqtjTab .readBandwidth{width:180px;}
+.cpqtjTab .wirteBandwidth{width:180px;}
+/* 用户 表格table td 宽度   */
+.userTab table tr td{text-align:left; padding-left:20px;}
+.userTab .RealName{width:300px;}
+.userTab .Email{width:300px;}
+.userTab .operation{ min-width: 200px;}
+/* 用户群组 表格table td 宽度   */
+.groupTab table tr td{text-align:left; padding-left:20px;}
+.groupTab .GroupName{width:260px;}
+.groupTab .Description{padding-right: 30px;}
+.groupTab .operation{width:350px;}
+/* 共享文件夹 表格table td 宽度   */
+.shareFolderTab table tr td{text-align:left; padding-left:20px;}
+.shareFolderTab .FileName{width:240px;}
+.shareFolderTab .Capacity{width:200px;}
+.shareFolderTab .operation{width:240px;}
+
+
+
+@media  (max-width:1400px) {
+    /* footOpertion */
+.main-content .main-right .footOpertion{height:50px; line-height:50px;}
+.main-content .main-right .footOpertion .checkbox{margin-top: 17px;}
+.main-content .main-right .paginations {bottom:65px;}
+}
+
+@media (max-width:1200px) {
+    /* footOpertion */
+.main-content .main-right .footOpertion{height:50px; line-height:50px;}
+.main-content .main-right .footOpertion .checkbox{margin-top: 17px;}
+    .set .group .br{float:left; margin-left:100px; width:100%;}
+    .set .group label.suninfo_cont_str {width:120px;}
+    .mlf_180{margin-left: 130px;}
+    .set .rw {margin-left: 130px;}
+    .dropdown_cont { left: 130px;}
+}
+
+@media screen and (max-width: 1280px){
+.main-right {
+  min-width: 700px;
+  overflow: hidden;
+}
+}
+
+/*home index*/
+@media screen and (min-height: 650px) {
+    .indexMain {
+        top: 20%;
+    }
+}
+
+#fileList tr td:last-child {
+    width: 82px;
+}
+
+
+
+div#rtgy-cont th {
+    /*background-color: whitesmoke;*/
+    /*max-width: 50px;*/
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+th#listfilename {
+    text-align: left;
+}
+
+div#listItems {
+  min-width: 581px;
+  }
+
+th.tf {
+    padding-left: 0 !important;
+    padding-right: 20px;
+}
+
+tbody#fileList th {
+  height: 46px;
+  line-height: 46px;
+}
+
+@media (max-width: 1200px) {
+tbody#fileList th {
+  height: 36px;
+  line-height: 36px;
+}
+}
+
+@media (max-width: 1400px) {
+tbody#fileList th {
+  height: 36px;
+  line-height: 36px;
+}
+
+tbody#fileList th {
+  height: 36px;
+  line-height: 36px;
+}
+}
+/* input  disabled style*/
+.group input:disabled{color: #999;}
+/* 磁盘卷管理  新增磁盘券  磁盘选择 style*/
+.set .group .cptab-box{float:left; margin-left: 10px;}
+.set .group .cptab-box .cpList .checkbox{margin-top: 7px;}
+.set .group .cptab-box .cpList span.msg{color: #333;}
+/* 系统网络设置 自动  手动选 style*/
+.networkSet-Choice{overflow: hidden; margin-left: 150px;}
+.checkBox{margin-left: 15px; float: left; margin:30px 0 0 30px; }
+
+.eyeIcon{width: 18px; height: 10px; display: inline-block; background-image: url("../../images/Default/public/eyeIcon.png"); background-repeat: no-repeat; margin: 6px 0 0 10px; cursor: pointer;}
+.openEye{background-position: 0 0;}
+.closeEye{background-position:-26px 0;}
+.txtRemark{width: 400px; height: 70px; background: none; border: 1px solid #ccc; padding:10px; margin-left: 10px;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;}
+.revisePasswordBtn{margin-left: 10px; float: left;}
+.revisePasswod-bar{display: none;}
+.revisePassword{color: #13a7bd; line-height: 32px;}
+.cancelPassword{width: 70px; height: 30px; line-height: 30px; color: #fff; background: #0cadc6; text-align: center; margin-top: 1px; display: inline-block; display: none;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;}
+
+.passwordInput{border: none; line-height: 20px; margin: 6px 10px; background: none; float: left; width: 70px;}
+.yyqx-bar{margin-top: 20px;}
+.qxChoice li{width: 64px; margin-right: 45px; float: left; text-align: center; margin-bottom: 20px;}
+
+/*****磁盘券******/
+.diskInformation-bar{margin: 0 0 0 40px;  min-width: 650px;}
+.diskRaidName{width: 690px; text-align: center; font-size: 16px; color: #333; line-height: 24px;}
+.diskInsert_state-cont{border-bottom: 1px dashed #ccc; padding-bottom: 30px; position: relative;}
+.diskCleanIcon{background: url("../../images/Default/public/CleanDiskIcon.png") no-repeat 0 center;
+    padding-left: 20px; color: #cc3333; font-size: 12px; line-height: 24px; margin-left: 20px; cursor: pointer; position: absolute; left: 590px; top: 5px;}
+.diskInsert_state-box{width: 726px; margin-top: 20px;}
+.diskInsert_stateLf{width:144px; height:190px; background: url("../../images/Default/public/diskInsert_stateBg.png") no-repeat 0 0; float: left;}
+.diskInsert_stateRt{width:180px; height:190px; background: url("../../images/Default/public/diskInsert_stateBg.png") no-repeat 0 -190px; float: left;}
+.diskInsert_stateCt{padding: 30px 0 10px; border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; float: left; font-size: 0; width: 400px; height: 148px}
+.diskInsert_stateCt .diskInsert{float: left; width: 160px; margin: 0 20px; text-align: center; position: relative;}
+.diskInsert_stateCt .diskInsert-cont{cursor: pointer;}
+.diskInsert_stateCt .diskInsert .diskInsertState-pic{width:111px; height: 126px; background: url("../../images/Default/public/diskInsert_state.png") no-repeat 0 0; display: inline-block; *display:inline; zoom:1;}
+.diskInsert_stateCt .diskInsert .diskInsertState-text{height: 22px; font-size: 14px; line-height: 22px; display: block; text-align: center;}
+.diskInsert_stateCt .diskInsert .ban-diskInsertState-pic{background: url("../../images/Default/public/diskInsert_state.png") no-repeat -119px 0;}
+.diskInsert_stateCt .unspan{ font-size: 25px; color: #ccc; display: block; text-align: center; line-height: 128px; word-spacing:48px; letter-spacing: 5px;}
+.diskInsert_state img{width: 100%; height: auto; margin-top: 20px;}
+.disk-information{width: 220px; padding: 20px 20px 20px 30px; background: #fff; border: 1px solid #ccc;  position: absolute; left:160px;  top: -50px; z-index: 100; display: none;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;}
+.disk-information ul li{line-height: 24px; color: #333; font-size: 12px; clear: both; text-align: left;}
+.disk-information ul li span{text-align: center;}
+.disk-information ul li i{float: right; width: 160px;}
+.disk-information ul li span.w3{letter-spacing:0.5em;  margin-right:-0.5em;}
+.addDisk-bar{margin: 25px 0 0 40px;display: none;}
+.addDisk-bar h3{font-size:16px; color: #333; line-height: 28px; text-align: left; background: none; text-indent: 0;}
+.undisklist{margin-left: 180px;}
+.addDisk-Choice{margin:20px 80px 0 0; float: left; text-align: center; width: 120px;}
+.addDisk-Choice .diskPic{width: 82px; height: 92px; background: url("../../images/Default/public/diskPic.png") no-repeat; display: inline-block; *display:inline; zoom:1;}
+.addDisk-Choice .checkbox{margin-top: 20px; float: none; display: inline-block; *display:inline; zoom:1;}
+.addDisk-Choice .diskId{font-size:14px; color: #333; line-height: 16px; display: inline-block; *display:inline; zoom:1; cursor: pointer; margin-left: 5px;
+    max-width: 95px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+.disk-Raid{margin: 30px 0 0 180px;}
+
+
+.updateDisk-bar{display: none;}
+.raid{ margin-right:50px; color: #ccc; line-height: 16px; font-size: 16px; cursor: pointer; width: 90px; float: left;}
+.raid-cur{color:#333;}
+.raid span{width: 16px; height: 16px; text-align: center; line-height: 16px; color: #fff; font-size: 12px; display: inline-block; margin-right: 10px;
+    background: url(../../images/Default/public/diskBootWorkflow_spanBg.png) no-repeat 0 -60px;}
+.raid-cur span{background: url(../../images/Default/public/diskBootWorkflow_spanBg.png) no-repeat 0 -40px;}
+.set .diskName-bar{margin-top: 35px;}
+.set .diskName-bar label.suninfo_cont_str{font-size: 16px; display: inline-block;}
+.diskConfirm{margin-top: 20px;  margin-left: 180px; text-align: left;}
+.diskConfirmBtn{width: 260px; height: 34px; line-height: 34px; text-align: center; color: #fff; font-size: 14px; background: #23a7bb; border: none; cursor: pointer;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;}
+.diskConfirmBtn:hover{background: #0cadc6;}
+
+.undiskdiv{ position: absolute; top: 280px; left: 260px; width: 260px; height: 50px; line-height: 50px; font-size: 20px; font-weight: bold; color: #ff9797; display: none;}
+
+div#available>label {
+    padding-right: 10px;
+}
+div#available {
+    margin-left: 59px;
+    position: relative;
+}
+
+input[name="isview"]:checked + label:before, input[name="isview"]:not(:checked) + label:before {
+     content: " ";
+    height: 16px;
+    left: 178px;
+    top: 6px;
+    position: absolute;
+    width: 16px;
+    border-radius: 4px;
+}
+
+input[name="r-name"]:checked + label:before, input[name="r-name"]:not(:checked) + label:before {
+     content: " ";
+    height: 16px;
+    left: 8px;
+    top: 9px;
+    position: absolute;
+    width: 16px;
+    border-radius: 4px;
+}
+
+@media screen and  (max-width: 1542px) {
+   div#available input[name="isview"]:checked + label:before, input[name="isview"]:not(:checked) + label:before {
+        left: 127px;
+        } 
+}
+

@@ -1,0 +1,417 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/public.js"></script>
+    <style>
+        body {margin:0px; padding:0px;
+        }
+        .videoplay { 
+            width:800px;
+            height:450px;
+            position:relative; 
+        }
+        .btnleft {
+            position: absolute;
+            width: 30px;
+            height: 50px;
+            line-height: 50px;
+            top: 200px;
+            left: 20px;
+            background-color: black;
+            color: white;
+            font-size: 40px;
+            text-align: center;
+            z-index: 999;
+            cursor: pointer;
+            border-radius: 3px;
+            display: none;
+        }
+        .btnright {
+            position: absolute;
+            width: 30px;
+            height: 50px;
+            line-height: 50px;
+            top: 200px;
+            right: 20px;
+            background-color: black;
+            color: white;
+            font-size: 40px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 3px;
+            display:none;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="videoplay">
+        <video id="video" controls="controls" autoplay="autoplay"  onplay="ture" width="800" height="450">
+            
+            <source id='mp4' src="" type="video/mp4">
+                <source id="webm" src="" type="video/webm">
+                <source id="ogv" src="" type="video/ogg">
+</video>
+        <div class="btnleft"><</div>
+        <div class="btnright">></div>
+    </div> 
+</body>
+</html>
+<script>
+
+    $(function () {
+        $(".btnleft").click(function () {
+            upVideo();
+        })
+        $(".btnright").click(function () {
+            nextVideo();
+        })
+        $(".videoplay").mouseover(function () {
+            $(".btnleft").fadeIn("slow");
+            $(".btnright").fadeIn("slow");
+        }).mouseout(function () {
+            $(".btnleft").fadeOut("slow");
+            $(".btnright").fadeOut("slow");
+        })
+    })
+</script>
+
+<script>
+
+
+    // the following was extracted from the spec in October 2014
+
+    var media_events = new Array();
+    media_events["loadstart"] = 0;
+    media_events["progress"] = 0;
+    media_events["suspend"] = 0;
+    media_events["abort"] = 0;
+    media_events["error"] = 0;
+    media_events["emptied"] = 0;
+    media_events["stalled"] = 0;
+    media_events["loadedmetadata"] = 0;
+    media_events["loadeddata"] = 0;
+    media_events["canplay"] = 0;
+    media_events["canplaythrough"] = 0;
+    media_events["playing"] = 0;
+    media_events["waiting"] = 0;
+    media_events["seeking"] = 0;
+    media_events["seeked"] = 0;
+    media_events["ended"] = 0;
+    media_events["durationchange"] = 0;
+    media_events["timeupdate"] = 0;
+    media_events["play"] = 0;
+    media_events["pause"] = 0;
+    media_events["ratechange"] = 0;
+    media_events["resize"] = 0;
+    media_events["volumechange"] = 0;
+
+    var media_controller_events = new Array();
+    media_controller_events["emptied"] = 0;
+    media_controller_events["loadedmetadata"] = 0;
+    media_controller_events["loadeddata"] = 0;
+    media_controller_events["canplay"] = 0;
+    media_controller_events["canplaythrough"] = 0;
+    media_controller_events["playing"] = 0;
+    media_controller_events["ended"] = 0;
+    media_controller_events["waiting"] = 0;
+    media_controller_events["ended"] = 0;
+    media_controller_events["durationchange"] = 0;
+    media_controller_events["timeupdate"] = 0;
+    media_controller_events["play"] = 0;
+    media_controller_events["pause"] = 0;
+    media_controller_events["ratechange"] = 0;
+    media_controller_events["volumechange"] = 0;
+
+    var media_properties = ["error", "src", "currentSrc", "crossOrigin", "networkState", "preload", "buffered", "readyState", "seeking", "currentTime", "duration",
+    "paused", "defaultPlaybackRate", "playbackRate", "played", "seekable", "ended", "autoplay", "loop", "mediaGroup", "controller", "controls", "volume",
+    "muted", "defaultMuted", "audioTracks", "videoTracks", "textTracks", "width", "height", "videoWidth", "videoHeight", "poster"];
+
+    var media_controller_properties = ["readyState", "buffered", "seekable", "duration", "currentTime",
+    "paused", "playbackState", "played", "defaultPlaybackRate", "playbackRate", "volume", "muted"];
+
+
+    // CODE START HERE
+
+    var media_properties_elts = null;
+    var media_mc_properties_elts = null;
+
+    var webm = null;
+    var ccurrent_video = 0;
+    var path = getCookie("videoPram");
+    var videos = eval(path);
+
+    //var videos =
+    //[[
+    //    "",
+    //    "/UserFiles/Video/aa.mp4"
+    //], [
+    //    "",
+    //    "/UserFiles/Video/bb.mp4"
+    //], [
+    //    "",
+    //    "/UserFiles/Video/cc.mp4"
+    //], [
+    //    "",
+    //    "/UserFiles/Video/dd.mp4"
+    //]
+    //];
+    var len = videos.length;
+    var tempend = 0;
+    function init() {
+        document._video = document.getElementById("video");
+
+
+        if (document._video.controller != undefined && document._video.controller != null) {
+            document._controller = document._video.controller;
+            document._hasController = true;
+        } else {
+            document._controller = document._video.controller;
+            document._hasController = false;
+        }
+
+        webm = document.getElementById("webm");
+
+        media_properties_elts = new Array(media_properties.length);
+
+        init_events("events", media_events, false);
+        init_properties("properties", media_properties, media_properties_elts, false);
+        if (document._hasController) {
+            media_mc_properties_elts = new Array(media_controller_properties.length);
+            init_events("mc_events", media_controller_events, true);
+            init_properties("mc_properties", media_controller_properties, media_mc_properties_elts, true);
+            // init_mc_properties();
+        } else {
+            function notImplemented(tbody) {
+                var tr = document.createElement("tr");
+                var td = document.createElement("td");
+                // td.textContent = "Not implemented";
+                //  tr.appendChild(td);
+                // tbody.appendChild(tr);
+            }
+            notImplemented(document.getElementById("mc_properties"));
+            notImplemented(document.getElementById("mc_events"));
+        }
+        init_mediatypes();
+        // properties are updated even if no event was triggered
+        setInterval(update_properties, 250);
+    }
+    document.addEventListener("DOMContentLoaded", init, false);
+
+    function init_events(id, arrayEventDef, isController) {
+        var f;
+        for (key in arrayEventDef) {
+            if (isController) {
+                document._controller.addEventListener(key, mc_capture, false);
+            } else {
+                document._video.addEventListener(key, capture, false);
+            }
+        }
+
+        var tbody = document.getElementById(id);
+        var i = 1;
+        var tr = null;
+        for (key in arrayEventDef) {
+            if (tr == null) tr = document.createElement("tr");
+            var th = document.createElement("th");
+            th.textContent = key;
+            var td = document.createElement("td");
+            if (isController) {
+                td.setAttribute("id", "e_mc_" + key);
+            } else {
+                td.setAttribute("id", "e_" + key);
+            }
+            td.textContent = "0";
+            td.className = "false";
+            tr.appendChild(th);
+            tr.appendChild(td);
+
+            if ((i++ % 5) == 0) {
+                //  tbody.appendChild(tr);
+                tr = null;
+            }
+        }
+        //  if (tr != null) tbody.appendChild(tr);
+    }
+    function init_properties(id, arrayPropDef, arrayProp, isController) {
+        var tbody = document.getElementById(id);
+        var i = 0;
+        var tr = null;
+        do {
+            if (tr == null) tr = document.createElement("tr");
+            var th = document.createElement("th");
+            th.textContent = arrayPropDef[i];
+            var td = document.createElement("td");
+            var r;
+            if (isController) {
+                td.setAttribute("id", "p_mc_" + arrayPropDef[i]);
+                r = eval("document._controller." + arrayPropDef[i]);
+            } else {
+                td.setAttribute("id", "p_" + arrayPropDef[i]);
+                r = eval("document._video." + arrayPropDef[i]);
+            }
+            td.textContent = r;
+            if (typeof (r) != "undefined") {
+                td.className = "true";
+            } else {
+                td.className = "false";
+            }
+            tr.appendChild(th);
+            tr.appendChild(td);
+            arrayProp[i] = td;
+            if ((++i % 3) == 0) {
+                //   tbody.appendChild(tr);
+                tr = null;
+            }
+        } while (i < arrayPropDef.length);
+        if (tr != null) tbody.appendChild(tr);
+        switchVideo();
+    }
+
+    function init_mediatypes() {
+
+    }
+
+    function capture(event) {
+        media_events[event.type]++;
+    }
+
+    function mc_capture(event) {
+        media_controller_events[event.type]++;
+    }
+
+    function update_properties() {
+
+        var i = 0;
+        for (key in media_events) {
+            var e = document.getElementById("e_" + key);
+            if (e) {
+                e.textContent = media_events[key];
+                if (media_events[key] > 0) e.className = "true";
+            }
+        }
+        for (key in media_controller_events) {
+            var e = document.getElementById("e_mc_" + key);
+            if (e) {
+                e.textContent = media_controller_events[key];
+                if (media_controller_events[key] > 0) e.className = "true";
+            }
+        }
+        for (key in media_properties) {
+            var val = eval("document._video." + media_properties[key]);
+            media_properties_elts[i++].textContent = val;
+        }
+        if (document._hasController) {
+            i = 0;
+            for (key in media_controller_properties) {
+                var val = eval("document._controller." + media_controller_properties[key]);
+                media_mc_properties_elts[i++].textContent = val;
+            }
+        }
+        if (document._video.audioTracks !== undefined) {
+            try {
+                var td = document.getElementById("m_audiotracks");
+                td.textContent = document._video.audioTracks.length;
+                td.className = "true";
+            } catch (e) { }
+        }
+        if (document._video.videoTracks !== undefined) {
+            try {
+                var td = document.getElementById("m_videotracks");
+                td.textContent = document._video.videoTracks.length;
+                td.className = "true";
+            } catch (e) { }
+        }
+        if (document._video.textTracks !== undefined) {
+            try {
+                var td = document.getElementById("m_texttracks");
+                td.textContent = document._video.textTracks.length;
+                td.className = "true";
+            } catch (e) { }
+        }
+
+        if (len > Number(media_events["ended"])) {
+            if (Number(media_events["ended"]) > tempend) {
+                tempend++;
+                ccurrent_video++;
+                switchVideo();
+
+            }
+        }
+        else {
+            tempend = 0;
+            media_events["ended"] = 0;
+            ccurrent_video = 0;
+            switchVideo();
+        }
+
+    }
+
+
+    function getController() {
+        if (document._hasController) {
+            return document._controller;
+        } else {
+            return document._video;
+        }
+    }
+
+    function nextVideo() {
+        if (len > ccurrent_video) {
+            tempend++;
+            media_events["ended"]++;
+            ccurrent_video++;
+            switchVideo();
+        }
+    }
+    function upVideo() {
+        if (ccurrent_video > 0) {
+            tempend--;
+            media_events["ended"]--;
+            ccurrent_video--;
+            switchVideo();
+        }
+    }
+
+    function switchVideo() {
+
+
+        if (len < 1) {
+            alert("请加载要播放的视频");
+            return false;
+        }
+
+
+
+        var mp4 = document.getElementById("mp4");
+        var parent = mp4.parentNode;
+
+        document._video.setAttribute("poster", videos[ccurrent_video][0]);
+        mp4.setAttribute("src", videos[ccurrent_video][1]);
+
+        if (videos[ccurrent_video][2]) {
+            if (webm.parentNode == null) {
+                parent.insertBefore(webm, mp4);
+            }
+            webm.setAttribute("src", videos[ccurrent_video][2]);
+        } else {
+            if (webm.parentNode != null) {
+                parent.removeChild(webm);
+            }
+        }
+        document._video.load();
+        document._video.play()
+    }
+     
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+</script>

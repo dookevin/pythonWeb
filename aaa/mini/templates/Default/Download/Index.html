@@ -1,0 +1,697 @@
+{% extends "Default/Shared/Master.html"%}
+
+<!--标题-->
+{% block title %}
+<title>下载中心 - MiniNas管理系统</title>
+{% endblock %}
+<!--css-->
+{% block css %}
+<link href="/static/css/Default/pager.css" rel="stylesheet" /> {% endblock %}
+<!--javascript-->
+{% block javascript %} 
+<script src="/static/js/pager/jquery.pager.js"></script>
+{% endblock %}
+
+<!--左边导航-->
+{% block left %}
+<div><a href="/default/download/index.html"  title="返回根目录"><img src="/static/images/Default/public/logo-download.png" /></a> </div>
+<div class="search">
+    <input id="txtSearch" class="input"  maxlength="30" style="color:#ccc;" value="请输入关键字" onfocus="if(value=='请输入关键字') {value=''}" onblur="if (value=='') {value='请输入关键字'}" />
+    <i id="btnSearch"></i>
+</div>
+<div class="lefttitle">
+    <span>任务列表</span>
+</div>
+<div class="treelist" id="treelist" avl="0">
+    <ul>
+        <li avl="0" pt="全部下载项目"><i class="ico"></i>全部下载项目 </li>
+        <li avl="2" pt="下载中"><i class="ico"></i>下载中 </li>
+        <li avl="3" pt="暂停"><i class="ico"></i>暂停 </li>
+        <li avl="1" pt="已完成"><i class="ico"></i>已完成 </li>
+    </ul>
+</div>
+{% endblock %}
+
+
+<!--右边主体-->
+{% block right %}
+<div class="itemHeader-download plf_42">
+    <ul>
+        <li class="li1" title="添加"><i class="btn-icon-download-add" id="DownloadFile"></i></li>
+        <li class="li2" title="开始/继续"><i class="btn-icon-download-paly" id="btnPlay"></i></li>
+        <li class="li3" title="暂停"><i class="btn-icon-download-pause" id="btnPause"></i></li>
+        <li class="li4" title="删除"><i class="btn-icon-download-del" id="btn-deletes"></i></li>
+    </ul>
+</div>
+
+<div class="mianHeader plf_42">
+    任务列表  <span id="selectFolder">全部下载项目</span>
+</div>
+
+<div id="listItems" class="listItems downloadTab">
+    <div class="thTitle">
+        <table>
+            <tr style="background-color:#e5e5e5">
+                <th width="25">
+                    <div class="checkbox">
+                        <input id="checkAll" type="checkbox" class="checkAll" name="checkAll" autocomplete="off">
+                        <label for="checkAll"></label>
+                    </div>
+                </th>
+                 <th class="listFileName">
+                    <table class="i">
+                        <tr>
+                            <th class="tf">
+                                <div class="txt_hidden">文件名称</div>
+                            </th>
+                        </tr>
+                    </table>
+                </th>
+                <th class="tyle">类型</th>
+                <th class="size">大小</th>
+                <th class="Finish">完成度</th>
+                <th class="cstatus">状态</th>
+                <th class="OperationUser">操作用户</th>
+                <th class="DownloadTime">下载时间</th>
+                <th class="operation">操作</th>
+            </tr>
+            <tr style="height:16px;"></tr>
+        </table>
+    </div>
+    <div class="rtgy-cont" id="rtgy-cont">
+        <table>
+            <tbody id="fileList">
+                <tr style="height:16px;"></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    $("#treelist,#rtgy-cont,#thumbItems").niceScroll({
+        cursorcolor: "#999",
+        cursoropacitymax: 1,
+        touchbehavior: false,
+        cursorwidth: "5px",
+        cursorborder: "0",
+        cursorborderradius: "5px"
+    });
+</script>
+
+<div id="pager" class="paginations"></div>
+<div class="footOpertion">
+    <div class="checkbox">
+        <input id="checkAll2" type="checkbox" name="checkAll" class="checkAll" autocomplete="off">
+        <label for="checkAll2"></label>
+    </div>
+    <span id="btn-deletess">删除</span>
+</div>
+
+{% endblock %}
+<!--弹窗相关杂项-->
+{% block popup %}
+<div id="popupLayer_DownLoad" class="popup-layer">
+    <div id="popupLayerBox_DownLoad" class="popup-layer-box downloadHttp">
+        <i id="closePopupLayer_DownLoad" class="close-popupLayer"></i>
+        <div class="downloadpup">
+            <table>
+                <tr>
+                    <td colspan="2" style="font-size:14px; height:40px; line-height:30px;">新建普通下载任务: </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:top;">下载链接： </td>
+                    <td style="height:100px; padding-left:10px;">
+                        <textarea id="txtUrl" cols="50" rows="6" style=""></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="height:30px; line-height:30px;padding-left:10px;">链接可以为 HTTP(S)/FTP: </td>
+                </tr>
+            </table>
+
+        </div>
+        <div style=" text-align:right;">
+            <input type="button" class="btn" id="btnDownload"  value="开始下载" style="width:90px" />
+
+        </div>
+    </div>
+</div>
+
+{% endblock %} 
+{% block footerJavascript %}
+<script>
+    var indexPath = "{{ UserName }}/download/";
+    var folderPath = "{{ UserName }}/download/";   //        admin/
+    var tmpOldName = "";
+    var tmpOldPath = "";
+    var keyword = "";  //搜索关键字
+
+    var pagecount = 0;
+    var pageSize = 10;
+    var pageIndex = 1;
+    var status = "";
+    var checkedArray = new Array();
+    $(function() {
+        lodingList(status, pageSize, pageIndex);
+        // 点击页码去掉全选按钮
+            $('#pager').on('click', 'ul li',function(){
+                var checked = $(this).is(":checked");
+                $("input[type='checkbox'][name='checkAll']").prop("checked", checked);
+            });
+
+        $(".treelist ul li").click(function() {
+
+            $(".treelist ul li").each(function () {
+                $(this).removeClass("checked");
+                $(this).children("i").removeClass("ico-se");
+            })
+
+            $(this).addClass("checked");
+            $(this).children("i").addClass("ico-se");
+
+
+            status = $(this).attr("avl");
+            if (status == "0")
+                status = "";
+            $("#selectFolder").text("/" + $(this).attr("pt"));
+
+            lodingList(status, pageSize, pageIndex);
+
+        });
+
+
+        //下载
+        $("#DownloadFile").click(function() {
+
+
+            $("#txtUrl").val("");
+            $("#btnDownload").removeAttr("disabled");
+            Popup.init('closePopupLayer_DownLoad', 'popupLayer_DownLoad', 'popupLayerBox_DownLoad');
+            Popup.popup();
+        });
+
+        
+        //提交 下载
+        $("#btnDownload").click(function() {
+            // $("#btnDownload").attr("disabled","disabled");
+            var url = $("#txtUrl").val().trim();
+            if (url.length < 1) {
+                alert("下载连接不能为空!");
+                return false;
+            }
+
+            var datas = {
+                pname: url
+            };
+
+            $.post("/default/download/adddownload/", datas, function(data) {
+               
+                if (data.returncode == "100100000") {
+                    Popup.closepopup();
+                    lodingList(status, pageSize, pageIndex);
+                } 
+                
+                else if(data.returncode == "100102233") //文件重复判断
+                {
+                    if (confirm("此文件已存在，是否继续下载？")) {
+                            var datasf = {pname: url ,godown:'Y'};
+                             
+                            $.post("/default/download/adddownload/", datasf, function(data) {
+                             
+                            if (data.returncode == "100100000") {
+                                Popup.closepopup();
+                                lodingList(status, pageSize, pageIndex);
+                            } 
+                            else if(data.returncode=="100102233")
+                            {
+                                    
+                            }
+
+                        },'json');
+                    }
+                }
+                else{
+                     alert(data.message)
+                }
+
+            },'json');
+
+        });
+
+
+
+        //---------------------------------------------------------------------------------------------------------------
+        //单个文件暂停
+        $('.main-right #fileList').on('click', '.btn-icon-download-pause-small', function(index, eleDom) {
+
+            var id = $(this).parent().attr("avl");
+
+            var n = $(this).parents("tr").children(".cstatus").text().trim();
+            if (n == "下载中") {
+                var datas = {
+                    fids: id
+                };
+                $.post("/default/download/stopdown/", datas, function(data) {
+                    if (data.returncode == "100100000") { 
+                        // alert("暂停成功");
+                        lodingList(status, pageSize, pageIndex);
+                    } else
+                        alert(data.message);
+                },'json');
+            } else {
+
+                alert("当前状态不能暂停");
+                return;
+            }
+
+        });
+
+        //集合暂停
+        $("#btnPause").click(function() {
+                var array = new Array();
+                $("input[type='checkbox'][name='checkOne']").each(function() {
+
+                    if ($(this).is(":checked")) {
+                        // var id = $(this).parent().attr("avl");
+                        var path = $(this).attr("avl");
+                        console.log($(this).attr("avl"))
+                        if (path != null) {
+                            array.push(path);
+                        }
+                    }
+                })
+
+                if (array.length > 0) {
+                    var datas = {
+                        fids: array.toString()
+                    };
+
+                    $.post("/default/download/stopdown/", datas, function(data) {
+                        if (data.returncode == "100100000") {
+                            // alert("暂停成功");
+                            lodingList(status, pageSize, pageIndex);
+                        } else
+                            alert(data.message);
+                    },'json');
+
+                } else {
+                    alert("请选择需要暂停的资源");
+                    return;
+                }
+            })
+            //---------------------------------------------------------------------------------------------------------------
+      //删除 文件  
+        $('.main-right #fileList').on('click', '.btn-icon-download-del-small', function(index, eleDom) {
+
+            var id = $(this).parent().attr("avl");
+
+            var datas = {
+                fids: id
+            };
+
+            if (confirm("您确定要删除吗？")) {
+                $.post("/default/download/deldownfile/", datas, function(data) {
+                    if (data.returncode == "100100000")
+                        lodingList(status, pageSize, pageIndex);  
+                    else
+                        alert(data.message);
+                },'json');
+            }
+        });
+
+        //删除文件集合(txt)
+        $("#btn-deletess").click(function() {
+            var array = new Array();
+            $("input[type='checkbox'][name='checkOne']").each(function() {
+
+                if ($(this).is(":checked")) {
+                    var codeid = $(this).attr("avl");
+                    if (codeid != null) {
+                        array.push(codeid);
+                    }
+                }
+            })
+            if (array.length > 0) {
+                var datas = {
+                    fids: array.toString()
+                };
+                if (confirm("您确定要删除所有选择文件吗？")) {
+
+                    $.post("/default/download/deldownfile/", datas, function(data) {
+                        if (data.returncode == "100100000")
+                            lodingList(status, pageSize, pageIndex);
+                        else
+                            alert(data.message);
+                    },'json');
+                }
+                 var checked = $(this).is(":checked");
+                 $("input[type='checkbox'][name='checkAll']").prop("checked", checked);
+            } else {
+                alert("请选择要删除的内容");
+                return;
+            }
+        });
+
+
+    //删除文件集合(icon)
+        $("#btn-deletes").click(function() {
+            var array = new Array();
+            $("input[type='checkbox'][name='checkOne']").each(function() {
+
+                if ($(this).is(":checked")) {
+                    var codeid = $(this).attr("avl");
+                    if (codeid != null) {
+                        array.push(codeid);
+                    }
+                }
+            })
+            if (array.length > 0) {
+                var datas = {
+                    fids: array.toString()
+                };
+                if (confirm("您确定要删除所有选择文件吗？")) {
+
+                    $.post("/default/download/deldownfile/", datas, function(data) {
+                        if (data.returncode == "100100000")
+                            lodingList(status, pageSize, pageIndex);
+                        else
+                            alert(data.message);
+                    },'json');
+                }
+                 var checked = $(this).is(":checked");
+            $("input[type='checkbox'][name='checkAll']").prop("checked", checked);
+            } else {
+                alert("请选择要删除的内容");
+                return;
+            }
+        });
+
+        //-----------------------------------------------------------------------------------------
+
+        //---------------------------------------------------------------------------------------------------------------
+        //开始/重新下载  
+        $('.main-right #fileList').on('click', '.btn-icon-download-paly-small', function(index, eleDom) {
+
+            var id = $(this).parent().attr("avl");
+            var n = $(this).parents("tr").children(".cstatus").text().trim();
+
+            if (n == "暂停") {
+                var datas = {
+                    fids: id
+                };
+
+                $.post("/default/download/startdown/", datas, function(data) {
+                    if (data.returncode == "100100000")
+                        lodingList(status, pageSize, pageIndex);
+                    else
+                        alert(data.message);
+                },'json');
+            } else {
+
+                alert("当前状态不允许重新开始!");
+                return;
+            }
+        });
+
+        //批量 开始/重新下载  
+        $("#btnPlay").click(function() {
+            var array = new Array();
+            $("input[type='checkbox'][name='checkOne']").each(function() {
+
+                if ($(this).is(":checked")) {
+                    var codeid = $(this).attr("avl");
+                    if (codeid != null) {
+                        array.push(codeid);
+                    }
+                }
+            })
+            if (array.length > 0) {
+                var datas = {
+                    fids: array.toString()
+                };
+
+                $.post("/default/download/startdown/", datas, function(data) {
+                    if (data.returncode == "100100000")
+                        lodingList(status, pageSize, pageIndex);
+                    else
+                        alert(data.message);
+                },'json');
+
+            } else {
+                alert("请选择要开始的内容");
+                return;
+            }
+        });
+
+        //-----------------------------------------------------------------------------------------
+
+     //checkbox全选按扭事件
+           //checkbox全选按扭事件
+
+
+        $(".checkAll").live("change", function () {
+            checkedArray = [];
+            var checked;
+            checked = $(this).is(":checked");
+            $("input[type='checkbox'][name='checkOne']").prop("checked", checked);
+            $("input[type='checkbox'][name='checkAll']").prop("checked", checked);
+
+
+
+
+            $("input[type='checkbox'][name='checkOne']").each(function () {
+                if ($(this).is(":checked")) {
+                    var codeid = $(this).attr("avl");
+                    if (codeid != null) {
+                        checkedArray.push(codeid);
+                    }
+                }
+            });
+
+
+        });
+
+
+
+         $(".checkbox input[type='checkbox'][name='checkOne']").live("change", function () {
+          
+            var checked = $(this).is(":checked");
+            var flag = true;   
+            //全选 按扭的控制  -------------------------------
+            if (!checked) { $("input[type='checkbox'][name='checkAll']").prop("checked", false); flag = false; }
+            else {
+                $("input[type='checkbox'][name='checkOne']").each(function () {
+                    if (!$(this).is(":checked")) { flag = false; }
+                })
+            }
+            if (flag) $("input[type='checkbox'][name='checkAll']").prop("checked", true);
+            //全选 按扭的控制  -------------------------------
+        })
+
+
+        Array.prototype.indexOf = function (val) {
+            for (var i = 0; i < this.length; i++) {
+                if (this[i] == val) return i;
+            }
+            return -1;
+        };
+
+
+        Array.prototype.remove = function (val) {
+            var index = this.indexOf(val);
+            if (index > -1) {
+                this.splice(index, 1);
+            }
+        };
+
+        $('#fileList').on('click', "input[type='checkbox'][name='checkOne']", function (index, eleDom) {
+
+            //单个选择  
+            var codeid = $(this).attr("avl");
+
+            if ($(this).is(":checked")) {
+
+                if (codeid != null) {
+                    checkedArray.push(codeid);
+                }
+            }
+            else {
+                checkedArray.remove(codeid);
+            }
+
+        })
+        refreshLish()
+       setInterval("refreshLish()", 2000);
+    })
+    function refreshLish()
+    {
+        lodingList(status, pageSize, pageIndex);
+    }
+
+
+// 加载文件
+    function lodingList(status, pageSize, pagenumber) {
+
+        var datas = {
+            status: status,
+            pageSize: pageSize,
+            pageNumber: pagenumber,
+            keyword: keyword
+        };
+
+        $.post("/default/download/getfilelist/", datas, function(data, result) {
+
+            if (data.returncode == "100100000") {
+
+                //var dataObj = eval("(" + data.data + ")"); //转换为json对象 
+                dataObj = data.data
+                pagecount = parseInt(dataObj["pageTotal"]);
+
+                var list = "";
+                //////pagecount
+
+                $.each(dataObj["rows"], function(idx, item) {
+                    var ck = "";
+                    if (checkedArray.indexOf(item.id) > -1)
+                        ck = "checked='checked'"
+                    list += "<tr> " +
+                        "<th class=\"ck\"><div class=\"checkbox\"><input id=\"check" + item.id + "\" type=\"checkbox\" name=\"checkOne\" title=\"\" avl=\"" + item.id + "\" " + ck + "><label for=\"check" + item.id + "\"></label></div></th>" +
+                        "<th class=\"listFileName\" id=\"listfilename\" title=\""+item.name+"\">" + item.name + "</th>" +
+                        "<th class=\"tyle\">" + item.ftype + "</th>" +
+                        "<th class=\"size\">" +   bytesToSize(item.totalfilesize)   + "</th>" +
+
+                        "<th class=\"Finish\">" + item.percent + "</th>" +
+                        "<th class='cstatus'>" + item.status + "</th>" +
+
+                        "<th class=\"OperationUser\">" + item.user + "</th>" +
+                        "<th class=\"DownloadTime\">" + arrive_timer_format(item.downloadtotaltime) + "</th>" +
+                        "<th class=\"operation\" avl=\"" + item.id + "\">" +
+                        "<span class='btn-icon-download-paly-small' title='继续下载' ></span>" +
+                        "<span class='btn-icon-download-pause-small' title='暂停' ></span>" +
+                        "<span class='btn-icon-download-del-small' title='删除'></span>" +
+                        "</th></tr>";
+                });
+
+               // 未找到显示内容及显示页码
+         $("#fileList tr").remove();
+                if(list.length>1)
+                    $("#fileList").append(list);
+                else
+                    $("#fileList").append("<tr><td style='color:red;text-align:center;' colspan=\"7\">未找到显示的内容</td></tr>");
+
+               if(pagecount>1) {
+                   $("#pager").pager({
+                       pagenumber: pagenumber,
+                       pagecount: pagecount,
+                       buttonClickCallback: PageClick
+                   });
+
+                     $("#pager").css("display","block");
+                }
+                else
+                    $("#pager").css("display","none");
+
+             $('.paginations').css('margin-left', -$('.paginations').width() / 2);
+
+                // if (pagecount > 1)
+                //     $("#pager").pager({
+                //         pagenumber: pagenumber,
+                //         pagecount: pagecount,
+                //         buttonClickCallback: PageClick
+                //     });
+            }else if(data.returncode == "100102246"){
+              alert(data.message)
+              $.post("/default/logout/", function (data, status) {
+               if (status == "success")
+                   window.location = "/";
+           });
+        } 
+        }, 'json');
+    }
+
+    
+    //时间转换
+    function arrive_timer_format(s) {
+    var t;
+    if(s > -1){
+        hour = Math.floor(s/3600);
+        min = Math.floor(s/60) % 60;
+        sec = s % 60;
+        day = parseInt(hour / 24);
+        if (day > 0) {
+            hour = hour - 24 * day;
+            t = day + "day " + hour + ":";
+            }
+        else t = hour + ":";   
+        if(min < 10){t += "0";}
+            t += min + ":";
+        if(sec < 10){t += "0";}
+            t += sec;
+    }
+    return t;
+    }
+
+
+//  搜索
+$('#txtSearch').blur(function () /*失去焦点时触发(清除关键字)*/
+    { 
+    if ($('#txtSearch').val() == '请输入关键字') { 
+        keyword = "";
+        lodingList(status, pageSize, pageIndex,keyword);
+    } 
+}) 
+$("#btnSearch").click(function () {
+
+    var searchName = $("#txtSearch").val().trim();
+     if(searchName == "请输入关键字"){
+        alert('请输入关键字')
+        keyword = "";
+        lodingList(folderPath, 10, 1, indexType,keyword);
+        return false;
+    }
+    // alert(searchName);
+    if (searchName.length > 20) {
+        alert("搜索条件不合法,请控制在20个字符以内!");
+        $("#txtSearch").val("");
+        return false;
+    }
+
+    if (searchName.length > 0)
+    {
+        keyword = searchName;
+        lodingList(status, pageSize, pageIndex,keyword);
+    }
+})
+
+
+    PageClick = function(pageclickednumber) {
+        //                    $("#pager").pager({
+        //                        pagenumber: pageclickednumber,
+        //                        pagecount: pagecount,
+        //                        buttonClickCallback: PageClick
+        //                    });
+
+        pageIndex = pageclickednumber;
+        lodingList(status, pageSize, pageIndex);
+    }
+
+
+  document.onkeydown = function (event)
+        { 
+            var e=event || window.event || arguments.callee.caller.arguments[0]; 
+            if (e && e.keyCode == 13)
+            { 
+            document.getElementById("btnSearch").click(); 
+            return false; 
+            } 
+        } 
+
+// $("#newtext").keydown(function(event){
+//         if(event.keyCode == 13){
+//             $("#newtext").blur();
+//             alert('ddddd')
+//         }
+//     });
+</script>
+
+{% endblock %}

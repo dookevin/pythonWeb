@@ -1,0 +1,118 @@
+﻿body {
+   width:100%; height:100%; background:url(/Images/Default/Home/bg05.png) no-repeat ; 
+}
+ /***index***/
+.indexHead {
+    width:95%; height:50px; margin:0 auto; margin-top:30px; 
+}
+    .indexHead .ilogo {
+        background:url(/Images/Default/Home/icon-logo-index.png); width:180px; height:57px; 
+    } 
+
+    .indexHead .logininfo {
+        width:140px;  height:30px; line-height:30px; text-align:right; position:relative; margin-right:25px;
+    }
+        .indexHead .logininfo span {
+            color:white; display:block; width:100px; overflow:hidden; float:left;
+        }
+        .indexHead .logininfo .rt {
+            background: url(/Images/Default/Home/icon-r-index.png) -32px -3px;
+            cursor:pointer;
+            width:30px; height:30px;
+        }
+        .indexHead .logininfo .fldiv {
+            position:absolute; top:30px; left:68px; width:124px; height:132px; background:url(/Images/Default/Home/bg-index-float.png); text-align:left; display:none;
+        }
+            .indexHead .logininfo .fldiv ul {
+                margin-top:9px; margin-left:2px;
+            }
+            .indexHead .logininfo .fldiv li {
+                height:40px; line-height:40px; color:white; cursor:pointer; font-family:"宋体"; font-size:14px;
+            }
+            .indexHead .logininfo .fldiv li:hover {
+                background:url(/Images/Default/Home/bg-index-float-li1.png); width:118px;  
+            }
+                .indexHead .logininfo .fldiv li i {
+                    float:left; margin-top:3px; margin-right:3px; margin-left:15px; width:26px; height:26px;
+                }
+                .indexHead .logininfo .fldiv li .i1 {
+                    background:url(/Images/Default/Home/icon-pop-index.png) -1px 2px; 
+                }
+                .indexHead .logininfo .fldiv li .i2 {
+                    background:url(/Images/Default/Home/icon-pop-index.png) -23px 2px;  
+                }
+                .indexHead .logininfo .fldiv li .i3 {
+                    background:url(/Images/Default/Home/icon-pop-index.png) -45px 2px; 
+                }
+
+
+
+.indexFoot {
+    position:fixed; bottom:0px; left:0px; margin-bottom:30px; width:100%;text-align:center; color:white; border-bottom:1px solid #b9dce2;
+}
+    .indexFoot span {
+        display: block;
+        line-height: 30px;
+        text-align: center;
+        border-bottom:1px solid #a1d0c4;
+    }
+
+
+
+/***login***/
+.loginMain {
+    width:420px; height:361px; background:url(/Images/Default/Home/bg-login.png) ;
+    left:50%; top:50%; margin:-180px 0 0 -210px; position:absolute;
+}
+    .loginMain ol {
+        margin-top:30px; margin-left:55px;
+    }
+    .loginMain li {
+        height:40px; margin-top:20px; position:relative; width:302px;
+    }
+    .errorMessage {
+        margin-bottom:-15px; height:20px; line-height:20px; color:red; display:inline-block; width:320px; overflow:hidden;
+    }
+    .loginMain .inp {
+       background:url(/Images/Default/Home/bg-login-input.png) 0px 0px no-repeat; width:247px; height:42px; border:0px; outline:none; padding:0 10px 0 45px; font-size:18px; line-height:42px;
+    }
+    .loginMain .lusername i{
+        background:url(/Images/Default/Home/icon-input-login.png) -65px -2px no-repeat; position:absolute; left:3px; bottom:5px; z-index:9; width:30px; height:30px;
+    }
+    .loginMain .lpassword i{
+        background:url(/Images/Default/Home/icon-input-login.png) -95px -2px no-repeat; position:absolute; left:3px; bottom:5px; z-index:9; width:30px; height:30px;
+    }
+
+/**修改密码**/
+.popup-layer .changepwd {    
+            width: 380px;
+            height: 300px;
+}
+    .popup-layer .changepwd ol {
+        margin-top:35px; text-align:center;
+    }
+    .popup-layer .changepwd ol li{
+        height:40px; line-height:40px;
+    }
+        .popup-layer .changepwd ol li label {
+            width:50px; display:inline-block; text-align:right; margin-right:10px;
+        }
+        .popup-layer .changepwd ol li .btn {
+            margin-top:15px; width:222px; margin-left:55px;
+        }
+
+/**关于我们**/
+.popup-layer .about {    
+            width: 380px;
+            height: 290px;
+}
+
+.popup-layer .about article {
+        margin-top:80px;
+    }
+    .popup-layer .about p {
+        text-align:center; margin-top:4px;
+    }
+    .popup-layer .about .aboutp2 {
+        margin-top:20px;
+    }

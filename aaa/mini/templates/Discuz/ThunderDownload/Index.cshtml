@@ -1,0 +1,590 @@
+﻿ 
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "迅雷远程";
+}
+
+ 
+<link href="~/Content/Default/pager.css" rel="stylesheet" />
+<link href="~/Content/Default/system.css" rel="stylesheet" />
+@using (Html.BeginForm())
+{
+    <div class="main-left fl">
+    <div class="lhead">
+        <div class="vhead vhead7"></div>
+        <a href="/Home/Index" class="indexUrl"></a>
+        <ul class="stationList">
+            <li class="li1">
+                <a href="@Url.Action("Index", "Photo")"><i></i><span>照片中心</span></a>
+            </li>
+            <li class="li2">
+                <a href="@Url.Action("Index", "Music")"><i></i><span>音频中心</span></a>
+            </li>
+            <li class="li3">
+                <a href="@Url.Action("Index", "Video")"><i></i><span>视频中心</span></a>
+            </li>
+            <li class="li4">
+                <a href="@Url.Action("Index", "Download")"><i></i><span>下载中心</span></a>
+            </li>
+            <li class="li5">
+                <a href="@Url.Action("Index", "BTDownload")"><i></i><span>BT中心</span></a>
+            </li>
+            <li class="li6">
+                <a href="@Url.Action("Index", "FileCenter")"><i></i><span>文件中心</span></a>
+            </li>
+            <li class="li7">
+                <a href="@Url.Action("Index", "System")"><i></i><span>系统管理</span></a>
+            </li>
+            @*<li class="li8">
+                <a href="@Url.Action("Index", "System")"><i></i><span>迅雷远程</span></a>
+            </li>*@
+        </ul>
+    </div>
+    <div class="lsearch">
+        <input type="text" value="搜索" onclick="if (this.value == '搜索') this.value = ''" onblur="    if (this.value == '') this.value = '搜索';" name="s" id="filter">
+        <i id="search"></i>
+    </div>
+    <div class="left-panel lcontent">
+        <h5 class="suninfo_str">文件列表</h5>
+    </div>  
+</div>
+    <div class="main-right">
+    <div class="rt-content">
+        <div class="rhead">
+            <ul class="rhead_ul clear">
+                <li id="ToThunder">内嵌页面测试</li>
+                <li id="getCode"><span>获取激活码</span></li>
+                <li id="UploadPhotoFile"><span>进入讯雷远程下载</span></li>
+            </ul>
+        </div>
+        <div class="hrhead clear">
+            <div class="fl"><span>文件列表</span><i>/</i><span id="sel_album_title" class="color_ye"></span></div>
+            <div class="rt"><span>共计 <span id="allnum" class="color_ye"> </span> 个文件 </span><span id="chkAll_thumbnail"></span> </div>
+        </div>
+        <div class="rtgy-box-center">
+            <div class="rtgy-cont">
+                <div id="content" class="scrollbar">
+                    <table class="table_list" width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <tr class="title">
+                                <td width="25">
+                                    <div class="checkbox">
+                                        <input id="checkAll" type="checkbox" class="checkAll" name="checkAll">
+                                        <label for="checkAll"></label>
+                                    </div>
+                                </td>
+                                <td width="40%">名称</td>
+                                <td width="10%">类型</td>
+                                <td width="10%">大小</td>
+                                <td width="10%">创建者</td>
+                                <td width="10%">上传时间</td>
+                                <td width="20%">操作</td>
+                            </tr>
+                            
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <div class="checkbox">
+                                    <input id="check1" type="checkbox" name="checkOne">
+                                    <label for="check1"></label>
+                                </div>
+                            </td>
+                            <td>名称</td>
+                            <td>类型</td>
+                            <td>大小</td>
+                            <td>创建者</td>
+                            <td>上传时间</td>
+                            <td>操作</td>
+                        </tr>
+                            <tr>
+                                <td>
+                                    <div class="checkbox">
+                                        <input id="check2" type="checkbox" name="checkOne">
+                                        <label for="check2"></label>
+                                    </div>
+                                </td>
+                                <td>名称</td>
+                                <td>类型</td>
+                                <td>大小</td>
+                                <td>创建者</td>
+                                <td>上传时间</td>
+                                <td>操作</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+<div id="popupLayer_xunlei" class="popup-layer">
+    <div id="popupLayerBox_xunlei" class="popup-layer-box xunlei" style="overflow:hidden;">
+        <i id="closePopupLayer_xunlei" class="close-popupLayer"></i>
+
+        <div id="turl">
+            <iframe src="http://yuancheng.xunlei.com/" id="ifupload" scrolling="no" style="width:1030px; height:720px; border:0px; overflow:hidden;"></iframe>
+        </div>
+
+
+    </div>
+</div>
+
+<div id="popupLayer_Upload" class="popup-layer">
+    <div id="popupLayerBox_Upload" class="popup-layer-box uploadPhoto" style="overflow:hidden;">
+        <i id="closePopupLayer_Upload" class="close-popupLayer"></i>
+         
+        <div id="turl"> 
+            @*<iframe src="/ThunderDownload/UploadFile?act=" id="ifupload" scrolling="no" style="width:608px; height:350px; border:0px; overflow:hidden;"></iframe>*@
+        </div>
+       
+        
+    </div>
+</div>
+<div id="popupLayer_Move" class="popup-layer">
+    <div id="popupLayerBox_Move" class="popup-layer-box moveFolder" style="overflow:hidden;">
+        <i id="closePopupLayer_Move" class="close-popupLayer"></i>
+        <iframe src="/ThunderDownload/MoveFolder?starPath=" id="ifmove" scrolling="no" style="width:400px; height:200px; border:0px; overflow:hidden;"></iframe>
+    </div>
+</div>
+  
+<script>
+
+    var pagecount = 0;
+    var folderPath = "";
+    var type = "";
+    var tmpOldName = "";
+    var tmpOldPath = "";
+
+    var fl = 0;
+    function hasFolder(filePath) { 
+        var datas = { filePath: filePath }; 
+        $.ajax({
+            type: "post",
+            url: "/ThunderDownload/GetFolderInfo",
+            datatype: "json",
+            data:datas,
+            async: false,//注意！！这个为必要的参数，不然这个会在上面的Ajax请求后才执行
+            success: function (data) {
+                var dataObj = eval("(" + data.data + ")");//转换为json对象  
+                fl= dataObj.folder.length; 
+            }
+        });
+
+    }
+
+    jQuery(function ($) {
+        var filePath = "/thunder";
+        var datas = { filePath: filePath }; 
+        $.post("/ThunderDownload/GetFolderInfo", datas, function (data, result) {
+            
+            if (result == "success") {
+                var dataObj = eval("(" + data.data + ")");//转换为json对象 
+
+                $(".treelist ul li").remove();
+                var t = "";
+                $.each(dataObj.folder, function (idx, item) {
+                    hasFolder(item);
+                    if (fl > 0) {
+                        t += "<li pt=\"" + item + "\" nv=\"" + item + "\"><i class='ico-close'></i>" + item.substr(0, 20);
+                        t += "<div>";
+                        t += "<i class=\"ibtn-edit mtp_10\"></i>";
+                        t += "<i class=\"ibtn-delete mtp_10\"></i>";
+                        t += "</div></li>";
+                    }
+                    else {
+                        t += "<li pt=\"" + item + "\" nv=\"" + item + "\"><i class='ico'></i>" + item.substr(0, 20);
+                        t += "<div>";
+                        t += "<i class=\"ibtn-edit mtp_10\"></i>";
+                        t += "<i class=\"ibtn-delete mtp_10\"></i>";
+                        t += "</div></li>";
+                    }
+                });
+                $(".treelist ul").append(t);
+            }
+          });
+
+        lodingList(folderPath, 10, 1,type);
+        //  $("#ifupload").attr("src", "/ThunderDownload/UploadFile?act=" + filePath + "");    ////////./////
+        //  $("#turl").html("<iframe src=\"/ThunderDownload/UploadFile?act=" + filePath + "\" id=\"ifupload\" scrolling=\"no\" style=\"width:608px; height:350px; border:0px; overflow:hidden;\"></iframe>");
+
+        $("#UploadPhotoFile").click(function () {
+            
+            window.open("http://yuancheng.xunlei.com/");
+        }); 
+        $("#getCode").click(function () {
+            window.location.href = "/System/ThunderSet";
+        });
+        
+        $("#ToThunder").click(function () {
+            Popup.init('closePopupLayer_xunlei', 'popupLayer_xunlei', 'popupLayerBox_xunlei');
+            Popup.popup();
+        });
+
+        $('.treelist ul').on('click', 'li', function (index, eleDom) {
+            $('.treelist ul li').each(function () {
+                
+                if ($(this).children("i").hasClass("ico-open-se")) {
+                    $(this).children("i").removeClass("ico-open-se");
+                    $(this).children("i").addClass("ico-open");
+                }
+                if ($(this).children("i").hasClass("ico-close-se")) {
+                    $(this).children("i").removeClass("ico-close-se");
+                    $(this).children("i").addClass("ico-close");
+                }
+                $(this).children("i").removeClass("ico-se");
+            })
+            
+             
+            var tagName = "";
+            type = "";
+            if ($(this).next().get(0) != null)
+                tagName = $(this).next().get(0).tagName.toLowerCase();
+             
+            if (tagName == "div") {
+               
+                $(this).children("i").removeClass("ico-open").addClass("ico-close-se");
+                $(this).next("div").remove("div"); //移除中间元素防止重复
+
+            } else {
+                if ($(this).children("i").attr("class") != "ico" && $(this).children("i").attr("class").indexOf("ico-se")<0) {
+                    
+                    var avl = $(this).parent().attr("avl");//获取当前等级
+                    var margin = 20; //下一级位移的默认值
+                    $(this).next("div").remove("div"); //移除中间元素防止重复
+                    // if(!$(id).children("i").hasClass("ico-close-se"))
+                    $(this).children("i").removeClass("ico-close");
+                    $(this).children("i").addClass("ico-open-se");
+
+                    $(".treelist ul li").each(function () {
+                        $(".treelist ul li").removeClass("checked");
+                    });
+                    $(this).addClass("checked");
+
+                    if (avl == null) {
+                        avl = 1;
+                    }
+                    else {
+                        avl = parseInt(avl) + 1;
+                    }
+                    var tempStr = "";
+                    var uppath = $(this).attr("pt");
+                    var id = this;
+                    datas = { filePath: uppath };
+                    $.post("/ThunderDownload/GetFolderInfo", datas, function (data, result) {
+
+                        if (result == "success") {
+                            var dataObj = eval("(" + data.data + ")");//转换为json对象 
+
+                            // $(".treelist ul li").remove();
+                            $.each(dataObj.folder, function (idx, item) {
+                                tempStr += "<li pt=\"" + uppath + "/" + item + "" + "\" nv=\"" + item + "\"><i class=\"ico-close\" style='margin-left:" + (margin * avl) + "px;'></i>" + item.substr(0, 15);
+                                tempStr += "<div>";
+                                tempStr += "<i class=\"ibtn-edit mtp_10\"></i>";
+                                tempStr += "<i class=\"ibtn-delete mtp_10\"></i>";
+                                tempStr += "</div></li>";
+
+                            });
+
+                            $(id).after("<div pt=\"" + uppath + "\"  avl=\"" + avl + "\">" + tempStr + "</div>");
+                        }
+                    });
+                }
+                else {
+                    $(this).children("i").addClass("ico-se");
+                }
+            }
+            folderPath = $(this).attr("pt")+"/";
+            $("#mianbao").text("/" + $(this).attr("pt"));
+            // $("#ifupload").attr("src", "/ThunderDownload/UploadFile?act=" + $(this).attr("pt") + "");////////////////////////////////////////
+            //$("#turl").html("<iframe src=\"/ThunderDownload/UploadFile?act=" + $(this).attr("pt") + "\" id=\"ifupload\" scrolling=\"no\" style=\"width:608px; height:350px; border:0px; overflow:hidden;\"></iframe>");
+             
+            lodingList(folderPath, 10, 1,type);
+           
+        });         
+            //添加文件夹
+        $("#btnAddFolder").click(function () {
+            var count = 0;
+            $(".treelist ul li").each(function () {
+
+                if ($(this).hasClass("checked")) {
+
+                    var avl = $(this).parent().attr("avl") == null ? 0 : $(this).parent().attr("avl");
+                    if (avl == "4")
+                    {
+                        alert("目前最多只支持创建5级目录!");
+                        count++;
+                        return;
+                    }
+                    var margin = 20;
+                    avl = parseInt(avl) + 1;
+                    $(this).next("div").append("<li ><i class=\"ico\" style='margin-left:" + (margin * avl) + "px;'></i><input type='text' id='newtext'></li>");
+                    count++;
+                }
+            });
+            if(count<1)
+                $(".treelist ul").append("<li ><i class=\"ico\"></i><input type='text' id='newtext'></li>"); 
+            $("#newtext").focus();
+            $("#newtext").bind('blur', removeNewtext);
+        });
+         
+        //checkbox全选按扭事件
+        $(".checkAll").live("change", function () {
+            var checked;
+            checked = $(this).is(":checked");
+            $("input[type='checkbox'][name='checkOne']").prop("checked", checked);
+            $("input[type='checkbox'][name='checkAll']").prop("checked", checked);
+        });
+
+        //删除 文件  
+        $('.main-right #fileList').on('click', '.ibtn-delete', function (index, eleDom) {
+           
+            var filePath = "#" + $("#mianbao").text() + "/" + $(this).attr("title");
+            filePath = filePath.replace("#/", "");
+            
+            var datas = { filePath: filePath };
+            if (confirm("您确定要删除吗？")) {
+                $.post("/ThunderDownload/DeleteFile", datas, function (data, result) {
+                    if (result == "success")
+                    lodingList(folderPath, 10, 1,type);
+                    else
+                        alert(result.result);
+                });
+            }
+        });
+        //删除文件集合
+        $("#btn-deletes").click(function () {
+            var array = new Array();
+            $("input[type='checkbox'][name='checkOne']").each(function () {
+
+                if ($(this).is(":checked")) {
+                    var path = $(this).attr("title");
+                    if (path != null) {
+                        array.push(path);
+                    }
+                }
+            })
+            if (array.length > 0) { 
+                var datas = { filePaths: array.toString() };
+                if (confirm("您确定要删除吗？")) {
+
+                    $.post("/ThunderDownload/DeleteFiles", datas, function (data, status) {
+                        if (result == "success")
+                            lodingList(folderPath, 10, 1,type);
+                        else
+                            alert(result.result);
+                    });
+                }
+            }
+            else {
+                alert("请选择要删除的内容");
+                return;
+            }
+        });
+
+        //移动文件
+        $('.main-right #fileList').on('click', '.ibtn-opertion', function (index, eleDom) {
+            Popup.init('closePopupLayer_Move', 'popupLayer_Move', 'popupLayerBox_Move');
+            Popup.popup();
+            var starPath = $(this).attr("title");
+            $("#ifmove").attr("src", "/ThunderDownload/MoveFolder?starPath=" + starPath);
+        });
+
+        //文件夹鼠标效果
+        $(".treelist ul").on("mouseover", "li", function (index, eleDom) {
+            var n = $(this).attr("pt");
+            if (n.indexOf("Downloads")<0)  //download为默认文件夹
+                $(this).children("div").css("display", "block");
+        })
+        $(".treelist ul").on("mouseout", "li", function (index, eleDom) {
+            $(this).children("div").css("display", "none");
+        })
+          
+        //删除文件夹
+        $(".treelist").on("click", ".ibtn-delete", function (index, eleDom) {
+            var name = $(this).parent().parent().attr("pt");
+            var datas = { name: name }; 
+            if (confirm("您确定要删除吗？")) {
+                $.post("/ThunderDownload/DeleteFolder", datas, function (data, status) {
+                    if (status == "success")
+                        window.location = "";
+                    else
+                        window.location = "";
+                });
+            }
+        });
+
+        //重命名文件夹
+       
+        $(".treelist").on("click", ".ibtn-edit", function (index, eleDom) {
+            var oldName = $(this).parent().parent().attr("nv");
+            var oldPath = $(this).parent().parent().attr("pt");
+            var avl = $(this).parent().parent().parent().attr("avl") == null ? 0 : $(this).parent().parent().parent().attr("avl"); //获取等级标识
+            var margin = 20;
+            avl = parseInt(avl);
+            
+            $(this).parent().parent().html("<i class=\"ico\" style='margin-left:" + (margin * avl) + "px;'></i><input type='text' id='newtext'>");
+            tmpOldName = oldName;
+            tmpOldPath = oldPath;
+            $("#newtext").focus();
+
+            $("#newtext").val(oldName);
+            $("#newtext").bind('blur', renameNewtext);
+            return;
+        });
+         
+     })
+
+    function lodingList(path,pageSize,pagenumber,type) {
+        
+        var datas = { filePath: path, pageSize: pageSize, pageNumber: pagenumber, type: type };
+        $("#fileList tr").remove();
+        $("#fileList").append("<tr><td style='color:red;text-align:center;' colspan=\"7\">未找到显示的内容</td></tr>");
+        $.post("/ThunderDownload/GetFileList", datas, function (data, result) {            
+             
+            if (result == "success") {
+                var dataObj = eval("(" + data.data + ")");//转换为json对象 
+                pagecount = parseInt(dataObj["pageTotal"]);
+                var list = ""; 
+                $.each(dataObj["rows"], function (idx, item) {                   
+                    list += "<tr>" +
+                             "<td><div class=\"checkbox\"><input id=\"check" + item.id + "\" type=\"checkbox\" name=\"checkOne\" title=\""+item.path+"\"><label for=\"check" + item.id + "\"></label></div></td>" +
+                            "<td>"+item.name+"</td>" +
+                             "<td>"+item.type+"</td>" +
+                            "<td>"+item.size+"</td>" +
+                             "<td>" + item.owner + "</td>" +
+                            "<td>"+item.last_write_time+"</td>" +
+                            "<td><span class='ibtn-delete' title=\"" + item.name + "\" ></span>" +  
+                    "<a class=\"ibtn-down\"  href=\"/ThunderDownload/DownLoadFile?filePath=" + item.path + "&fileName=" + item.name + "\">&nbsp;</a>" +
+                    "<span class='ibtn-opertion' title=\"" + item.path + "\" ></span></td>" +
+                            "</tr>";
+                });
+
+                $("#fileList tr").remove();
+                $("#fileList").append(list);                
+                $("#pager").pager({ 
+                    pagenumber: pagenumber,
+                    pagecount: pagecount,
+                    buttonClickCallback: PageClick
+                });
+            }
+        });                 
+    }
+    //  搜索
+    $("#btnSearch").click(function () {
+        var searchName = $("#txtSearch").val().trim();
+        if (searchName.length > 30) {
+            alert("搜索条件不合法,请控制在30个字符以内!");
+            $("#txtSearch").val("");
+            return false;
+        }
+        if (searchName.length > 0)
+        {
+            type = "SEARCH";
+            folderPath = searchName;
+            lodingList(folderPath, 10, 1, type);
+        }
+    })
+
+    //新增文件夹操作
+    function removeNewtext() {
+        var txt = $("#newtext").val().trim();
+        if (txt.length < 1) {
+            $("#newtext").parent().remove();
+        }
+        else {
+            if (txt.length < 3) {
+                alert("新增目录名称必须大于3个字符");
+                $("#newtext").focus();
+            }
+            else if (txt.length > 30)
+            {
+                alert("新增目录名称必须小于30个字符");
+                $("#newtext").focus();
+            }
+            else if (txt.toLocaleLowerCase()=="downloads") {
+                alert("Downloads为专用文件夹,不允许添加!");
+                $("#newtext").focus();
+            }
+            else {
+                var pt = $(this).parent().parent().attr("pt") == null ? "" : $(this).parent().parent().attr("pt") + "/";
+                var datas = { name: pt + txt };
+
+                $.post("/ThunderDownload/AddFolder", datas, function (result) {
+                    if (result.result)
+                        window.location.href = "";
+                    else
+                        alert(result.result);
+                });
+
+            }
+        }
+    }
+    //重命名文件夹
+    function renameNewtext() {
+        
+        var txt = $("#newtext").val().trim();
+        
+        if (txt.length < 1 || tmpOldName == txt) {
+           
+            // $(".treelist ul li:last-child").remove();
+            //暂时先刷新 
+            window.location = "";
+        }
+        else { 
+            if (txt.length < 3) {
+                alert("目录名称必须大于3个字符");
+                $("#newtext").focus();
+            }
+            else if (txt.length > 30) {
+                alert("目录名称必须小于30个字符");
+                $("#newtext").focus();
+            }
+            else if (txt.toLocaleLowerCase() == "downloads") {
+                alert("Downloads为专用文件夹,不允许添加!");
+                $("#newtext").focus();
+            }
+            else {
+                // var pathName = $("#newtext").parent().attr("title");
+                var datas = { oldName: tmpOldPath, newName: txt };
+
+                $.post("/ThunderDownload/RenameFolder", datas, function (data,result) {
+                   
+                    if (status == "success")
+                        window.location = "";
+                    else
+                        window.location = "";
+                });
+
+            }
+        }
+    }
+
+    PageClick = function (pageclickednumber) {
+        $("#pager").pager({ pagenumber: pageclickednumber, pagecount: pagecount, buttonClickCallback: PageClick });
+        lodingList(folderPath, 10, pageclickednumber,type);
+    }
+    //上传文件后子页面关闭事件
+    function parentClick() {
+        Popup.closepopup();
+        lodingList(folderPath, 10, 1,type);
+    }
+    //移动文件夹子页面取消按扭
+    function parentClickbyMove() {
+        Popup.closepopup();
+        lodingList(folderPath, 10, 1, type);
+    }
+      
+    document.onkeydown = function (event) {
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+
+        if (e && e.keyCode == 13) { // enter 键
+            //要做的事情 
+            $("#btnSearch").click(); return false;
+        }
+    };
+</script>
+
+<script src="~/Scripts/pager/jquery.pager.js"></script>

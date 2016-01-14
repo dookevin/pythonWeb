@@ -1,0 +1,166 @@
+﻿@model   MiniNasWeb.Models.SystemModels.DiskManageModel
+@{
+    ViewBag.Title = "DiskManagement";
+    Layout = "~/Views/Templates/Discuz/Shared/_SystemLayout.cshtml";
+}
+
+<div class="road">
+    <span class="suninfo_str">首页 > 存储设置 > 磁盘管理</span>
+</div>
+<div class="rtgy-box">
+    <div class="rtgy-cont">
+        <h3>磁盘管理</h3>
+        <div class="rightCol">
+            <div class="tab_nav">
+                <ul class="clear">
+                    <li class="first_li cur">管理</li>
+                </ul>
+            </div>
+            <div class="add_list add_mtp">
+                <a class="add_btn" href="AddDisk"><i>+</i>新建磁盘</a>
+                <a class="add_btn"><i>+</i>导入磁盘</a>
+            </div>
+            <div class="tab_contBox">
+                <div class="tab_cont" style="display:block;">
+                    <div class="tabBox">
+                        <table id="user_list" width="100%" border="0" cellspacing="0" cellpadding="0" class="tab01">
+                            <thead>
+                                <tr class="tab_mean">
+                                    <td width="10%">磁盘名</td>
+                                    <td width="25%">当前设备名</td>
+                                    <td width="10%">物理空间</td>
+                                    <td width="10%">序列号</td>
+                                    <td width="10%">状态</td>
+                                    <td width="35%" class="text-center">动作</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.diskModel != null)
+                                {
+                                    foreach (var item in Model.diskModel)
+                                    {
+                                        <tr>
+                                            <td>@item.Name</td>
+                                            <td>@item.DeviceName</td>
+                                            <td>@item.Capacity</td>
+                                            <td>@item.Serialno</td>
+                                            <td>@item.Status</td>
+                                            <td><p><a class="btn3" href="InsideEditDisk" title="编辑">编辑</a><a class="btn5" title="删除">删除</a></p></td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--
+                    <div class="tab_cont">
+                    <div class="checkbox checkbox_height">
+                        <input id="checkAll" type="checkbox" class="checkAll" name="checkAll">
+                        <label for="checkAll"></label>
+                        <span class="msg" ns="WinSetting">启用 S.M.A.R.T 功能</span>
+                    </div>
+                    <div class="set">
+                        <h6><span class="icon-l"></span><span class="msg">自我监测，分析和报告技术</span></h6>
+                        <div class="group clear">
+                            <label class="suninfo_cont_str">检测间隔</label>
+                            <input type="text" class="w260" maxlength="15" value="">
+                            <span class="msg"> <font>*</font>单位是秒，最少是10秒</span>
+                        </div>
+                        <div class="group clear postion_box">
+                            <label class="suninfo_cont_str">电源模式</label>
+                            <div class="option_list">
+                                <span class="dropdown_Text">永不</span>
+                                <a class="dropdownBtn"></a>
+                            </div>
+                            <span class="msg"></span>
+                            <div class="dropdown_cont">
+                                <span class="dropdown_mean dropdown_cur"><a class="cur_gou">永不</a></span>
+                                <span class="dropdown_mean2"><a>休眠</a></span>
+                                <span class="dropdown_mean2"><a>待机</a></span>
+                                <span class="dropdown_mean2"><a>空闲</a></span>
+                            </div>
+                        </div>
+                        <h6><span class="icon-l"></span><span class="msg">温度监测</span></h6>
+                        <div class="group clear">
+                            <label class="suninfo_cont_str">差异</label>
+                            <input type="text" class="w260" maxlength="15" value="0">
+                            <span class="msg">°C</span><span class="msg"><font>*</font>温度变化大于N摄氏度就报告，设为0关闭这项功能</span>
+                        </div>
+                        <div class="group clear">
+                            <label class="suninfo_cont_str">非正式</label>
+                            <input type="text" class="w260" maxlength="15" value="0">
+                            <span class="msg">°C</span><span class="msg"><font>*</font>温度大于N摄氏度就报告，设为0关闭这项功能</span>
+                        </div>
+                        <div class="group clear">
+                            <label class="suninfo_cont_str">重要</label>
+                            <input type="text" class="w260" maxlength="15" value="0">
+                            <span class="msg">°C</span><span class="msg"><font>*</font>温度大于N摄氏度就报告，设为0关闭这项功能</span>
+                        </div>
+                        <h6><span class="icon-l"></span><span class="msg">Email报告</span></h6>
+                        <div class="group clear">
+                            <label class="suninfo_cont_str">激活</label>
+                            <div class="checkbox checkbox_postion">
+                                <input id="checkAll4" type="checkbox" name="checkAll" class="checkAll">
+                                <label for="checkAll4"></label>
+                            </div>
+                            <span class="msg">启动时发送测试警告邮件</span>
+                        </div>
+                        <div class="group clear">
+                            <label class="suninfo_cont_str">收件人Email</label>
+                            <input type="text" class="w260" maxlength="15" value="">
+                            <span class="msg"><font style="display:none;">*</font>收件邮件地址，用分号分隔</span>
+                        </div>
+                        <div class="group clear">
+                            <label class="suninfo_cont_str">测试邮件</label>
+                            <div class="checkbox checkbox_postion">
+                                <input id="checkAll6" type="checkbox" name="checkAll" class="checkAll">
+                                <label for="checkAll6"></label>
+                            </div>
+                            <span class="msg">启动时发送测试警告邮件</span>
+                        </div>
+                        <div class="clear mtp_40 mlf_180">
+                            <a class="save">保存</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab_cont">
+                    <div class="tabBox">
+                        <table id="user_list" width="100%" border="0" cellspacing="0" cellpadding="0" class="tab01">
+                            <thead>
+                                <tr class="tab_mean">
+                                    <td width="20%">磁盘</td>
+                                    <td width="30%">类型</td>
+                                    <td width="25%">描述信息</td>
+                                    <td width="25%">动作</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="height:16px;"></tr>
+                                <tr>
+                                    <td>Disk1</td>
+                                    <td>ata-Hitachi_HUA722010CLA330_JPW9M0N12ZASUL</td>
+                                    <td>953869M</td>
+                                    <td><a class="btn3" title="编辑">编辑</a><a class="btn5" title="删除">删除</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Disk1</td>
+                                    <td>ata-Hitachi_HUA722010CLA330_JPW9M0N12ZASUL</td>
+                                    <td>953869M</td>
+                                    <td><a class="btn3" title="编辑">编辑</a><a class="btn5" title="删除">删除</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Disk1</td>
+                                    <td>ata-Hitachi_HUA722010CLA330_JPW9M0N12ZASUL</td>
+                                    <td>953869M</td>
+                                    <td><a class="btn3" title="编辑">编辑</a><a class="btn5" title="删除">删除</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+     <title>MiniNas管理系统</title>
+    <link rel="shortcut icon" href="/static/images/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/static/css/public.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/Default/Site.css" />
+    <link href="/static/css/Default/PluginCss.css" rel="stylesheet" />
+    <script src="/static/js/jquery-1.8.2.min.js"></script>
+    <script src="/static/js/popup.mini.js"></script>
+    <script src="/static/js/public.js"></script>
+    <script src="/static/js/PluginJavascript.js"></script>
+    <script src="/static/js/base.js"></script>
+
+</head>
+
+<body>
+    <div class="smain">
+        <div class="indexMain">
+            <ul class="indexicon clear">
+                <li class="li01"><a href="/default/photo/index/"><span class="icon"><img src="/static/images/Default/Home/nav-photo.png" /></span><p class="text ">照片中心</p></a></li>
+                <li class="li02"><a href="/default/music/index.html"><span class="icon"><img src="/static/images/Default/Home/nav-music.png" /></span><p class="text ">音频中心</p></a></li>
+                <li class="li02"><a href="/default/video/index.html"><span class="icon"><img src="/static/images/Default/Home/nav-video.png" /></span><p class="text ">视频中心</p></a></li>
+                <li class="li02"><a href="/default/download/index.html"><span class="icon"><img src="/static/images/Default/Home/nav-download.png" /></span><p class="text ">下载中心</p></a></li>
+                <li class="li01"><a href="/default/btdownload/index.html"><span class="icon"><img src="/static/images/Default/Home/nav-bt.png" /></span><p class="text ">BT下载</p></a></li>
+                <li class="li03" id="thunder"><a href="/default/thunderdownload/index.html"><span class="icon"><img src="/static/images/Default/Home/nav-thunder.png" /></span><p class="text ">迅雷远程</p></a></li>
+                <li class="li03"><a href="/default/filecenter/index.html"><span class="icon"><img src="/static/images/Default/Home/nav-filecenter.png" /></span><p class="text ">文件中心</p></a></li>
+                <li class="li03" id="system"><a href="/default/system/index.html"><span class="icon"><img src="/static/images/Default/Home/nav-system.png" /></span><p class="text ">系统管理</p></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="indexHead clear">
+        <div class="ilogo fl"></div>
+        <div class="ilogin rt" id="iconstatus">
+            <div class="logininfo clear" id="logininfo">
+                <i class="rt"></i>
+                <span>{{UserName}}</span>
+                <div class="fldiv">
+                    <ul>
+                        <li id="chpwd"><i class="i1"></i>变更密码</li>
+                        <li id="chout"><i class="i2"></i>注销</li>
+                        <li id="chabout"><i class="i3"></i>关于</li>
+                    </ul>
+                </div>
+            </div>
+            <div id="popupLayer" class="popup-layer">
+                <div id="popupLayerBox" class="popup-layer-box changepwd">
+                    <i id="closePopupLayer" class="close-popupLayer"> </i>
+                    <form action="../Home/Index.html" method="post">
+                        <div class="validation-summary-valid" >
+                            <ul>
+                                <li style="display:none"></li>
+                            </ul>
+                        </div>
+                        <ol>
+                            <li class="errorMessage"></li>
+                            <li>
+                                <label for="OldPassword">当前密码</label>
+                                <input class="input" data-val="true"  id="OldPassword" name="OldPassword" type="password" />
+                                <span class="red"> * </span>
+                            </li>
+                            <li>
+                                <label for="NewPassword">新密码</label>
+                                <input class="input"  id="NewPassword" name="NewPassword" type="password" />
+                                <span class="red"> * </span>
+                            </li>
+                            <li>
+                                <label for="ConfirmPassword">确认密码</label>
+                                <input class="input"  id="ConfirmPassword" name="ConfirmPassword" type="password" />
+                                <span class="red"> * </span>
+                            </li>
+                            <li>
+                                <input type="submit" value="保 存" class="btn" id="submitPwd" />
+                            </li>
+                        </ol>
+                    </form>
+                </div>
+            </div>
+            <div id="popupLayer_about" class="popup-layer">
+                <div id="popupLayerBox_about" class="popup-layer-box about">
+                    <i id="closePopupLayer_about" class="close-popupLayer"></i>
+                    <article>
+                        <p class="aboutp1">
+                            <img src="/static/images/Default/Home/icon-logo-about.png" />
+                        </p>
+
+                        <p class="aboutp2" id="viewAbout">
+
+                        </p>
+
+                        <p class="aboutp3">
+                            www.winsuntech.cn
+                        </p>
+                        <p class="aboutp4">
+                            版权所有 &copy; 2016 上海闻上信息技术有限公司
+                        </p>
+                    </article>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="indexFoot">
+        <span>版权所有 &copy; 2016 上海闻上信息科技有限公司</span>
+    </div>
+
+    <!-- <iframe  id="iframe" name="iframe" width="0" height="0" src="http://www.winsuntech.cn/test.html" onload="getData()"></iframe> -->
+    <script type="text/javascript">
+
+        function getData(){
+//            var iframe = document.getElementById("iframe");
+//            iframe.onload=function(){
+//                var data = iframe.contentWindow.name;
+//                alert(data);
+//            }
+//            iframe.src = "about:blank";
+        }
+
+    var userName = getCookie("UserName");
+
+    if(userName!=null)
+    {
+        if(userName!="admin"){
+            $('#thunder').css('display','none');
+            $('#system').css('display','none');
+        }
+    }
+    else
+    {
+
+        window.location = "/";
+    }
+//        function getIFrameDOM(id){
+
+//            return document.getElementById(id).contentDocument || document.frames[id].document;
+//        }
+
+        $().ready(function() {
+
+//            $("#iframe").attr("src","http://192.168.5.230/");
+//          //  var a = getIFrameDOM("iframe");
+//           // a.getElementById('mstop').click() ;
+//          alert(  iframe.window.callback() );
+            // Logo hover Jump
+            $(".indexMain img").each(function(k, img) {
+                new JumpObj(img, 10);
+                $(img).hover(function() {
+                    this.parentNode.parentNode.className = "hover"
+                });
+            });
+            $(".ilogin .llist ul li").each(function() {
+
+            })
+
+            $(".ilogin .linfo").mouseover(function() {
+                $(".ilogin .llist").slideDown(300);
+            })
+            $(".ilogin .llist").mouseleave(function() {
+                $(".ilogin .llist").slideUp(300);
+            })
+        });
+    </script>
+</body>
+</html>

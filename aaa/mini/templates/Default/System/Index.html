@@ -1,0 +1,67 @@
+{% extends "Default/Shared/Master.html"%}
+
+<!--标题-->
+{% block title %}
+<title>系统管理 - MiniNas管理系统</title>
+{% endblock %}
+<!--css-->
+{% block css %}
+
+{% endblock %}
+<!--javascript-->
+{% block javascript %}
+        <!--下拉菜单Js  Star-->
+<script type="text/javascript" src="/static/js/systemplay/SimpleTree.js"></script>
+{% endblock %}
+<!--左边导航-->
+{% block left %}
+        {% include "Default/System/left.html" %}
+{% endblock %}
+<!--右边主体-->
+{% block right %}
+<iframe src="/default/system/main.html" frameborder="0" scrolling="no" id="MainPage"  width="100%" height="100%"></iframe>
+{% endblock %}
+<!--弹窗相关杂项-->
+{% block popup %}
+<!--磁盘操作引导 弹框-->
+<div id="popupLayer_diskboot" class="popup-layer diskboot-layer">
+    <div id="popupLayerBox_diskboot" class="popup-layer-box diskboot-box" style="overflow:hidden;">
+        <i id="closePopupLayer_diskboot" class="close-popupLayer"></i>
+        <iframe id="Myiframe" name="Myiframe" src=""  frameborder="0" scrolling="no" ></iframe>
+    </div>
+</div>
+{% endblock %}
+
+{% block footerJavascript %}
+<script>
+
+    isfraid =false;
+
+    function JumpInfo(){
+
+        $("#Myiframe").attr("src","/default/diskoperationboot");
+
+        Popup.init('closePopupLayer_diskboot', 'popupLayer_diskboot', 'popupLayerBox_diskboot');
+        Popup.popup();
+    }
+
+    if( window.location.href.split('?')[1]=="diskmanagement")
+    {
+        $('#MainPage').attr("src","/default/system/diskcouponmanagement");
+        NavStyle(1,1);
+    }
+    else if( window.location.href.split('?')[1]=="thunderset")
+    {
+        $('#MainPage').attr("src","/default/system/thunderset");
+        NavStyle(2,5);
+    }
+    function NavStyle(a,b){
+        //a:父级的index; b:子级的index
+        $("#left-panel dl").eq(a).children("dt").addClass("ztree_cur");
+        $("#left-panel dl").eq(a).children("dd").addClass("dd_show");
+        $("#left-panel dl").eq(a).children("dd").eq(b).addClass("ztree_cur");
+        $("#left-panel dl").eq(a).children("dt").find("a").addClass("open");
+        $(".zl-tit").removeClass("ztree_cur");
+    }
+</script>
+{% endblock %}

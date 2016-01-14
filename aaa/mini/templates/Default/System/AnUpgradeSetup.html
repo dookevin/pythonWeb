@@ -1,0 +1,177 @@
+﻿{% extends "Default/Shared/ContentMaster.html"%}
+
+<!--标题-->
+{% block title %}
+<title>新建用户组 - MiniNas管理系统</title>
+{% endblock %}
+<!--css-->
+{% block css %}
+{% endblock %}
+<!--javascript-->
+{% block javascript %}
+{% endblock %}
+
+{% block body %}
+<div class="road">
+    <span class="suninfo_str">系统管理 > 系统设置 > 升级系统</span>
+</div>
+<div class="rtgy-box">
+    <h3>升级系统</h3>
+    <div class="systemRt-cont5" id="systemRt-cont">
+        <div class="set pbt_50">
+            <div class="Upgrade-cont clear">
+                <div class="current-bar">
+
+                    <p class="currp">当前版本：<i id="version"></i></p>
+                    <p class="nextp"></p>
+                    <div class="btnUpdate" style="font-size: 14px;" >
+                    </div>
+                    <div class="remark" style="color: #666;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block popup %}
+<div id="popupLayer_StatusView" class="popup-layer">
+    <div id="popupLayerBox_StatusView" class="popup-layer-box StatusView" style="overflow:hidden;">
+        <i id="closePopupLayer_StatusView" class="close-popupLayer none"></i>
+        <div style="text-align:center;">
+            <img src="/static/images/Default/public/loading.gif" style="vertical-align:middle; width:30px; height:30px;" />
+            <span id="viewText" style=" margin-left:10px;">开始升级系统，请耐心等待，不要进行其它操作......</span>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block footerJavascript %}
+<script>
+    isfraid =false;
+$(function() {
+    $('#systemRt-cont,#VersionList_tab').niceScroll({
+        cursorcolor: "#999",
+        cursoropacitymax: 1,
+        touchbehavior: false,
+        cursorwidth: "5px",
+        cursorborder: "0",
+        cursorborderradius: "5px"
+    });
+    var countdown=30;
+
+
+    $.ajax({
+        url: '/default/system/checkversion',
+        type: 'post',
+        timeout: 600000,
+        beforeSend: function(XMLHttpRequest) {
+            Popup.init('closePopupLayer_StatusView', 'popupLayer_StatusView', 'popupLayerBox_StatusView');
+            Popup.popup();
+            $("#viewText").text("版本检测中,请稍候......");
+        },
+        success: function(data, textStatus) {
+
+            if(data.returncode == '100100000'){
+                $("#version").text(data.data.curr_version);
+
+                // data = {'returncode': '100100000', 'data': {'status': 'ready', 'curr_version': '0', 'next_version': '1'}};
+
+                if(parseInt(data.data.next_version)>parseInt(data.data.curr_version))
+                {
+                    $(".nextp").html("下一版本 : "+data.data.next_version);
+                    if(data.data.status=="downloading")
+                    {
+                        $(".btnUpdate").html("下载中......");
+                        $(".remark").html("<br/><br/>温馨提示:<br/> <p style=\"color: #666;\">若网络通畅,下载时间约20-40分钟.</p><p style=\"color: #666;\">若遇到通讯故障,下载失败后会在4小时后重试!</p>");
+                    }
+                    else if(data.data.status=="ready"){
+                        $(".btnUpdate").html('<p>下载完成</p><div ><a class="reboot" style="background-position: -105px 0;width: 120px;" id="btnUpdate">升级到最新版本</a></div>');
+                        $(".remark").html("<br/><br/>温馨提示:<br/><p style=\"color: #666;\">升级时间约10分钟</p>");
+                    }
+                    else
+                    {
+                        $(".btnUpdate").html("等待下载.....");
+                        $(".remark").html("<br/><br/>温馨提示:<br/><p style=\"color: #666;\">等待启动新的下载或重试上一次失败的下载</p>");
+                    }
+
+                }
+                else
+                {
+                    $(".btnUpdate").html("您目前已是最新版本!");
+                }
+
+            } else if(data.returncode == "100102246"){
+                alert(data.message)
+                window.parent.location = "/";
+            }
+            else
+            {alert(data.message);}
+        },
+        complete: function(XMLHttpRequest, textStatus) {
+            $("#viewText").text("执行完成!!!");
+            $("#closePopupLayer_StatusView").click();
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            //  alert("出错了.--txtStatus:" + textStatus + " xmlhttprequest:" + XMLHttpRequest.statusText + "  errorthrown:" + errorThrown);
+            $("#closePopupLayer_StatusView").click();
+        }
+    });
+
+
+
+    $(".btnUpdate").on("click", "#btnUpdate", function (index, eleDom) {
+
+
+        $.ajax({
+            url: '/default/system/doupgrade',
+            type: 'post',
+            timeout: 600000,
+            beforeSend: function(XMLHttpRequest) {
+                Popup.init('closePopupLayer_StatusView', 'popupLayer_StatusView', 'popupLayerBox_StatusView');
+                Popup.popup();
+                $("#viewText").text("开始升级系统，请耐心等待，不要进行其它操作.....");
+            },
+            success: function(data, textStatus) {
+
+                if (data.returncode == "100100000" || data.returncode == 100100000)
+                {
+                    setInterval(f,1000);
+
+                }
+                else if(data.returncode == "100102246")
+                {
+                    alert(data.message)
+                    window.parent.location = "/";
+                }
+                else
+                {
+                    alert(data.message);
+                }
+            },
+            complete: function(XMLHttpRequest, textStatus) {
+                $("#viewText").text("执行完成!!!");
+                $("#closePopupLayer_StatusView").click();
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                //  alert("出错了.--txtStatus:" + textStatus + " xmlhttprequest:" + XMLHttpRequest.statusText + "  errorthrown:" + errorThrown);
+                $("#closePopupLayer_StatusView").click();
+            }
+        });
+    })
+
+
+
+   var f= function settime(){
+        if (countdown == 0) {
+            window.parent.location = "/";
+        } else {
+            $(".btnUpdate").text(""+countdown);
+            countdown--;
+
+        }
+    }
+});
+</script>
+{% endblock %}

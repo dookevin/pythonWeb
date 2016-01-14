@@ -1,0 +1,467 @@
+﻿body {
+   width:100%; height:100%; background:url(../../images/Default/Home/bg05.png) no-repeat ; 
+}
+ /***index***/
+.indexHead {
+    width: 95%;
+    height: 50px;
+    margin-top: 30px;
+    position: fixed;
+    top: 0;
+    left: 2.5%;
+    z-index:100;
+    min-width: 365px;
+}
+    .indexHead .ilogo {
+        background:url(../../images/Default/Home/icon-logo-index.png); width:180px; height:57px; padding-bottom: 7px;
+    } 
+
+    .indexHead .logininfo {
+        width:140px;  height:30px; line-height:30px; text-align:right; position:relative; margin-right:25px;
+    }
+        .indexHead .logininfo span {
+            color:white; display:block; width:100px; overflow:hidden; float:left;
+        }
+        .indexHead .logininfo .rt {
+            background: url(../../images/Default/Home/icon-r-index.png) -32px -3px;
+            cursor:pointer;
+            width:30px; height:30px;
+        }
+        .indexHead .logininfo .fldiv {
+            position:absolute; top:30px; left:68px; width:124px; height:132px; background:url(../../images/Default/Home/bg-index-float.png); text-align:left; display:none;
+        }
+            .indexHead .logininfo .fldiv ul {
+                margin-top:9px; margin-left:2px;
+            }
+            .indexHead .logininfo .fldiv li {
+                height:40px; line-height:40px; color:white; cursor:pointer; font-family:"宋体"; font-size:14px;
+            }
+            .indexHead .logininfo .fldiv li:hover {
+                background:url(../../images/Default/Home/bg-index-float-li1.png); width:118px;  
+            }
+                .indexHead .logininfo .fldiv li i {
+                    float:left; margin-top:3px; margin-right:3px; margin-left:15px; width:26px; height:26px;
+                }
+                .indexHead .logininfo .fldiv li .i1 {
+                    background:url(../../images/Default/Home/icon-pop-index.png) -1px 2px; 
+                }
+                .indexHead .logininfo .fldiv li .i2 {
+                    background:url(../../images/Default/Home/icon-pop-index.png) -23px 2px;  
+                }
+                .indexHead .logininfo .fldiv li .i3 {
+                    background:url(../../images/Default/Home/icon-pop-index.png) -45px 2px; 
+                }
+
+
+
+.indexFoot {
+    position:fixed; bottom:0px; left:0px; margin-bottom:30px; width:100%;text-align:center; color:white; /*border-bottom:1px solid #b9dce2*/;
+}
+    .indexFoot span {
+        display: block;
+        line-height: 30px;
+        text-align: center;
+        /*border-bottom:1px solid #a1d0c4;*/
+    }
+
+
+
+/***login***/
+.loginMain {
+    width:420px; height:361px; background:url(../../images/Default/Home/bg-login.png) ;
+    left:50%; top:50%; margin:-180px 0 0 -210px; position:absolute;
+}
+    .loginMain ol {
+        margin-top:30px;
+        margin-left:55px;
+        
+    }
+/*ie7兼容*/
+    *:first-child+html .loginMain ol {
+        margin-left: 0px;
+        padding-left: 55px;
+}
+    *:first-child+html #recheck{
+       top: -2px;
+}
+
+.lost-password{
+    float: right;
+    color: #999;
+    cursor: pointer;
+}
+
+    .loginMain li {
+        height:40px; margin-top:20px; position:relative; width:302px;
+    }
+    .errorMessage {
+        margin-bottom:-15px; height:20px; line-height:20px; color:red; display:inline-block; width:320px; overflow:hidden;
+    }
+    .loginMain .inp {
+       background:url(../../images/Default/Home/bg-login-input.png) 0px 0px no-repeat; width:247px; height:26px; border:0px; outline:none; padding:8px 10px 8px 45px; font-size:18px; line-height:26px;
+    }
+    .loginMain uf.UserName {
+       background:url(../../images/Default/Home/bg-login-input.png) 0px 0px no-repeat; width:247px; height:26px; border:0px; outline:none; padding:8px 10px 8px 45px; font-size:18px; line-height:26px;
+}
+    .loginMain .lusername i{
+        background:url(../../images/Default/Home/icon-input-login.png) -65px -2px no-repeat; position:absolute; left:3px; bottom:5px; z-index:9; width:30px; height:30px;
+    }
+    .loginMain .lpassword i{
+        background:url(../../images/Default/Home/icon-input-login.png) -95px -2px no-repeat; position:absolute; left:3px; bottom:5px; z-index:9; width:30px; height:30px;
+    }
+
+/**修改密码**/
+.popup-layer .changepwd {    
+            width: 380px;
+            height: 300px;
+}
+    .popup-layer .changepwd ol {
+        margin-top:35px; text-align:center;
+    }
+    .popup-layer .changepwd ol li{
+        height:40px; line-height:40px;
+    }
+        .popup-layer .changepwd ol li label {
+            width:50px; display:inline-block; text-align:right; margin-right:10px;
+        }
+        .popup-layer .changepwd ol li .btn {
+            margin-top:15px; width:222px; margin-left:55px;
+        }
+
+/**关于我们**/
+.popup-layer .about {    
+            width: 380px;
+            height: 290px;
+}
+
+.popup-layer .about article {
+        margin-top:80px;
+    }
+    .popup-layer .about p {
+        text-align:center; margin-top:4px;
+    }
+    .popup-layer .about .aboutp2 {
+        margin-top:20px;
+    }
+
+
+/*找回密码问题*/
+.pop-case {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 2000;
+    background: rgba(0, 0, 0, 0.5);
+    -pie-background: rgba(0, 0, 0, .5);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#4B000000, endColorstr=#4B000000);
+}
+
+.content-pssword {
+    width: 500px;
+    height: 550px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-top: -275px;
+    margin-left: -250px;
+    background: #f3f3f3;
+    border-radius: 2px;
+}
+
+ .btn-next {
+    width: 270px;
+    height: 40px;
+    background: #0cadc6;
+    /*margin-top: 60px;*/
+    margin-left: 125px;
+    cursor: pointer;
+    color: #fff;
+    text-align: center;
+    line-height: 40px;
+    font-size: 14px;
+    border-radius: 2px;
+}
+
+.content-pssword .title-password{
+    margin-top: 40px;
+}
+
+.content-pssword .title-password  p {
+    text-align: center;
+
+}
+
+.close-pop-case {
+    cursor: pointer;
+    background: url(../../images/Default/Home/index-float-close.png) -20px 0px no-repeat;
+    float: right;
+    height: 20px;
+    width: 20px;
+    margin-top: 20px;
+    margin-right: 20px;
+}
+
+.close-pop-case:hover {
+    background: url(../../images/Default/Home/index-float-close.png) 2px 0px no-repeat;
+}
+
+.select-content {
+    /*height: 340px;*/
+    width: 371px;
+    margin: 0 auto;
+}
+
+.select-content select {
+    margin-bottom: 10px;
+    width: 270px;
+    height: 40px;
+    font-size: 14px;
+    background: #f3f3f3;
+    border:1px solid #ccc;
+    color: #666666;
+    margin-left: 2px;
+  
+}
+
+.select-content li {
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.select-content li input {
+    width: 255px;
+    height: 40px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    border-radius: 2px;
+    outline: none;
+}
+
+.select-content li input:focus {
+    border: 1px solid #999999;
+}
+
+.select-content li span {
+    margin-left: 15px;
+}
+
+.select-content li .remind {
+    color: #0cadc6;
+    font-size: 12px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.family {
+    margin-top: 25px;
+}
+
+.select-content span {
+    font-size: 14px;
+    margin-right: 15px;
+    color: #333333;
+}
+
+/*重新设置密码*/
+.set-password {
+    display: none;
+    width: 500px;
+    height: 305px;
+    background: #f3f3f3;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -250px;
+    margin-top: -152px;
+    border-radius: 2px;
+}
+
+.set-password p {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.setpass {
+    width: 370px;
+    margin: 0 auto;
+}
+
+.setpass li {
+    margin-bottom: 10px;
+}
+
+.setpass li span {
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.setpass li input {
+    width: 270px;
+    height: 40px;
+    /*outline: none;*/
+}
+
+/*.setpass li input:focus {
+    border: 1px solid #999;
+}*/
+
+.set-password .confirm {
+    margin-left: 130px;
+    margin-top: 20px;
+    border: 1px solid #0cadc6;
+    width: 285px;
+}
+
+li.new-pass {
+    margin-left: 13px;
+}
+
+/*设置密码问题*/
+.pop-case input {
+        background: #f3f3f3;
+        border: 1px solid #ccc;
+        padding-left: 10px;
+        padding-right: 3px;
+}
+
+.tip {
+    margin-top: 10px;
+    margin-left: 2px;
+}
+
+.problem-select .problem {
+    height: 706px;
+    margin-top: -353px;
+}
+
+#btnSet {
+    /*margin-top:-15px;*/
+    margin-left: 139px;
+}
+
+#symbol{
+    position: absolute;
+    color: red;
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 15px;
+}
+    
+
+.set-problem .select-content {
+    width: 346px;
+}
+
+span.jump {
+    position: relative;
+    left: 76%;
+    top: -60px;
+    color: #0cadc6;
+    cursor: pointer;
+}
+
+.select-content label {
+    position: relative;
+    left: -13px;
+}
+
+@media (max-height: 800px) { 
+    .problem-select .problem {
+        height: 610px;
+        margin-top: -305px;
+    }
+
+    .select-content li {
+         margin-bottom: -8px;
+    }
+
+    .select_wrapper {
+    margin-bottom: 5px !important;
+}
+
+   .family {
+         margin-top: 10px;
+    }
+
+    #btnSet {
+        margin-top: 15px;
+    }
+
+    .close-pop-case {
+        margin-top: 15px;
+    }
+
+    .content-pssword .title-password {
+        margin-top: 35px;
+    }
+
+    .tip {
+        margin-top: 5px;
+    }
+}
+
+span.cover {
+            position: absolute;
+            display: block;    
+    }
+
+
+/*验证密码问题*/
+.certification .select-content li {
+    margin-bottom: 40px;
+    margin-top: 10px;
+}
+
+
+
+
+/*仿select*/
+.select_wrapper {
+    background: url(../../images/Default/Home/select.png) no-repeat;
+    cursor: pointer;
+    width: 270px;
+    position: relative;
+    height: 40px;
+    left: 62px;
+    margin-bottom: 10px;
+}
+
+.select_wrapper span {
+    display: block;
+    margin: 0 30px 0 15px;
+    color: #666;
+    line-height: 40px;
+}
+.select_wrapper .select_inner {
+    background: #F3F3F3;
+    border: 1px solid #ccc;
+    color: #687278;
+    display: none;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    z-index: 3;
+}
+.select_wrapper .select_inner li {
+    border-bottom: 1px solid #eee;
+    padding: 0 15px;
+    margin-bottom: 0;
+    height: 30px;
+    line-height: 30px;
+}
+.select_wrapper .select_inner li:hover {
+    background: #0CADC6;
+    color: #fff;
+}
+.select_wrapper .select_inner li:last-child {
+    border: none;
+}
+
+span.que {
+    position: relative;
+    top: 30px;
+}

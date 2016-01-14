@@ -1,0 +1,79 @@
+{% extends "Default/Shared/ContentMaster.html"%}
+
+<!--标题-->
+{% block title %}
+<title>新建用户组 - MiniNas管理系统</title>
+{% endblock %}
+<!--css-->
+{% block css %}
+{% endblock %}
+<!--javascript-->
+{% block javascript %}
+{% endblock %}
+
+{% block body %}
+<div class="road">
+    <span class="suninfo_str">系统管理 > 共享与权限 > DLNA协议</span>
+</div>
+<div class="rtgy-box">
+    <h3>DLNA协议</h3>
+    <ul class="funlist dlna">
+        <li>
+            <a href="javascript:void(0)" ><span class="span_img span_img23"></span><span class="dlna_img" id="photoDlna"></span><span class="span_txt">照片中心</span></a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" ><span class="span_img span_img24"></span><span class="dlna_img" id="photoDlna"></span><span class="span_txt">音频中心</span></a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" ><span class="span_img span_img25"></span><span class="dlna_img" id="photoDlna"></span><span class="span_txt">视频中心</span></a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" ><span class="span_img span_img26"></span><span class="dlna_img" id="photoDlna"></span><span class="span_txt">下载中心</span></a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" ><span class="span_img span_img27"></span><span class="dlna_img" id="photoDlna"></span><span class="span_txt">BT中心</span></a>
+        </li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block popup %}
+
+{% endblock %}
+
+
+{% block footerJavascript %}
+<script type="text/javascript">
+    // 开启闭合按钮
+    $(function () {
+        $(".dlna_img").on('click',function(){
+            if($(this).hasClass('dlna_img_off')) {
+                $(this).removeClass('dlna_img_off');
+            } else {
+                $(this).addClass('dlna_img_off');
+            }
+        });
+    });
+
+</script>
+{% endblock %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="/static/css/public.css" rel="stylesheet" />
+    <link href="/static/css/Default/PluginCss.css" rel="stylesheet" />
+    <link href="/static/css/Default/system.css" rel="stylesheet" />
+    <script src="/static/js/jquery-1.8.2.min.js"></script>
+    <script src="/static/js/public.js"></script>
+    <script src="/static/js/popup.mini.js"></script>
+    <script src="/static/js/scrollbar.js"></script>
+    <script src="/static/js/PluginJavascript.js"></script>
+</head>
+<body>
+
+</body>
+</html>
+

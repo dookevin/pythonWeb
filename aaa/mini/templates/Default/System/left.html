@@ -1,0 +1,174 @@
+<div><a href="index.html" nav="index"><img src="/static/images/Default/public/logo-sys.png" /></a></div>
+<div class="left-panel" id="left-panel">
+    <div class="zl-tit ztree_cur">
+        <a href="index.html" nav="index">总览</a>
+    </div>
+    <dl>
+        <dt>
+            <a class="ztree_a" href="#">
+                <span class="ztree_icon"></span>
+                <span class="ztree_span">共享与权限</span>
+            </a>
+        </dt>
+        <dd>
+            <a class="ztree_in_a" href="#" nav="winviewconfig">
+                <span class="ztree_in_ico ztree1_in_ico"></span>
+                <span class="ztree_in_span">Win访问设置</span>
+            </a>
+        </dd>
+        <dd>
+            <a class="ztree_in_a" href="#" nav="ftpviewconfig">
+                <span class="ztree_in_ico ztree2_in_ico"></span>
+                <span class="ztree_in_span">FTP访问设置</span>
+            </a>
+        </dd>
+        <dd>
+            <a class="ztree_in_a" href="#" nav="userlist">
+                <span class="ztree_in_ico ztree3_in_ico"></span>
+                <span class="ztree_in_span">用户</span>
+            </a>
+        </dd>
+        <!--<dd>-->
+            <!--<a class="ztree_in_a" href="#" nav="usergroup">-->
+                <!--<span class="ztree_in_ico ztree4_in_ico"></span>-->
+                <!--<span class="ztree_in_span">用户群组</span>-->
+            <!--</a>-->
+        <!--</dd>-->
+        <dd>
+            <a class="ztree_in_a" href="#" nav="sharefolder">
+                <span class="ztree_in_ico ztree5_in_ico"></span>
+                <span class="ztree_in_span">共享文件夹</span>
+            </a>
+        </dd>
+        <dd style="display: none;">
+            <a class="ztree_in_a" href="#" nav="dlna">
+                <span class="ztree_in_ico ztree21_in_ico"></span>
+                <span class="ztree_in_span">DLNA协议</span>
+            </a>
+        </dd>
+        <dd>
+            <a class="ztree_in_a" href="#" nav="timemachine">
+                <span class="ztree_in_ico ztree22_in_ico"></span>
+                <span class="ztree_in_span">Time Machine</span>
+            </a>
+        </dd>
+    </dl>
+    <dl>
+        <dt>
+            <a class="ztree_a">
+                <span class="ztree_icon"></span>
+                <span class="ztree_span">存储设置</span>
+            </a>
+        </dt>
+        <dd style="display: none;">
+            <a class="ztree_in_a" href="#" nav="diskmanagement">
+                <span class="ztree_in_ico ztree6_in_ico"></span>
+                <span class="ztree_in_span">磁盘管理</span>
+            </a>
+        </dd>
+        <dd>
+            <a class="ztree_in_a" href="#" nav="diskcouponmanagement">
+                <span class="ztree_in_ico ztree7_in_ico"></span>
+                <span class="ztree_in_span">磁盘卷管理</span>
+            </a>
+        </dd>
+    </dl>
+    <dl>
+        <dt>
+            <a class="ztree_a">
+                <span class="ztree_icon"></span>
+                <span class="ztree_span">系统设置</span>
+            </a>
+        </dt>
+        <dd>
+            <a class="ztree_in_a" href="#" nav="networksetup">
+                <span class="ztree_in_ico ztree8_in_ico"></span>
+                <span class="ztree_in_span">系统网络设置</span>
+            </a>
+        </dd>
+        <dd>
+            <a class="ztree_in_a" href="#" nav="timeareasetup">
+                <span class="ztree_in_ico ztree9_in_ico"></span>
+                <span class="ztree_in_span">时间区域设置</span>
+            </a>
+        </dd>
+        <dd>
+            <a class="ztree_in_a" href="#" nav="powersupplysetup">
+                <span class="ztree_in_ico ztree10_in_ico"></span>
+                <span class="ztree_in_span">电源设置</span>
+            </a>
+        </dd>
+        <dd>
+            <a class="ztree_in_a" href="#" nav="anupgradesetup">
+                <span class="ztree_in_ico ztree11_in_ico"></span>
+                <span class="ztree_in_span">升级系统</span>
+                <i class="NewsupIcon"></i>
+            </a>
+        </dd>
+        <!--<dd>-->
+            <!--<a class="ztree_in_a" href="#" nav="restoredefaultsetup">-->
+                <!--<span class="ztree_in_ico ztree12_in_ico"></span>-->
+                <!--<span class="ztree_in_span">恢复默认设置</span>-->
+            <!--</a>-->
+        <!--</dd>-->
+        <dd>
+            <a class="ztree_in_a" href="#" nav="thunderset">
+                <span class="ztree_in_ico ztree13_in_ico"></span>
+                <span class="ztree_in_span">迅雷设置</span>
+            </a>
+        </dd>
+        <dd>
+            <a class="ztree_in_a" href="#" nav="resourcesmonitor">
+                <span class="ztree_in_ico ztree14_in_ico"></span>
+                <span class="ztree_in_span">资源监控</span>
+            </a>
+        </dd>
+    </dl>
+</div>
+<!--下拉菜单Js  Star-->
+<script type="text/javascript" src="/static/js/systemplay/SimpleTree.js"></script>
+<script type="text/javascript">
+    $(function(){
+
+        $("#left-panel dl dd a").click(function(){
+            var url =  $(this).attr("nav");
+            $("#MainPage").attr("src","/default/system/"+url+".html");
+            $(this).parent("dd").addClass("ztree_cur");
+            $(this).parent("dd").siblings("dd").removeClass("ztree_cur");
+        })
+
+        // left 下拉菜单Js
+        $(".left-panel dl dt").click(function(){
+            var $this = $(this);
+            if($this.siblings("dd").hasClass("dd_show")){
+                $this.siblings("dd").removeClass("dd_show");
+//                $(this).addClass("ztree_cur");
+                $this.children(".ztree_a").removeClass("open");
+
+            }else{
+                $this.siblings("dd").addClass("dd_show");
+                $this.children("a").addClass("open");
+                $this.parent("dl").siblings("dl").children("dd").removeClass("dd_show");
+                $this.parent("dl").siblings("dl").children("dt").children(".ztree_a").removeClass("open");
+                $(".zl-tit").removeClass("ztree_cur");
+                $(this).addClass("ztree_cur");
+                $this.parent("dl").siblings("dl").children("dt").removeClass("ztree_cur")
+            }
+        });
+
+        // 滚动条Js
+        $('#left-panel').niceScroll({
+            cursorcolor: "#999",
+            cursoropacitymax: 1,
+            touchbehavior: false,
+            cursorwidth: "5px",
+            cursorborder: "0",
+            cursorborderradius: "5px"
+        });
+    });
+
+    function toUserList(){
+        $("#MainPage").attr("src","/default/system/userlist");
+        NavStyle(0,2)
+    }
+</script>

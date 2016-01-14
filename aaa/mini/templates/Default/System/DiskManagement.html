@@ -1,0 +1,148 @@
+{% extends "Default/Shared/ContentMaster.html"%}
+
+<!--标题-->
+{% block title %}
+<title>磁盘管理 - MiniNas管理系统</title>
+{% endblock %}
+<!--css-->
+{% block css %}
+{% endblock %}
+<!--javascript-->
+{% block javascript %}
+{% endblock %}
+
+{% block body %}
+<div class="user_add">
+    <div class="add_disk">
+        <div class="user_add_lf user_add_bg"></div>
+        <div class="user_add_ct">
+            <a id="add_btn" class="add_btn" href="adddisk.html" ns="User">导入磁盘</a>
+        </div>
+        <div class="user_add_rt user_add_bg"></div>
+    </div>
+    <div class="diskHelp" id="diskHelp">
+        <span class="diskHelpIcon"></span>帮助
+    </div>
+</div>
+<div class="road">
+    <span class="suninfo_str">系统管理 > 存储设置 > 磁盘管理</span>
+</div>
+<div class="rtgy-box">
+    <h3>磁盘管理</h3>
+    <div class="systemRt-cont3" id="systemRt-cont">
+        <div class="rightCol">
+            <div class="tab_nav">
+                <ul>
+                    <li class="first_li cur"><a>管理</a></li>
+                </ul>
+            </div>
+            <div class="tab_contBox">
+                <div class="tab_cont" style="display:block;">
+                    <div class="tabBox cpTab">
+                        <table id="user_list" width="100%" border="0" cellspacing="0" cellpadding="0" class="tab01">
+                            <thead>
+                            <tr class="tab_mean">
+                                <td class="cpName">磁盘名</td>
+                                <td class="sbName">
+                                    <table class="i">
+                                        <tr>
+                                            <td class="tf">
+                                                <div class="txt_hidden">当前设备名</div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td class="space">物理空间</td>
+                                <td class="zSpeed">转速</td>
+                                <td class="busInterface">总线接口</td>
+                                <td class="sequenceNum">
+                                    <table class="i">
+                                        <tr>
+                                            <td class="tf">
+                                                <div class="txt_hidden">序列号</div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td class="State">状态</td>
+                                <td class="operation">操作</td>
+                            </tr>
+                            <tr style="height:16px;"></tr>
+                            </thead>
+                            <tbody id="grouplist"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block popup %}
+
+{% endblock %}
+
+
+{% block footerJavascript %}
+<script type="text/javascript">
+    $(function(){
+        $("#diskHelp").click(function(){
+            window.parent.JumpInfo();
+        });
+        loadList();
+        $('#grouplist').on('click', '.btnDel', function (index, eleDom) {
+            var id = $(this).parents("tr").attr("prv");
+            var datas = {
+                id: id
+            };
+            if (confirm("您确定要删除磁盘吗?")) {
+                $.post("/default/system/deldisk", datas, function(data) {
+                    if(data.returncode=="100100000")
+                    {
+                        alert("删除成功!");
+                        loadList();
+                    }
+                    else if(data.returncode == "100102246"){
+                        alert(data.message)
+                        window.parent.location = "/";
+                    }
+                    else{
+                        alert(data.message);
+                    }
+                });
+            }
+        });
+        function loadList(){
+            var html = "";
+            $.post("/default/system/getdisklist",function(data){
+
+                if(data.returncode=="100100000"){
+                    $.each(data.data, function (idx, item) {
+                        html+="<tr prv='"+item.id+"'>";
+                        html+="<td class='cpName'>"+item.name+"</td>";  //磁盘名
+                        html+="<td class='sbName'><table class=\"i\"><tr><td class=\"tf\"><div class=\"txt_hidden\">"+item.model+"</div></td></tr></table></td>";  //当前设备名
+                        html+="<td class='space'>"+item.capacity+"</td>";  //物理空间
+                        html+="<td class='zSpeed'>"+item.rrate+"</td>";  //转速
+                        html+="<td class='busInterface'>"+item.bus+"</td>";  //总线接口
+                        html+="<td class='sequenceNum'><table class=\"i\"><tr><td class=\"tf\"><div class=\"txt_hidden\">"+item.serial+"</div></td></tr></table></td>";  //序列号
+                        html+="<td class='State'>"+item.status+"</td>";  //状态
+                        html+="<td class=\"operation\"> <a class=\"btn3\" title=\"编辑\" href=\"/default/system/insideeditdisk.html?id="+item.id+"\">编辑</a> <a class=\"btn5 btnDel\" title=\"删除\">删除</a></td>";  //动作（编辑 删除）
+                        html +="</tr>";
+                    })
+                    $("#grouplist").html(html);
+                }
+                else if(data.returncode == "100102246"){
+                    alert(data.message)
+                    window.parent.location = "/";
+                }
+                else{
+                    alert(data.message);
+                }
+            },"json");
+        }
+    })
+</script>
+{% endblock %}
+
+

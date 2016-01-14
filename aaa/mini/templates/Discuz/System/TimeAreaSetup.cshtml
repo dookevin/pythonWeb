@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "TimeAreaSetup";
+    Layout = "~/Views/Templates/Discuz/Shared/_SystemLayout.cshtml";
+}
+<div class="road">
+    <span class="suninfo_str">首页 > 系统设置 > 时间区域设置</span>
+</div>
+<div class="rtgy-box">
+    <div class="rtgy-cont">
+        <h3>时间区域设置</h3>
+        <div class="set h120">
+            <h5>系统目前的日期和时间</h5>
+            <div id="nowTime" class="nowTime"></div>
+        </div>
+        <div class="set">
+            <h5>日期与时间</h5>
+            <div class="group clear">
+                <label class="suninfo_cont_str">时区：</label>
+                <span class="msg msg_sq">Asia/Shanghai </span>
+            </div>
+            <div class="checkBox checkbox_group clear">
+                <input type="radio" name="setmode" value="manual" checked="checked" class="inpBtn">
+                <span class="str">手动设定</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">日期/时间：</label>
+                <input type="text" class="w200" id="systime">
+                <span class="msg">欲设定的系统时间</span>
+            </div>
+            <div class="checkBox checkbox_group clear">
+                <input type="radio" name="setmode" value="ntp_enable" class="inpBtn">
+                <span class="str">自动与Internet时间服务器同步</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">NTP时间服务器：</label>
+                <input type="text" class="w200" value="pool.ntp.org">
+                <span class="msg">如果你输入主机名称，请先设置DNS服务器。</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">时间更新间隔：</label>
+                <input type="text" class="w200" value="300">
+                <span class="msg">多少分钟进行一次时间同步。</span>
+            </div>
+        </div>
+        <div class="btnBox">
+            <a class="save">保存</a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function showLocale(objD) {
+        var str, colorhead, colorfoot;
+        var yy = objD.getYear();
+        if (yy < 1900) yy = yy + 1900;
+        var MM = objD.getMonth() + 1;
+        if (MM < 10) MM = '0' + MM;
+        var dd = objD.getDate();
+        if (dd < 10) dd = '0' + dd;
+        var hh = objD.getHours();
+        if (hh < 10) hh = '0' + hh;
+        var mm = objD.getMinutes();
+        if (mm < 10) mm = '0' + mm;
+        var ss = objD.getSeconds();
+        if (ss < 10) ss = '0' + ss;
+        var ww = objD.getDay();
+        if (ww == 0) colorhead = "<font color=\"#FF0000\">";
+        if (ww > 0 && ww < 6) colorhead = "<font color=\"#373737\">";
+        if (ww == 6) colorhead = "<font color=\"#008000\">";
+        if (ww == 0) ww = "星期日";
+        if (ww == 1) ww = "星期一";
+        if (ww == 2) ww = "星期二";
+        if (ww == 3) ww = "星期三";
+        if (ww == 4) ww = "星期四";
+        if (ww == 5) ww = "星期五";
+        if (ww == 6) ww = "星期六";
+        colorfoot = "</font>"
+        str = colorhead + yy + "/" + MM + "/" + dd + " " + hh + ":" + mm + ":" + ss + "  " + ww + colorfoot;
+        return (str);
+    }
+    function tick() {
+        var today;
+        today = new Date();
+        document.getElementById("nowTime").innerHTML = showLocale(today);
+        window.setTimeout("tick()", 1000);
+    }
+    tick();
+</script>

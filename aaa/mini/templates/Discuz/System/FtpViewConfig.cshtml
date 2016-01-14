@@ -1,0 +1,109 @@
+﻿@{
+    ViewBag.Title = "FtpViewConfig";
+    Layout = "~/Views/Templates/Discuz/Shared/_SystemLayout.cshtml";
+}
+
+<div class="road">
+    <span class="suninfo_str">首页 > 共享与权限 > FTP访问设置</span>
+</div>
+<div class="rtgy-box">
+    <div class="rtgy-cont">
+        <h3>FTP访问设置</h3>
+        <div class="contentLine">
+            <div class="checkbox mrt_10 fl">
+                <input id="enableWinSetting" type="checkbox" checked="checked">
+                <label for="enableWinSetting"></label>
+            </div>
+            <span class="suninfo_cont_str" ns="WinSetting">启用档案传输(FTP)服务器功能</span>
+        </div>
+        <div class="set">
+            <h5>基础设置</h5>
+            <div class="group clear">
+                <label class="suninfo_cont_str">认证方式：</label>
+                <select id="securitylist">
+                    <option>匿名</option>
+                    <option>本机用户</option>
+                </select>
+                <span class="msg">允许任何用户访问。</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">TCP端口：</label>
+                <input type="text" class="w200" value="21">
+                <span class="msg"><font>*</font>缺省是21。【 1~65535 】</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">客户端数：</label>
+                <input type="text" class="w200" value="5">
+                <span class="msg"><font>*</font>最大并发客户端数。【 1~50 】</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">每个IP的最大连接数：</label>
+                <input type="text" class="w200" value="2">
+                <span class="msg"><font>*</font>同一IP地址的最大连接数( 0 = 不限制 )。</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">最大登录重试次数：</label>
+                <input type="text" class="w200" value="1">
+                <span class="msg"><font>*</font>最大密码重试次数。</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">超时：</label>
+                <input type="text" class="w200" value="600">
+                <span class="msg"><font>*</font>最大空闲时间，单位是秒。</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">欢迎信息：</label>
+                <textarea class="text_box w200"></textarea>
+                <span class="msg mtp_36">当用户刚连接上FTP所显示的信息。</span>
+            </div>
+        </div>
+        <div class="set">
+            <h5><span class="icon-l"></span><span class="msg">高级设置</span></h5>
+            <div class="checkbox_group clear">
+                <div class="checkbox mrt_10 fl">
+                    <input id="usereversedns" type="checkbox">
+                    <label for="usereversedns"></label>
+                </div>
+                <span class="suninfo_cont_str">启用反向DNS查询 ( 将对传入的主动模式和传出的被动模式数据连接生效 )</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">伪装地址：</label>
+                <input type="text" class="w200" value="">
+                <span class="msg">导致服务器显示指定IP地址或DNS主机名到客户端，该IP地址或DNS主机为NAT网关或代理服务器的端口转发。</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">被动端口：</label>
+                <input type="text" class="w200" value="0">
+                <span class="msg">被动模式数据连接的最小端口号( 0 = 不限制 )。【 0或者1024~65535 】</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str"></label>
+                <input type="text" class="w200" value="">
+                <span class="msg">被动模式数据连接的最大端口号( 0 = 不限制 )。【 0或者1024~65535 】</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">本地用户带宽：</label>
+                <input type="text" class="w200" value="">
+                <span class="msg">本地用户上传带宽，单位KB/s。为空不限制带宽。</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str"></label>
+                <input type="text" class="w200" value="">
+                <span class="msg">本地用户下载带宽，单位KB/s。为空不限制带宽。</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">匿名用户带宽：</label>
+                <input type="text" class="w200" value="0">
+                <span class="msg">匿名用户上传带宽，单位KB/s。为空不限制带宽。</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str"></label>
+                <input type="text" class="w200" value="">
+                <span class="msg">匿名用户下载带宽，单位KB/s。为空不限制带宽。</span>
+            </div>
+        </div>
+        <div class="btnBox">
+            <a class="save">保存</a>
+        </div>
+    </div>
+</div>

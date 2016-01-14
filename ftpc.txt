@@ -1,0 +1,1191 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+int minigetftcfgline(char *   src, char *  cfgopt1 ,char *  cfgopt2 ,char *  dest, unsigned long srclength );
+int minigettftcfgkeyval(char *  src, char * cfgopt ,char *  dest );
+char * minisetftcfgfdlinep(char *   src, char *  cfgopt1 , char *  cfgopt2 , long unsigned  int*length , unsigned long srclength );
+int minisetftcfginsert(char *   src, char * tempswapbuf,char *  cfgsection ,char * linebeginep, char * lineendp );
+
+char  Anonymousconfigfirt[]="<Anonymous ";
+char  Anonymousconfigthird[]=">\n  User	ftp\n   Group	nogroup\n   UserAlias	anonymous ftp\n   DirFakeUser	on ftp\n   DirFakeGroup on ftp\n   RequireValidShell	off\n</Anonymous>\n";
+char  limitlonginsection[]="\n<Limit LOGIN>\n  AllowUser ftp\n  DenyAll\n</Limit>\n";
+char  DELLINEORSECTION[]="";
+
+#ifndef debugprinton
+	const char file_path[] =  "/etc/proftpd/proftpd.conf";
+	const char file_pathnew[] =  "/etc/proftpd/proftpdnew.conf";
+	const char file_pathbak[] =  "/etc/proftpd/proftpdbak.conf";
+#endif
+
+/*
+get the config section  line of option contains key and value in one line
+parameters:
+char * src,
+char * cfgopt
+char * dest,
+int srclength
+return :
+
+comment:
+find option  from src and save the result line into dest
+srclength is the length of src
+
+*/
+int minigetftcfgline(char *   src, char *  cfgopt1 ,char *  cfgopt2 ,char * dest, unsigned long srclength )
+{
+	char * linepbegin;
+	char * linepend;
+	char * tempp1;
+	char * tempp2;
+	char * srcpend;
+	char * mode_enter = "\n";
+	int i;
+
+	*dest = 0;
+	srcpend = src + srclength - 1;
+	linepbegin = src;
+	do {
+		linepend = strpbrk(linepbegin, mode_enter);
+		/*if the line is comment skip it */
+		if (linepend == 0) {
+			break;
+
+		}
+		if ((*linepbegin == '#') || (*linepbegin == 10)) {
+			if (linepend < srcpend) {
+
+			} else {
+				*dest = 0;
+				return -1;
+			}
+
+		} else {
+			/*get one line not commment*/
+			i = linepend - linepbegin;
+			strncpy(dest, linepbegin, i);
+			*(dest + i) = 0;
+
+			tempp1 = strstr(dest, cfgopt1);
+			/*contain the option get the line */
+
+			if (tempp1 > 0) {
+				if (strlen(cfgopt2) == 0)
+
+				{
+					return 0;/*test*/
+				} else {
+					tempp2 = strstr(dest, cfgopt2);
+					if (tempp2 > 0) {
+
+						return 0;/*test*/
+					} else {
+
+					}
+
+				}
+			}
+			/*not contain the option*/
+			else {
+
+			}
+
+		}
+		linepbegin = linepend + 1;
+	} while (linepend < srcpend);
+	*dest = 0;
+
+	return -1;
+}
+
+/*
+ find the option's key value by the synax from one line section
+
+parameters:
+char * src,
+char * cfgopt
+char * dest,
+return : -1 error  1 success
+
+comment:
+
+find the option's key value from src and save it to dest
+the value is one strings
+*/
+
+int minigettftcfgkeyval(char *  src, char * cfgopt ,char *  dest )
+{
+	char * fstr;
+	char * fstr1;
+	int i;
+	int max;
+	*dest = 0;
+	fstr = strstr(src, cfgopt);
+	max = strlen(src) - strlen(cfgopt);
+
+	fstr = fstr + strlen(cfgopt);
+	/*find the position of  no space chractar or tab*/
+	for (i = 0; i < max;) {
+		if ((*(fstr + i) == ' ') || (*(fstr + i) == '\t')) {
+
+			i++;
+		} else {
+			break;
+		}
+
+	}
+
+	fstr1 = fstr + i;
+	strncpy(dest, fstr1, max);
+
+	/*delet the ' ' '\t'and '/n' from the last position*/
+
+	i = max;
+	do {
+		if ((*(dest + i) == ' ') || (*(dest + i) == '\n')
+				|| (*(dest + i) == '\t')) {
+			*(dest + i) = 0;
+			i--;
+
+		} else {
+			break;
+
+		}
+
+	} while (i > 0);
+	if (strlen(dest) == 0) {
+		return -1;
+	}
+
+	return 0;
+}
+
+
+
+/*
+find the set the config section position begin to  end
+
+begin and end
+
+ informatos  insert  by  the config details
+
+parameters:
+char *   src,
+char *  cfgopt ,
+char * linebeginep,
+char * lineendp,
+unsigned long srclength
+return :
+if 0 not find the cfgopt
+if >0  find the cfgopt
+comment:
+find option  from src and save the line start position into linebeginep and stop postition into lineendp
+
+*/
+
+
+char * minisetftcfgfdlinep(char *   src, char *  cfgopt1,char *  cfgopt2, long unsigned  int  *length , unsigned long srclength )
+{
+	char * linepbegin;
+	char * linepend;
+	char * tempp1;
+	char * tempp2;
+	char * srcpend;
+	char * mode_enter = "\n";
+	char dest[500] = "";
+	int i;
+	srcpend = src + srclength - 1;
+	linepbegin = src;
+
+	do {
+		linepend = strpbrk(linepbegin, mode_enter);
+		/*if the line is comment skip it */
+		if (linepend == 0) {
+			break;
+
+		}
+		if ((*linepbegin == '#') || (*linepbegin == 10)) {
+			if (linepend < srcpend) {
+
+			} else {
+				*length = 0; /*insert in the file end*/
+				return 0;
+			}
+
+		} else {
+			/*get one line not commment*/
+			i = linepend - linepbegin;
+			strncpy(dest, linepbegin, i);
+			*(dest + i) = 0;
+
+			/*check if thi line contains cfgopt*/
+			tempp1 = strstr(dest, cfgopt1);
+
+			/*contain the option get the line */
+
+			if (tempp1 > 0) {
+
+				if (strlen(cfgopt2) == 0) {
+					*length = linepend - linepbegin;
+
+					return linepbegin;/*return the line begin and end pistions */
+				} else {
+
+					tempp2 = strstr(dest, cfgopt2);
+					if (tempp2 > 0) {
+						*length = linepend - linepbegin;
+
+						return linepbegin;/*return the line begin and end pistions */
+					} else {
+
+					}
+
+				}
+			}
+			/*not contain the option*/
+			else {
+
+			}
+
+		}
+		linepbegin = linepend + 1;
+	} while (linepend < srcpend);
+
+	*length = 0; /*insert in the file end*/
+
+	return 0;
+}
+
+
+
+
+/*
+insert the section config into tempbuf
+char *   src,               config file buf
+char * tempswapbuf,   swap for  insert easy
+char *  cfgopt ,        information section
+char * linebeginep,
+char * lineendp,
+unsigned long srclength  the src length
+
+comment : write cfgsection to src between  linebeginep and lineendp
+*/
+
+int minisetftcfginsert(char *   src, char * tempswapbuf,char *  cfgsection ,char * linebeginep, char * lineendp )
+{
+	if (linebeginep == lineendp) {
+		strcat(src, cfgsection);
+	} else {
+		strcat(tempswapbuf, lineendp + 1);
+
+		*linebeginep = 0;
+
+		strcat(src, cfgsection);
+		strcat(src, tempswapbuf);
+	}
+
+	return 0;
+}
+
+int get_ftp_infor_to_JSON_wsnas(char *const caller_space)
+{
+	cJSON *json;
+
+	FILE * fp;
+	FILE * fpwelcom;
+	unsigned long filesize = 0;
+	unsigned long filesizewelcom = 0;
+	char line[500];
+	char * linestrp;
+	char keyvalue[500];
+	char * keyvaluestrp;
+	char *tempbuf;
+	char *out;
+	char pathwelcom[200];
+	char *file_pathwelcom;
+	int length;
+	char * linebeginp;
+	char * lineendp;
+
+	/*open the config file */
+	fp = fopen(file_path, "r");
+	if (fp == 0)
+	{
+		return OPEN_FILE_FAILED;
+	}
+
+	/*get the config file length*/
+	fseek(fp, 0L, SEEK_END);
+	filesize = ftell(fp);
+
+	/*read all the data from file*/
+	fseek(fp, 0L, SEEK_SET);
+	tempbuf = (char *) malloc(filesize);
+	memset(tempbuf,0,filesize);
+	if (tempbuf == 0)
+	{
+
+		return ALLOCATE_MEMORY_FAILED;
+	}
+
+	fread(tempbuf, filesize, 1, fp);
+	json = cJSON_CreateObject();
+
+	/*read option key value examples*/
+	/*test annoymous or local host*/
+	if ((minigetftcfgline(tempbuf, "<Anonymous", "", line, filesize) == 0)
+			&& (minigetftcfgline(tempbuf, "</Anonymous>", "", line, filesize)
+					== 0)) {
+
+		cJSON_AddStringToObject(json, "UserLoginMode", "Anonymous");
+
+	} else {
+
+		cJSON_AddStringToObject(json, "UserLoginMode", "Localuser");
+
+	}
+
+	/*get default root*/
+	if ((minigetftcfgline(tempbuf, "DefaultRoot", "", line, filesize) == 0)) {
+
+		/*get display file path  */
+		linebeginp = strpbrk(line, "/");
+		lineendp = strpbrk(linebeginp, " ");
+		length = lineendp - linebeginp;
+		memset(pathwelcom, 0, sizeof(pathwelcom));
+		file_pathwelcom = pathwelcom;
+		strncpy(file_pathwelcom, linebeginp, length);
+		/*get DefaultRootDir*/
+		cJSON_AddStringToObject(json, "DefaultRootDir", file_pathwelcom);
+		/*get display file path+ name */
+		strcat(file_pathwelcom, "/welcome.msg");
+
+	} else {
+		cJSON_AddStringToObject(json, "DefaultRootDir", "");
+
+	}
+
+	/*test Port*/
+	if (minigetftcfgline(tempbuf, "Port", "", line, filesize) == 0) {
+		minigettftcfgkeyval(line, "Port", keyvalue);
+
+		cJSON_AddStringToObject(json, "Port", keyvalue);
+	} else {
+
+		cJSON_AddStringToObject(json, "Port", "");
+	}
+
+	/*test MaxClients*/
+	if (minigetftcfgline(tempbuf, "MaxClients", "", line, filesize) == 0) {
+		minigettftcfgkeyval(line, "MaxClients", keyvalue);
+
+		cJSON_AddStringToObject(json, "MaxClients", keyvalue);
+	} else {
+		cJSON_AddStringToObject(json, "MaxClients", "");
+
+	}
+
+	if (minigetftcfgline(tempbuf, "MaxConnectionsPerHost", "", line, filesize)
+			== 0) {
+		minigettftcfgkeyval(line, "MaxConnectionsPerHost", keyvalue);
+
+		cJSON_AddStringToObject(json, "MaxConnectionsPerHost", keyvalue);
+	} else {
+		cJSON_AddStringToObject(json, "MaxConnectionsPerHost", "");
+	}
+
+	if (minigetftcfgline(tempbuf, "MaxLoginAttempts", "", line, filesize)
+			== 0) {
+		minigettftcfgkeyval(line, "MaxLoginAttempts", keyvalue);
+
+		cJSON_AddStringToObject(json, "MaxLoginAttempts", keyvalue);
+	} else {
+
+		cJSON_AddStringToObject(json, "MaxLoginAttempts", "");
+
+	}
+
+	if (minigetftcfgline(tempbuf, "TimeoutIdle", "", line, filesize) == 0) {
+		minigettftcfgkeyval(line, "TimeoutIdle", keyvalue);
+
+		cJSON_AddStringToObject(json, "TimeoutIdle", keyvalue);
+	} else {
+		cJSON_AddStringToObject(json, "TimeoutIdle", "");
+
+	}
+	/*need open the file contain the  DisplayLogin */
+	if (minigetftcfgline(tempbuf, "DisplayLogin", "", line, filesize) == 0) {
+		if (minigettftcfgkeyval(line, "DisplayLogin", keyvalue) == 0) {
+
+			/*need get the welcom informations from file welcome.msg"*/
+			memset(keyvalue, 0, sizeof(keyvalue));
+			fpwelcom = fopen(file_pathwelcom, "r");
+			if (fpwelcom == 0) {
+
+				cJSON_AddStringToObject(json, "DisplayLogin", "");
+			} else {
+				fseek(fpwelcom, 0L, SEEK_END);
+				filesizewelcom = ftell(fpwelcom);
+				fseek(fpwelcom, 0L, SEEK_SET);
+
+				if (filesizewelcom < 180) {
+					fread(keyvalue, filesizewelcom, 1, fpwelcom);
+
+				} else {
+					fread(keyvalue, 180, 1, fpwelcom);
+
+				}
+				fclose(fpwelcom);
+			}
+			cJSON_AddStringToObject(json, "DisplayLogin", keyvalue);
+
+		} else {
+
+			cJSON_AddStringToObject(json, "DisplayLogin", "");
+		}
+	} else {
+
+		cJSON_AddStringToObject(json, "DisplayLogin", "");
+
+	}
+
+	/*get UseReverseDNS*/
+	if (minigetftcfgline(tempbuf, "UseReverseDNS", "", line, filesize) == 0) {
+		minigettftcfgkeyval(line, "UseReverseDNS", keyvalue);
+
+		cJSON_AddStringToObject(json, "UseReverseDNS", keyvalue);
+	} else {
+
+		cJSON_AddStringToObject(json, "UseReverseDNS", "");
+	}
+
+	/*get MasqueradeAddress*/
+	if (minigetftcfgline(tempbuf, "MasqueradeAddress", "", line, filesize)
+			== 0) {
+		minigettftcfgkeyval(line, "MasqueradeAddress", keyvalue);
+
+		cJSON_AddStringToObject(json, "MasqueradeAddress", keyvalue);
+	} else {
+
+		cJSON_AddStringToObject(json, "MasqueradeAddress", "");
+	}
+
+	/*get PassivePorts*/
+	if (minigetftcfgline(tempbuf, "PassivePorts", "", line, filesize) == 0) {
+		minigettftcfgkeyval(line, "PassivePorts", keyvalue);
+
+		cJSON_AddStringToObject(json, "PassivePorts", keyvalue);
+	} else {
+
+		cJSON_AddStringToObject(json, "PassivePorts", "");
+	}
+
+	/*get user nonymous ftp up rate */
+	if (minigetftcfgline(tempbuf, "TransferRate RETR", "ftp", line, filesize)
+			== 0) {
+		int i;
+		linestrp = line;
+		keyvaluestrp = keyvalue;
+		*keyvaluestrp = 0;
+		for (i = 0; i < 3; i++) {
+			if (i > 0)
+				linestrp = 0;
+			keyvaluestrp = strtok(linestrp, " ");
+
+			if ((keyvaluestrp != 0) && (i == 2)) {
+				break;
+
+			}
+		}
+
+		cJSON_AddStringToObject(json, "AnonymousTransferRateUp", keyvaluestrp);
+	} else {
+
+		cJSON_AddStringToObject(json, "AnonymousTransferRateUp", "");
+	}
+
+	/*get user nonymous  ftp down rate */
+	if (minigetftcfgline(tempbuf, "TransferRate STOR", "ftp", line, filesize)
+			== 0) {
+		int i;
+		linestrp = line;
+		keyvaluestrp = keyvalue;
+		*keyvaluestrp = 0;
+		for (i = 0; i < 3; i++) {
+			if (i > 0)
+				linestrp = 0;
+			keyvaluestrp = strtok(linestrp, " ");
+
+			if ((keyvaluestrp != 0) && (i == 2)) {
+				break;
+
+			}
+		}
+
+		cJSON_AddStringToObject(json, "AnonymousTransferRateDown",
+				keyvaluestrp);
+	} else {
+
+		cJSON_AddStringToObject(json, "AnonymousTransferRateDown", "");
+	}
+
+	/*get user nonymous  miniadmin up rate */
+	if (minigetftcfgline(tempbuf, "TransferRate RETR", "miniadmin", line,
+			filesize) == 0) {
+
+		int i;
+		linestrp = line;
+		keyvaluestrp = keyvalue;
+		*keyvaluestrp = 0;
+		for (i = 0; i < 3; i++) {
+			if (i > 0)
+				linestrp = 0;
+			keyvaluestrp = strtok(linestrp, " ");
+
+			if ((keyvaluestrp != 0) && (i == 2)) {
+				break;
+
+			}
+		}
+
+		cJSON_AddStringToObject(json, "LocaluserTransferRateUp", keyvaluestrp);
+	} else {
+
+		cJSON_AddStringToObject(json, "LocaluserTransferRateUp", "");
+	}
+
+	/*get user nonymous  ftp down rate */
+	if (minigetftcfgline(tempbuf, "TransferRate STOR", "miniadmin", line,
+			filesize) == 0) {
+		int i;
+		linestrp = line;
+		keyvaluestrp = keyvalue;
+		*keyvaluestrp = 0;
+		for (i = 0; i < 3; i++) {
+			if (i > 0)
+				linestrp = 0;
+			keyvaluestrp = strtok(linestrp, " ");
+
+			if ((keyvaluestrp != 0) && (i == 2)) {
+				break;
+
+			}
+		}
+
+		cJSON_AddStringToObject(json, "LocaluserTransferRateDown",
+				keyvaluestrp);
+	} else {
+
+		cJSON_AddStringToObject(json, "LocaluserTransferRateDown", "");
+	}
+
+	out = cJSON_PrintUnformatted(json); /*have no \n*/
+
+	strcpy(caller_space, out);
+
+	cJSON_Delete(json);
+
+	free(tempbuf);
+	fclose(fp);
+
+	return SUCCESS;
+}
+
+int set_ftp_infor_from_JSON_wsnas(const char *caller_space)
+{
+	cJSON *json;
+	cJSON *json_UserLoginMode;
+	cJSON *json_Port;
+	cJSON *json_MaxClients;
+	cJSON *json_MaxConnectionsPerHost;
+	cJSON *json_MaxLoginAttempts;
+	cJSON *json_TimeoutIdle;
+	cJSON *json_DisplayLogin;
+	cJSON *json_DefaultRootDir;
+
+	/*for advance */
+	#ifdef highftpmodel
+	cJSON * json_UseReverseDNS;
+	cJSON * json_MasqueradeAddress;
+
+	cJSON * json_PassivePorts;
+	cJSON *json_AnonymousTransferRateRETR;/*up*/
+	cJSON *json_AnonymousTransferRateSTOR;/*down load*/
+
+	cJSON *json_LocaluserTransferRateRETR;/*up*/
+	cJSON *json_LocaluserTransferRateSTOR;/*down load*/
+      #endif
+	FILE * fp;
+	FILE * fpnew;
+	FILE * fpwelcom;
+	unsigned char onelinelength;
+	unsigned long filesize = 0;
+	char line[500];
+	char *tempbuf;
+	char *tempbufswap;
+
+	char * firstlinebeginep;
+	char * firstlineendp;
+	char * secondlinebeginep;
+	char * secondlineendp;
+	char * file_pathwelcom;
+	long unsigned int linelength;
+
+	/*open the config file */
+	fp = fopen(file_path, "r");
+	if (fp == 0)
+	{
+		return OPEN_FILE_FAILED;
+	}
+
+	fpnew = fopen(file_pathnew, "w");
+	if (fpnew == 0)
+	{
+		return OPEN_FILE_FAILED;
+	}
+
+	/*get the config file length*/
+	if (fseek(fp, 0L, SEEK_END) < 0)
+	{
+		return OPEN_FILE_FAILED;
+	}
+
+	filesize = ftell(fp);
+
+	/*read all the data from file*/
+	fseek(fp, 0L, SEEK_SET);
+	tempbuf = (char *) malloc(2 * filesize);
+	memset(tempbuf,0,2 * filesize);
+	if (tempbuf == 0)
+	{
+		return ALLOCATE_MEMORY_FAILED;
+	}
+	tempbufswap = (char *) malloc(filesize);
+	memset(tempbufswap,0,filesize);
+	if (tempbufswap == 0) {
+
+		return ALLOCATE_MEMORY_FAILED;
+	}
+	fread(tempbuf, filesize, 1, fp);
+
+	json = cJSON_Parse(caller_space);
+
+	if (!json)
+	{
+		return PARSE_JSON_FAILED;
+	} else {
+
+		/*config login user mode */
+
+		/*Anonymous*/
+		json_UserLoginMode = cJSON_GetObjectItem(json, "UserLoginMode");
+		if (json_UserLoginMode->type == cJSON_String) {
+
+			/*get the anonymous section position*/
+			if (strcmp("Anonymous", json_UserLoginMode->valuestring) == 0) {
+
+				/*find limit login*/
+				firstlinebeginep = minisetftcfgfdlinep(tempbuf, "<Limit LOGIN>",
+						"", &linelength, filesize);
+
+				secondlinebeginep = minisetftcfgfdlinep(tempbuf, "</Limit>", "",
+						&linelength, filesize);
+				secondlineendp = secondlinebeginep + linelength;
+
+				/*write in anonymous config */
+				tempbufswap[0] = 0;
+
+				line[0] = 0;
+
+				strcat(line, limitlonginsection);
+				onelinelength = strlen(line);
+				line[onelinelength] = '\n';
+				line[onelinelength + 1] = 0;
+
+				/*inset limit login*/
+				minisetftcfginsert(tempbuf, tempbufswap, line, firstlinebeginep,
+						secondlineendp);
+
+				firstlinebeginep = minisetftcfgfdlinep(tempbuf, "<Anonymous",
+						"", &linelength, filesize);
+
+				secondlinebeginep = minisetftcfgfdlinep(tempbuf, "</Anonymous>",
+						"", &linelength, filesize);
+				secondlineendp = secondlinebeginep + linelength;
+
+				/*write in anonymous config */
+				tempbufswap[0] = 0;
+
+				line[0] = 0;
+
+				strcat(line, Anonymousconfigfirt);
+
+				json_DefaultRootDir = cJSON_GetObjectItem(json,
+						"DefaultRootDir");
+				if (json_DefaultRootDir->type == cJSON_String) {
+					strcat(line, json_DefaultRootDir->valuestring);
+				} else
+
+				{
+					strcat(line, "/mnt"); /*default mnt*/
+
+				}
+
+				strcat(line, Anonymousconfigthird);
+				onelinelength = strlen(line);
+				line[onelinelength] = '\n';
+				line[onelinelength + 1] = 0;
+
+				minisetftcfginsert(tempbuf, tempbufswap, line, firstlinebeginep,
+						secondlineendp);
+
+			} else
+
+			{
+				/*local host uesr*/
+				/*get the anonymous section position*/
+				firstlinebeginep = minisetftcfgfdlinep(tempbuf, "<Anonymous",
+						"", &linelength, filesize);
+
+				secondlinebeginep = minisetftcfgfdlinep(tempbuf, "</Anonymous>",
+						"", &linelength, filesize);
+				secondlineendp = secondlinebeginep + linelength;
+
+				/*write in anonymous config */
+				tempbufswap[0] = 0;
+				minisetftcfginsert(tempbuf, tempbufswap, DELLINEORSECTION,
+						firstlinebeginep, secondlineendp);
+
+				/*delete linit login section*/
+				firstlinebeginep = minisetftcfgfdlinep(tempbuf, "<Limit LOGIN>",
+						"", &linelength, filesize);
+
+				secondlinebeginep = minisetftcfgfdlinep(tempbuf, "</Limit>", "",
+						&linelength, filesize);
+				secondlineendp = secondlinebeginep + linelength;
+
+				/*write in anonymous config */
+				tempbufswap[0] = 0;
+				minisetftcfginsert(tempbuf, tempbufswap, DELLINEORSECTION,
+						firstlinebeginep, secondlineendp);
+
+			}
+
+		}
+
+		/*config service DEFAULT ROOT DIR */
+		json_DefaultRootDir = cJSON_GetObjectItem(json, "DefaultRootDir");
+		if (json_DefaultRootDir->type == cJSON_String) {
+
+			firstlinebeginep = minisetftcfgfdlinep(tempbuf, "DefaultRoot", "",
+					&linelength, filesize);
+			firstlineendp = firstlinebeginep + linelength;
+
+			line[0] = 0;
+
+			strcat(line, "DefaultRoot    ");
+			strcat(line, json_DefaultRootDir->valuestring);
+			strcat(line, " !root");
+			onelinelength = strlen(line);
+			line[onelinelength] = '\n';
+			line[onelinelength + 1] = 0;
+
+			tempbufswap[0] = 0;
+			minisetftcfginsert(tempbuf, tempbufswap, line, firstlinebeginep,
+					firstlineendp);
+
+		}
+
+		/*config service port */
+		json_Port = cJSON_GetObjectItem(json, "Port");
+		if (json_Port->type == cJSON_String) {
+
+			firstlinebeginep = minisetftcfgfdlinep(tempbuf, "Port", "",
+					&linelength, filesize);
+			firstlineendp = firstlinebeginep + linelength;
+
+			line[0] = 0;
+
+			strcat(line, "Port    ");
+			strcat(line, json_Port->valuestring);
+			onelinelength = strlen(line);
+			line[onelinelength] = '\n';
+			line[onelinelength + 1] = 0;
+
+			tempbufswap[0] = 0;
+			minisetftcfginsert(tempbuf, tempbufswap, line, firstlinebeginep,
+					firstlineendp);
+
+		}
+
+		/*config service MaxClients*/
+		json_MaxClients = cJSON_GetObjectItem(json, "MaxClients");
+		if (json_MaxClients->type == cJSON_String) {
+
+			firstlinebeginep = minisetftcfgfdlinep(tempbuf, "MaxClients", "",
+					&linelength, filesize);
+			firstlineendp = firstlinebeginep + linelength;
+
+			line[0] = 0;
+
+			strcat(line, "MaxClients    ");
+			strcat(line, json_MaxClients->valuestring);
+			onelinelength = strlen(line);
+			line[onelinelength] = '\n';
+			line[onelinelength + 1] = 0;
+
+			tempbufswap[0] = 0;
+			minisetftcfginsert(tempbuf, tempbufswap, line, firstlinebeginep,
+					firstlineendp);
+
+		}
+
+		/*config service MaxConnectionsPerHost*/
+		json_MaxConnectionsPerHost = cJSON_GetObjectItem(json,
+				"MaxConnectionsPerHost");
+
+		if (json_MaxConnectionsPerHost->type == cJSON_String) {
+
+			firstlinebeginep = minisetftcfgfdlinep(tempbuf,
+					"MaxConnectionsPerHost", "", &linelength, filesize);
+			firstlineendp = firstlinebeginep + linelength;
+
+			line[0] = 0;
+			
+			if(strcmp(json_MaxConnectionsPerHost->valuestring,"0")==0) /*if 0 mean the not limit*/
+			{
+				strcat(line,"");
+				onelinelength=strlen(line); 
+				line[onelinelength]='\n';
+				line[onelinelength+1]=0;
+
+			}
+			else
+			{
+				strcat(line,"MaxConnectionsPerHost    ");
+				strcat(line,json_MaxConnectionsPerHost->valuestring);
+				onelinelength=strlen(line); 
+				line[onelinelength]='\n';
+				line[onelinelength+1]=0;
+			} 
+			
+			tempbufswap[0] = 0;
+			minisetftcfginsert(tempbuf, tempbufswap, line, firstlinebeginep,
+					firstlineendp);
+
+		}
+
+		/*config service MaxLoginAttempts*/
+		json_MaxLoginAttempts = cJSON_GetObjectItem(json, "MaxLoginAttempts");
+		if (json_MaxLoginAttempts->type == cJSON_String) {
+
+			firstlinebeginep = minisetftcfgfdlinep(tempbuf, "MaxLoginAttempts",
+					"", &linelength, filesize);
+			firstlineendp = firstlinebeginep + linelength;
+
+			line[0] = 0;
+
+			strcat(line, "MaxLoginAttempts    ");
+			strcat(line, json_MaxLoginAttempts->valuestring);
+			onelinelength = strlen(line);
+			line[onelinelength] = '\n';
+			line[onelinelength + 1] = 0;
+
+			tempbufswap[0] = 0;
+			minisetftcfginsert(tempbuf, tempbufswap, line, firstlinebeginep,
+					firstlineendp);
+		}
+
+		/*config service json_TimeoutIdle*/
+		json_TimeoutIdle = cJSON_GetObjectItem(json, "TimeoutIdle");
+		if (json_TimeoutIdle->type == cJSON_String) {
+
+			firstlinebeginep = minisetftcfgfdlinep(tempbuf, "TimeoutIdle", "",
+					&linelength, filesize);
+			firstlineendp = firstlinebeginep + linelength;
+
+			line[0] = 0;
+
+			strcat(line, "TimeoutIdle    ");
+			strcat(line, json_TimeoutIdle->valuestring);
+			onelinelength = strlen(line);
+			line[onelinelength] = '\n';
+			line[onelinelength + 1] = 0;
+
+			tempbufswap[0] = 0;
+			minisetftcfginsert(tempbuf, tempbufswap, line, firstlinebeginep,
+					firstlineendp);
+
+		}
+
+		/*config service DisplayLogin*/
+		json_DisplayLogin = cJSON_GetObjectItem(json, "DisplayLogin");
+		if (json_DisplayLogin->type == cJSON_String) {
+
+			/*display longin file name default welcome.msg*/
+			firstlinebeginep = minisetftcfgfdlinep(tempbuf, "DisplayLogin", "",
+					&linelength, filesize);
+			firstlineendp = firstlinebeginep + linelength;
+
+			line[0] = 0;
+
+			strcat(line, "DisplayLogin    ");
+			strcat(line, "welcome.msg");
+			onelinelength = strlen(line);
+			line[onelinelength] = '\n';
+			line[onelinelength + 1] = 0;
+
+			tempbufswap[0] = 0;
+			minisetftcfginsert(tempbuf, tempbufswap, line, firstlinebeginep,
+					firstlineendp);
+
+			/*get the file dir*/
+			file_pathwelcom = line;
+			line[0] = 0;
+
+			strcat(file_pathwelcom, json_DefaultRootDir->valuestring);
+			strcat(file_pathwelcom, "/welcome.msg");
+
+			fpwelcom = fopen(file_pathwelcom, "w");
+			if (fpwelcom == 0) {
+
+			} else {
+				fwrite(json_DisplayLogin->valuestring,
+						strlen(json_DisplayLogin->valuestring), 1, fpwelcom);
+				fclose(fpwelcom);
+			}
+
+			/*file save to where?*/
+		}
+#ifdef highftpmodel
+		/*config service UseReverseDNS*/
+		json_UseReverseDNS = cJSON_GetObjectItem(json, "UseReverseDNS");
+		if (json_UseReverseDNS->type == cJSON_String) {
+
+			firstlinebeginep = minisetftcfgfdlinep(tempbuf, "UseReverseDNS", "",
+					&linelength, filesize);
+			firstlineendp = firstlinebeginep + linelength;
+
+			line[0] = 0;
+
+			strcat(line, "UseReverseDNS    ");
+			strcat(line, json_UseReverseDNS->valuestring);
+			onelinelength = strlen(line);
+			line[onelinelength] = '\n';
+			line[onelinelength + 1] = 0;
+
+			tempbufswap[0] = 0;
+			minisetftcfginsert(tempbuf, tempbufswap, line, firstlinebeginep,
+					firstlineendp);
+
+		}
+
+		/*config service MasqueradeAddress*/
+		json_MasqueradeAddress = cJSON_GetObjectItem(json, "MasqueradeAddress");
+		if (json_MasqueradeAddress->type == cJSON_String) {
+
+			firstlinebeginep = minisetftcfgfdlinep(tempbuf, "MasqueradeAddress",
+					"", &linelength, filesize);
+			firstlineendp = firstlinebeginep + linelength;
+
+			line[0] = 0;
+
+			strcat(line, "MasqueradeAddress    ");
+			strcat(line, json_MasqueradeAddress->valuestring);
+			onelinelength = strlen(line);
+			line[onelinelength] = '\n';
+			line[onelinelength + 1] = 0;
+
+			tempbufswap[0] = 0;
+			minisetftcfginsert(tempbuf, tempbufswap, line, firstlinebeginep,
+					firstlineendp);
+
+		}
+
+		/*config service PassivePorts*/
+		json_PassivePorts = cJSON_GetObjectItem(json, "PassivePorts");
+		if (json_PassivePorts->type == cJSON_String) {
+
+			firstlinebeginep = minisetftcfgfdlinep(tempbuf, "PassivePorts", "",
+					&linelength, filesize);
+			firstlineendp = firstlinebeginep + linelength;
+
+			line[0] = 0;
+
+			strcat(line, "PassivePorts    ");
+			strcat(line, json_PassivePorts->valuestring);
+			onelinelength = strlen(line);
+			line[onelinelength] = '\n';
+			line[onelinelength + 1] = 0;
+
+			tempbufswap[0] = 0;
+			minisetftcfginsert(tempbuf, tempbufswap, line, firstlinebeginep,
+					firstlineendp);
+
+		}
+
+		/*config service ftp transfer up rate*/
+		json_AnonymousTransferRateRETR = cJSON_GetObjectItem(json,
+				"AnonymousTransferRateUp");
+		if (json_AnonymousTransferRateRETR->type == cJSON_String) {
+
+			firstlinebeginep = minisetftcfgfdlinep(tempbuf, "TransferRate RETR",
+					"ftp", &linelength, filesize);
+			firstlineendp = firstlinebeginep + linelength;
+
+			line[0] = 0;
+			if (strlen(json_AnonymousTransferRateRETR->valuestring) == 0) {
+
+			} else {
+
+				strcat(line, "TransferRate RETR    ");
+				strcat(line, json_AnonymousTransferRateRETR->valuestring);
+				strcat(line, " user ftp");
+
+				onelinelength = strlen(line);
+				line[onelinelength] = '\n';
+				line[onelinelength + 1] = 0;
+
+			}
+
+			tempbufswap[0] = 0;
+			minisetftcfginsert(tempbuf, tempbufswap, line, firstlinebeginep,
+					firstlineendp);
+
+		}
+
+		/*config service ftp transfer down rate*/
+		json_AnonymousTransferRateSTOR = cJSON_GetObjectItem(json,
+				"AnonymousTransferRateDown");
+		if (json_AnonymousTransferRateSTOR->type == cJSON_String) {
+
+			firstlinebeginep = minisetftcfgfdlinep(tempbuf, "TransferRate STOR",
+					"ftp", &linelength, filesize);
+			firstlineendp = firstlinebeginep + linelength;
+
+			line[0] = 0;
+			if (strlen(json_AnonymousTransferRateSTOR->valuestring) == 0) {
+
+			} else {
+				strcat(line, "TransferRate STOR    ");
+				strcat(line, json_AnonymousTransferRateSTOR->valuestring);
+				strcat(line, " user ftp");
+
+				onelinelength = strlen(line);
+				line[onelinelength] = '\n';
+				line[onelinelength + 1] = 0;
+
+			}
+			tempbufswap[0] = 0;
+			minisetftcfginsert(tempbuf, tempbufswap, line, firstlinebeginep,
+					firstlineendp);
+
+		}
+
+		/*config service miniadmin transfer up rate*/
+		json_LocaluserTransferRateRETR = cJSON_GetObjectItem(json,
+				"LocaluserTransferRateUp");
+		if (json_LocaluserTransferRateRETR->type == cJSON_String) {
+
+			firstlinebeginep = minisetftcfgfdlinep(tempbuf, "TransferRate RETR",
+					"miniadmin", &linelength, filesize);
+			firstlineendp = firstlinebeginep + linelength;
+
+			line[0] = 0;
+			if (strlen(json_LocaluserTransferRateRETR->valuestring) == 0) {
+
+			} else {
+				strcat(line, "TransferRate RETR    ");
+				strcat(line, json_LocaluserTransferRateRETR->valuestring);
+				strcat(line, " user miniadmin");
+
+				onelinelength = strlen(line);
+				line[onelinelength] = '\n';
+				line[onelinelength + 1] = 0;
+			}
+			tempbufswap[0] = 0;
+			minisetftcfginsert(tempbuf, tempbufswap, line, firstlinebeginep,
+					firstlineendp);
+
+		}
+
+		/*config service miniadmin transfer down rate*/
+		json_LocaluserTransferRateSTOR = cJSON_GetObjectItem(json,
+				"LocaluserTransferRateDown");
+		if (json_LocaluserTransferRateSTOR->type == cJSON_String) {
+
+			firstlinebeginep = minisetftcfgfdlinep(tempbuf, "TransferRate STOR",
+					"miniadmin", &linelength, filesize);
+			firstlineendp = firstlinebeginep + linelength;
+
+			line[0] = 0;
+			if (strlen(json_LocaluserTransferRateSTOR->valuestring) == 0) {
+
+			} else {
+				strcat(line, "TransferRate STOR    ");
+				strcat(line, json_LocaluserTransferRateSTOR->valuestring);
+				strcat(line, " user miniadmin");
+
+				onelinelength = strlen(line);
+				line[onelinelength] = '\n';
+				line[onelinelength + 1] = 0;
+			}
+			tempbufswap[0] = 0;
+			minisetftcfginsert(tempbuf, tempbufswap, line, firstlinebeginep,
+					firstlineendp);
+
+		}
+#endif
+		cJSON_Delete(json);
+
+		/*write new config informationg into fpnew*/
+		if (fwrite(tempbuf, strlen(tempbuf), 1, fpnew) == 0) {
+			free(tempbuf);
+			free(tempbufswap);
+			fclose(fp);
+			fclose(fpnew);
+			return WRITE_FILE_FAILED;
+		} else {
+
+			free(tempbuf);
+			free(tempbufswap);
+			if (fclose(fp) == 0) {
+			} else {
+				return CLOSE_FILE_FAILED;
+
+			}
+			if (fclose(fpnew) == 0) {
+			} else {
+
+				return CLOSE_FILE_FAILED;
+
+			}
+
+			/*need or not close ftp service ?*/
+			/*delet  config file */
+			if (rename(file_path, file_pathbak) == 0)
+
+			{
+				/*rename new file name to old config file*/
+				if (rename(file_pathnew, file_path) == 0) {
+					remove(file_pathbak);
+					return SUCCESS;
+				}
+
+				else {
+					rename(file_pathbak, file_path); /*huifu*/
+
+					return CLOSE_FILE_FAILED;
+
+				}
+			} else {
+				remove(file_pathbak);/**/
+				return CLOSE_FILE_FAILED;
+
+			}
+
+			/*need or not restart ftp service ?*/
+		}
+
+	}
+
+	return SUCCESS;
+}
+

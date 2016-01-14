@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="/static/css/public.css" rel="stylesheet" />
+    <script src="/static/js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.SuperSlide.js"></script>
+</head>
+<body>
+<div class="diskboot-bar">
+    <h3>磁盘操作引导</h3>
+    <div class="diskboot-flowTit">
+        <ul class="clear">
+            <li class="on li1Bg"><span>1</span>插入硬盘</li>
+            <li class="li2Bg"><span>2</span>添加磁盘</li>
+            <li class="li3Bg"><span>3</span>选择磁盘</li>
+            <li class="li4Bg"><span>4</span>添加磁盘卷</li>
+            <li class="li5Bg"><span>5</span>选择磁盘卷类型</li>
+            <li class="li6Bg"><span>6</span>完成</li>
+        </ul>
+    </div>
+    <div class="diskboot-bd">
+        <div class="diskboot-tempWrap">
+            <div class="diskboot-conWrap">
+                <div class="diskboot-con">
+                    <h4 class="mtp_30">将硬盘插入闻上云存储器</h4>
+                    <div class="diskboot-pic1"><img src="/static/images/Default/public/diskBootPic1.png"></div>
+                </div>
+                <div class="diskboot-con">
+                    <h4>将硬盘插入闻上云存储器</h4>
+                    <div class="diskboot-pic"><img src="/static/images/Default/public/diskBootPic2.png"></div>
+                </div>
+                <div class="diskboot-con">
+                    <h4>将硬盘插入闻上云存储器</h4>
+                    <div class="diskboot-pic"><img src="/static/images/Default/public/diskBootPic3.png"></div>
+                </div>
+                <div class="diskboot-con">
+                    <h4>将硬盘插入闻上云存储器</h4>
+                    <div class="diskboot-pic"><img src="/static/images/Default/public/diskBootPic4.png"></div>
+                </div>
+                <div class="diskboot-con">
+                    <h4>将硬盘插入闻上云存储器</h4>
+                    <div class="diskboot-pic"><img src="/static/images/Default/public/diskBootPic5.png"></div>
+                </div>
+                <div class="diskboot-con">
+                    <h4 class="mtp_30">请开始设置</h4>
+                    <div class="mtp_50"><img src="/static/images/Default/public/diskBootFinishIcon.png"></div>
+                    <a href="/default/system/index/?diskmanagement" target="_parent" class="diskbootSetBtn">开始设置</a>
+                </div>
+            </div>
+        </div>
+        <a class="prev prevStop" href="javascript:void(0)"></a>
+        <a class="next" href="javascript:void(0)"></a>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function(){
+        $(".diskboot-bar").slide({
+            mainCell:".diskboot-conWrap",
+            effect:"left",
+            trigger:"click",
+            pnLoop:false
+        });
+
+    });
+</script>
+</body>
+</html>

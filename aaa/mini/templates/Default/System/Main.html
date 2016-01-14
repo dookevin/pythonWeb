@@ -1,0 +1,104 @@
+{% extends "Default/Shared/ContentMaster.html"%}
+
+<!--标题-->
+{% block title %}
+<title>新建用户组 - MiniNas管理系统</title>
+{% endblock %}
+<!--css-->
+{% block css %}
+{% endblock %}
+<!--javascript-->
+{% block javascript %}
+{% endblock %}
+
+{% block body %}
+<!--Right Title-->
+<div class="road">
+    <span class="suninfo_str">系统管理 > 控制面板</span>
+</div>
+<!-- 外层Title 内容 -->
+<div class="systemRt-cont rtgy-box" id="systemRt-cont">
+    <!-- 总览 -->
+    <div class="zl_content">
+        <h3>共享与权限</h3>
+        <ul class="funlist">
+            <li>
+                <a href="winviewconfig.html" onclick="NavStyle(0,0)"><span class="span_img span_img1"></span><span class="span_txt">Win访问设置</span></a>
+            </li>
+            <li>
+                <a href="ftpviewconfig.html" onclick="NavStyle(0,1)"><span class="span_img span_img2"></span><span class="span_txt">FTP访问设置</span></a>
+            </li>
+            <li>
+                <a href="userlist.html" onclick="NavStyle(0,2)"><span class="span_img span_img3"></span><span class="span_txt">用户</span></a>
+            </li>
+            <!--<li>-->
+            <!--<a href="usergroup.html" onclick="NavStyle(0,3)"><span class="span_img span_img4"></span><span class="span_txt">用户群组</span></a>-->
+            <!--</li>-->
+            <li>
+                <a href="sharefolder.html" onclick="NavStyle(0,3)"><span class="span_img span_img5"></span><span class="span_txt">共享文件夹</span></a>
+            </li>
+            <li style="display: none;">
+                <a href="dlna.html" onclick="NavStyle(0,4)"><span class="span_img span_img21"></span><span class="span_txt">DLNA协议</span></a>
+            </li>
+            <li>
+                <a href="timemachine.html" onclick="NavStyle(0,5)"><span class="span_img span_img22"></span><span class="span_txt">Time Machine</span></a>
+            </li>
+        </ul>
+        <h3>存储设置</h3>
+        <ul class="funlist">
+            <li style="display: none;">
+                <a href="diskmanagement.html" onclick="NavStyle(1,0)"><span class="span_img span_img6"></span><span class="span_txt">磁盘管理</span></a>
+            </li>
+            <li>
+                <a href="diskcouponmanagement.html" onclick="NavStyle(1,1)"><span class="span_img span_img7"></span><span class="span_txt">磁盘卷管理</span></a>
+            </li>
+        </ul>
+        <h3>系统设置</h3>
+        <ul class="funlist">
+            <li>
+                <a href="networksetup.html" onclick="NavStyle(2,0)"><span class="span_img span_img8"></span><span class="span_txt">系统网络设置</span></a>
+            </li>
+            <li>
+                <a href="timeareasetup.html" onclick="NavStyle(2,1)"><span class="span_img span_img9"></span><span class="span_txt">时间区域设置</span></a>
+            </li>
+            <li>
+                <a href="powersupplysetup.html" onclick="NavStyle(2,2)"><span class="span_img span_img10"></span><span class="span_txt">电源设置</span></a>
+            </li>
+            <li>
+                <a href="anupgradesetup.html" onclick="NavStyle(2,3)"><span class="span_img span_img11"></span><span class="span_txt">升级系统</span></a>
+            </li>
+            <!--<li>-->
+            <!--<a href="restoredefaultsetup.html" onclick="NavStyle(2,4)"><span class="span_img span_img12"></span><span class="span_txt">恢复默认设置</span></a>-->
+            <!--</li>-->
+            <li>
+                <a href="thunderset.html" onclick="NavStyle(2,4)"><span class="span_img span_img13"></span><span class="span_txt">迅雷设置</span></a>
+            </li>
+            <li>
+                <a href="resourcesmonitor.html" onclick="NavStyle(2,5)"><span class="span_img span_img14"></span><span class="span_txt">资源监控</span></a>
+            </li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block popup %}
+
+{% endblock %}
+
+
+{% block footerJavascript %}
+<script>
+    $('#systemRt-cont').niceScroll({
+        cursorcolor: "#999",
+        cursoropacitymax: 1,
+        touchbehavior: false,
+        cursorwidth: "5px",
+        cursorborder: "0",
+        cursorborderradius: "5px"
+    });
+    function NavStyle(a,b){
+        parent.NavStyle(a,b);
+    }
+    isfraid =false;
+</script>
+{% endblock %}

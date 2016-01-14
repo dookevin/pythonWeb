@@ -1,0 +1,101 @@
+    <!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>音频中心 - MiniNas管理系统</title>
+    <link href="/static/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="/static/css/public.css" rel="stylesheet" />
+    <link href="/static/css/Default/system.css" rel="stylesheet" />
+    <link href="/static/css/Default/PluginCss.css" rel="stylesheet" />
+    <script src="/static/js/jquery-1.8.2.min.js"></script>
+    <script src="/static/js/popup.mini.js"></script>
+    <script src="/static/js/public.js"></script>
+    <script src="/static/js/PluginJavascript.js"></script>
+    <script src="/static/js/base.js"></script>
+    <script src="/static/js/PhotoPlay/js/baguettebox.min.js"></script>
+    <script src="/static/js/scrollbar.js"></script>
+    <script src="/static/js/jquery.fullscreenslides.js"></script>
+</head>
+<body onresize="ReSet()" onload="ReSet()" style="background-color:transparent; background-image:none!important; ">
+    <div class="header" style="border-bottom:none;">
+        <div class="header-wrapper clear">
+            <div class="rt" style="  position: relative; top: 4px;">
+                <div id="iconstatus">
+                    <div class="logininfo clear" id="logininfo">
+                        11111<span>{{ UserName }}</span>
+                        <i class="rt"></i>
+                        <div class="fldiv">
+                            <ul>
+                                <li id="chpwd"><i class="i1"></i>变更密码</li>
+                                <li id="chout"><i class="i2"></i>注销</li>
+                                <li id="chabout"><i class="i3"></i>关于</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="popupLayer" class="popup-layer">
+                        <div id="popupLayerBox" class="popup-layer-box changepwd">
+                            <i id="closePopupLayer" class="close-popupLayer"> </i>
+<!-- 修改开始 -->
+                            <form action="/Default/Accountc/Manage/Login.html" method="post">
+                                <div class="validation-summary-valid">
+                                    <ul>
+                                        <li style="display:none"></li>
+                                    </ul>
+                                </div>
+                                <ol>
+                                    <li class="errorMessage"></li>
+                                    <li>
+                                        <label for="OldPassword">当前密码</label>
+                                        <input class="input"  id="OldPassword" name="OldPassword" type="password" />
+                                        <span class="red"> * </span>
+                                    </li>
+                                    <li>
+                                        <label for="NewPassword">新密码</label>
+                                        <input class="input"  id="NewPassword" name="NewPassword" type="password" />
+                                        <span class="red"> * </span>
+                                    </li>
+                                    <li>
+                                        <label for="ConfirmPassword">确认密码</label>
+                                        <input class="input" id="ConfirmPassword" name="ConfirmPassword" type="password" />
+                                        <span class="red"> * </span>
+                                    </li>
+                                    <li>
+                                        <input type="submit" value="保 存" class="btn" id="submitPwd" />
+                                    </li>
+                                </ol>
+                            </form>
+<!-- 修改结束 -->
+                        </div>
+                    </div>
+                    <div id="popupLayer_about" class="popup-layer">
+                        <div id="popupLayerBox_about" class="popup-layer-box about">
+                            <i id="closePopupLayer_about" class="close-popupLayer"></i>
+
+
+                            <article>
+                                <p class="aboutp1">
+                                    <img src="/static/images/Default/Home/icon-logo-about.png" />
+                                </p>
+
+                                <p class="aboutp2">
+                                    Version: 1.0.0.1
+                                </p>
+
+                                <p class="aboutp3">
+                                    www.wisnuc.com
+                                </p>
+                                <p class="aboutp4">
+                                    版权所有 &copy; 2014 上海闻上信息技术有限公司
+                                </p>
+                            </article>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </body>
+    </html>

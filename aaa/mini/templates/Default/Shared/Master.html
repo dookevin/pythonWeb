@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    {% block title %}
+    {% endblock %}
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="/static/css/public.css" rel="stylesheet" />
+    <link href="/static/css/Default/PluginCss.css" rel="stylesheet" />
+    <link href="/static/css/Default/system.css" rel="stylesheet" />
+    {% block css %}
+    {% endblock %}
+    <script src="/static/js/jquery-1.8.2.min.js"></script>
+    <script src="/static/js/popup.mini.js"></script>
+    <script src="/static/js/public.js"></script>
+    <script src="/static/js/PluginJavascript.js"></script>
+    <script src="/static/js/base.js"></script>
+    <script src="/static/js/PhotoPlay/js/baguettebox.min.js"></script>
+    <script src="/static/js/scrollbar.js"></script>
+    <script src="/static/js/respond.js"></script>
+    <script src="/static/js/layer/layer.js"></script>
+    {% block javascript %}
+    {% endblock %}
+    <script>
+      var  isfraid =true;
+
+      //  window.onerror=function(){return true;}
+
+    </script>
+</head>
+
+<body onresize="Mychang()" onload="Mychang()">
+<div class="header">
+    <div class="header-wrapper clear">
+        <div class="ilogo fl">
+            <p class="site-title">
+                <a href="/default/home/index.html" id="logoBtn" title="回到首页"><img src="/static/images/Default/Home/public-logo.png" /></a>
+            </p>
+        </div>
+        <!-- <iframe src="/default/login/infor/login-infor.html" id="infor" style="width:100%; height:100%;position:fixed; top:0; left:0; right:0; bottom:0; float:right;  border:0px; overflow:hidden;"></iframe> -->
+        <div class="rt" style="  position: relative; top: 4px;">
+                <div id="iconstatus">
+                    <div class="logininfo clear" id="logininfo">
+                         <span>{{ UserName }}</span>
+                        <i class="rt"></i>
+                        <div class="fldiv">
+                            <ul>
+                                <li id="chpwd"><i class="i1"></i>变更密码</li>
+                                <li id="chout"><i class="i2"></i>注销</li>
+                                <li id="chabout"><i class="i3"></i>关于</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="popupLayer" class="popup-layer">
+                        <div id="popupLayerBox" class="popup-layer-box changepwd">
+                            <i id="closePopupLayer" class="close-popupLayer"> </i>
+                            <form action="/Default/Accountc/Manage/Login.html" method="post">
+                                <div class="validation-summary-valid">
+                                    <ul>
+                                        <li style="display:none"></li>
+                                    </ul>
+                                </div>
+                                <ol>
+                                    <li class="errorMessage"></li>
+                                    <li>
+                                        <label for="OldPassword">当前密码</label>
+                                        <input class="input" id="OldPassword" name="OldPassword" type="password">
+                                        <span class="red"> * </span>
+                                    </li>
+                                    <li>
+                                        <label for="NewPassword">新密码</label>
+                                        <input class="input" id="NewPassword" name="NewPassword" type="password">
+                                        <span class="red"> * </span>
+                                    </li>
+                                    <li>
+                                        <label for="ConfirmPassword">确认密码</label>
+                                        <input class="input" id="ConfirmPassword" name="ConfirmPassword" type="password">
+                                        <span class="red"> * </span>
+                                    </li>
+                                    <li>
+                                        <input type="submit" value="保 存" class="btn" id="submitPwd">
+                                    </li>
+                                </ol>
+                            </form>
+                        </div>
+                    </div>
+                    <div id="popupLayer_about" class="popup-layer">
+                        <div id="popupLayerBox_about" class="popup-layer-box about">
+                            <i id="closePopupLayer_about" class="close-popupLayer"></i>
+                            <article>
+                                <p class="aboutp1">
+                                    <img src="/static/images/Default/Home/icon-logo-about.png">
+                                </p>
+                                <p class="aboutp2" id="viewAbout">
+
+                                </p>
+                                <p class="aboutp3">
+                                    www.wisnuc.com
+                                </p>
+                                <p class="aboutp4">
+                                    版权所有 © 2016 上海闻上信息技术有限公司
+                                </p>
+                            </article>
+
+                        </div>
+                    </div>
+
+                </div>
+        </div>
+    </div>
+</div>
+
+<div id="body">
+<div class="main-content clear">
+    <div class="main-left fl">
+        {% block left %}
+        {% endblock %}
+    </div>
+    <div class="main-right">
+        {% block right %}
+        {% endblock %}
+    </div>
+        {% block popup %}
+        {% endblock %}
+</div>
+</div>
+
+</body>
+</html>
+{% block footerJavascript %}
+{% endblock %}
+        <script>
+
+            if(isfraid){
+                $.post("/default/system/ifraid",function(data){
+                        if(data.returncode=="100100000")
+                        {
+                            if(data.data.raid=="0")
+                            {
+                                alert("系统未检测到磁盘卷!不能进行操作!");
+                                window.location = "/default/system/index/?diskmanagement";
+                            }
+                         }
+                        else
+                        {
+                            alert("磁盘卷检测失败!");
+                        }
+
+                })
+            }
+        </script>

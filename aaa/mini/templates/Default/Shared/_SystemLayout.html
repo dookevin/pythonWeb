@@ -1,0 +1,365 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>@ViewBag.Title - MiniNas管理系统</title>
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="/Content/public.css" rel="stylesheet" />
+    <link href="/Content/Default/PluginCss.css" rel="stylesheet" />
+    <link href="~/Content/Default/system.css" rel="stylesheet" />
+    <script src="/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/scrollbar.js"></script>
+    <script src="/Scripts/popup.mini.js"></script>
+    <script src="/Scripts/public.js"></script>
+    <script src="/Scripts/PluginJavascript.js"></script>
+    <script src="/Scripts/base.js"></script>
+    @RenderSection("header", required: false)
+</head>
+<body onresize="ReSet()" onload="ReSet()">
+    <div class="tal_box">
+        <div class="tal_bg"></div>
+        <div class="smain">
+            <div class="indexMain">
+                <i id="close_tal_btn" class="close_tal_btn"></i>
+                <ul class="indexicon clear">
+                    <li class="li01"><a href="/Photo/Index"><span class="icon"><img src="/Images/Default/Home/nav-photo.png" width="130" height="130"></span><p class="text ">照片中心</p></a></li>
+                    <li class="li02"><a href="/Music/Index"><span class="icon"><img src="/Images/Default/Home/nav-music.png" width="130" height="130"></span><p class="text ">音频中心</p></a></li>
+                    <li class="li02"><a href="/Video/Index"><span class="icon"><img src="/Images/Default/Home/nav-video.png" width="130" height="130"></span><p class="text ">视频中心</p></a></li>
+                    <li class="li02"><a href="/Download/Index"><span class="icon"><img src="/Images/Default/Home/nav-download.png" width="130" height="130"></span><p class="text ">下载中心</p></a></li>
+                    <li class="li01"><a href="/BTDownload/Index"><span class="icon"><img src="/Images/Default/Home/nav-bt.png" width="130" height="130"></span><p class="text ">BT下载</p></a></li>
+                    <li class="li03"><a href="/FileCenter/Index"><span class="icon"><img src="/Images/Default/Home/nav-filecenter.png" width="130" height="130"></span><p class="text ">文件中心</p></a></li>
+                    <li class="li03"><a href="/System/Index"><span class="icon"><img src="/Images/Default/Home/nav-system.png" width="130" height="130"></span><p class="text ">系统管理</p></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="header">
+        <div class="header-wrapper clear">
+            <div class="ilogo fl">
+                <p class="site-title"><a href="/Home" id="logoBtn" title="回到首页"><img src="/Images/Default/Home/public-logo.png" /></a> </p>
+            </div>
+            <div class="to-Direction fl none">
+                <i class="to-Forward fl"></i>
+                <i class="to-Backward rt"></i>
+            </div>
+            <div class="rt">
+                <div id="iconstatus">
+                    @Html.Partial("~/Views/Templates/Default/Home/_LoginInfoPartial.cshtml")
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="body">
+        @RenderSection("featured", required: false)
+        <div class="main-content clear">
+                <div class="main-left">
+                    <div><img src="/Images/Default/public/logo-sys.png" /> </div>
+                    <div class="left-panel" id="left-panel">
+                        <ul class="ztree_ul">
+                            <li class="ztree1_li">
+                                <a class="zl-tit ztree_a ztree1_a_cur" href="/System/Index">总览</a>
+                            </li>
+                            <li class="ztree1_li">
+                                <a class="ztree_a">
+                                    <span class="ztree_icon"></span>
+                                    <span class="ztree_span">共享与权限</span>
+                                </a>
+                                <ul class="ztree_in_ul">
+                                    <li class="ztree1_in_li">
+                                        <a class="ztree1_in_a" href="/System/WinViewConfig">
+                                            <span class="ztree_in_ico ztree1_in_ico"></span>
+                                            <span class="ztree_in_span">Win访问设置</span>
+                                        </a>
+                                    </li>
+                                    <li class="ztree1_in_li">
+                                        <a class="ztree1_in_a" href="/System/FtpViewConfig">
+                                            <span class="ztree_in_ico ztree2_in_ico"></span>
+                                            <span class="ztree_in_span">FTP访问设置</span>
+                                        </a>
+                                    </li>
+                                    <li class="ztree1_in_li">
+                                        <a class="ztree1_in_a" href="/System/UserList">
+                                            <span class="ztree_in_ico ztree3_in_ico"></span>
+                                            <span class="ztree_in_span">用户</span>
+                                        </a>
+                                    </li>
+                                    <li class="ztree1_in_li">
+                                        <a class="ztree1_in_a" href="/System/UserGroup">
+                                            <span class="ztree_in_ico ztree4_in_ico"></span>
+                                            <span class="ztree_in_span">用户群组</span>
+                                        </a>
+                                    </li>
+                                    <li class="ztree1_in_li">
+                                        <a class="ztree1_in_a" href="/System/ShareFolder">
+                                            <span class="ztree_in_ico ztree5_in_ico"></span>
+                                            <span class="ztree_in_span">共享文件夹</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="ztree1_li">
+                                <a class="ztree_a">
+                                    <span class="ztree_icon"></span>
+                                    <span class="ztree_span">存储设置</span>
+                                </a>
+                                <ul class="ztree_in_ul">
+                                    <li class="ztree1_in_li">
+                                        <a class="ztree1_in_a" href="/System/DiskManagement">
+                                            <span class="ztree_in_ico ztree6_in_ico"></span>
+                                            <span class="ztree_in_span">磁盘管理</span>
+                                        </a>
+                                    </li>
+                                    <li class="ztree1_in_li">
+                                        <a class="ztree1_in_a" href="/System/DiskCouponManagement">
+                                            <span class="ztree_in_ico ztree7_in_ico"></span>
+                                            <span class="ztree_in_span">磁盘卷管理</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="ztree1_li">
+                                <a class="ztree_a">
+                                    <span class="ztree_icon"></span>
+                                    <span class="ztree_span">系统设置</span>
+                                </a>
+                                <ul class="ztree_in_ul">
+                                    <li class="ztree1_in_li">
+                                        <a class="ztree1_in_a" href="/System/NetworkSetup">
+                                            <span class="ztree_in_ico ztree8_in_ico"></span>
+                                            <span class="ztree_in_span">系统网络设置</span>
+                                        </a>
+                                    </li>
+                                    <li class="ztree1_in_li">
+                                        <a class="ztree1_in_a" href="/System/TimeAreaSetup">
+                                            <span class="ztree_in_ico ztree9_in_ico"></span>
+                                            <span class="ztree_in_span">时间区域设置</span>
+                                        </a>
+                                    </li>
+                                    <li class="ztree1_in_li none">
+                                        <a class="ztree1_in_a" href="/System/LanguageSetup">
+                                            <span class="ztree_in_ico ztree10_in_ico"></span>
+                                            <span class="ztree_in_span">语言设置</span>
+                                        </a>
+                                    </li>
+                                    <li class="ztree1_in_li">
+                                        <a class="ztree1_in_a" href="/System/PowerSupplySetup">
+                                            <span class="ztree_in_ico ztree11_in_ico"></span>
+                                            <span class="ztree_in_span">电源设置</span>
+                                        </a>
+                                    </li>
+                                    <li class="ztree1_in_li none">
+                                        <a class="ztree1_in_a" href="/System/ExternalSetup">
+                                            <span class="ztree_in_ico ztree12_in_ico"></span>
+                                            <span class="ztree_in_span">外接设备设置</span>
+                                        </a>
+                                    </li>
+                                    <li class="ztree1_in_li">
+                                        <a class="ztree1_in_a" href="/System/AnUpgradeSetup">
+                                            <span class="ztree_in_ico ztree13_in_ico"></span>
+                                            <span class="ztree_in_span">升级系统</span>
+                                        </a>
+                                    </li>
+                                    <li class="ztree1_in_li">
+                                        <a class="ztree1_in_a" href="/System/RestoreDefaultSetup">
+                                            <span class="ztree_in_ico ztree14_in_ico"></span>
+                                            <span class="ztree_in_span">恢复默认设置</span>
+                                        </a>
+                                    </li>
+                                    <li class="ztree1_in_li">
+                                        <a class="ztree1_in_a" href="/System/ThunderSet">
+                                            <span class="ztree_in_ico ztree15_in_ico"></span>
+                                            <span class="ztree_in_span">讯雷设置</span>
+                                        </a>
+                                    </li>
+                                    <li class="ztree1_in_li">
+                                        <a class="ztree1_in_a" href="/System/ResourcesMonitor">
+                                            <span class="ztree_in_ico ztree21_in_ico"></span>
+                                            <span class="ztree_in_span">资源监控</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="ztree1_li none">
+                                <a class="ztree_a">
+                                    <span class="ztree_icon"></span>
+                                    <span class="ztree_span">个人应用</span>
+                                </a>
+                                <ul class="ztree_in_ul">
+                                    <li class="ztree1_in_li">
+                                        <a class="ztree1_in_a" href="/System/PhotoCenter">
+                                            <span class="ztree_in_ico ztree16_in_ico"></span>
+                                            <span class="ztree_in_span">照片中心</span>
+                                        </a>
+                                    </li>
+                                    <li class="ztree1_in_li">
+                                        <a class="ztree1_in_a" href="/System/AudioCenter">
+                                            <span class="ztree_in_ico ztree17_in_ico"></span>
+                                            <span class="ztree_in_span">音频中心</span>
+                                        </a>
+                                    </li>
+                                    <li class="ztree1_in_li">
+                                        <a class="ztree1_in_a" href="/System/VideoCenter">
+                                            <span class="ztree_in_ico ztree18_in_ico"></span>
+                                            <span class="ztree_in_span">视频中心</span>
+                                        </a>
+                                    </li>
+                                    <li class="ztree1_in_li">
+                                        <a class="ztree1_in_a" href="/System/DownloadCenter">
+                                            <span class="ztree_in_ico ztree19_in_ico"></span>
+                                            <span class="ztree_in_span">下载中心</span>
+                                        </a>
+                                    </li>
+                                    <li class="ztree1_in_li">
+                                        <a class="ztree1_in_a" href="/System/BtCenter">
+                                            <span class="ztree_in_ico ztree20_in_ico"></span>
+                                            <span class="ztree_in_span">BT中心</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <script type="text/javascript">
+                            $("#left-panel,#systemRt-cont").niceScroll({
+                                cursorcolor: "#999",
+                                cursoropacitymax: 1,
+                                touchbehavior: false,
+                                cursorwidth: "5px",
+                                cursorborder: "0",
+                                cursorborderradius: "5px"
+                            });
+                        </script>
+
+                    </div>
+                    
+                </div>
+                <div class="main-right">
+                    @RenderBody()
+                </div>
+                <script type="text/javascript">
+                    
+                    $(function () {
+                        // Logo hover
+                        //$("#logoBtn").hover(function (event) {
+                        //    $(".tal_box").show();
+                        //    $("#close_tal_btn").click(function () {
+                        //        $(".tal_box").hide();
+                        //    });
+                        //    event.stopPropagation();
+                        //});
+
+                        // left mean 
+
+                        var thisURL = document.URL;
+                        var tmpUPage = thisURL.split("/");
+                        var thisUPage = tmpUPage[tmpUPage.length - 1];
+
+                        $(".ztree_ul .ztree1_in_a").each(function () {
+                            var url = $(this).attr("href");
+                            if (url.indexOf(thisUPage) > 0)
+                            {
+                                $(this).parent().parent().toggle();
+                                if ($(this).parent().parent().css("display") != "none")
+                                    $(this).parent().parent().parent().children(".ztree_a").children(".ztree_icon").addClass("li_zk");
+                                else
+                                    $(this).parent().parent().parent().children(".ztree_a").children(".ztree_icon").removeClass("li_zk");
+                            }
+                        })
+
+                        $(".ztree_a").click(function () {
+                           
+                            $(this).parent().children(".ztree_in_ul").toggle();
+
+                            if($(this).parent().children(".ztree_in_ul").css("display")!="none")
+                                $(this).children(".ztree_icon").addClass("li_zk");
+                            else
+                                $(this).children(".ztree_icon").removeClass("li_zk");
+
+
+
+                        });
+
+                        $(".ztree1_in_a").click(function () {
+                            $(this).addClass("ztree1_a_cur");
+                        });
+
+                        var List = $(".left-panel ul li.ztree1_li");
+                        var List_a = $(".left-panel ul li.ztree1_li .ztree_a");
+                        var xL_mean_li = $(".ztree_in_ul .ztree1_in_li")
+                        var xL_mean_a = $(".ztree_in_ul .ztree1_in_li .ztree1_in_a")
+
+                        List_a.click(function () {
+                            var url = window.location.href;
+                            var list_Index = List_a.index(this);
+                            if (url.indexOf("Index") > -1) {
+                                $(this).addClass("ztree1_a_cur").parent().siblings().children().removeClass("ztree1_a_cur");
+                               
+                                $(".rtgy-box .zl_content").eq(list_Index).show().siblings().hide();
+                            } else {
+                                window.location.href = "/System/Index/"+list_Index;
+                            }
+                        });
+
+
+                        // right 选项卡 jQuery
+                        $(".tab_nav li").click(function () {
+                            $(this).addClass("cur").siblings("li").removeClass("cur");
+                            var _index = $(this).index();
+                            $(".tab_cont").eq(_index).show().siblings().hide();
+                        });
+                        // right 点击下拉菜单 jQuery
+                        $('.group').each(function (i) {
+                            var $this = $(this);
+                            $this.find(".dropdownBtn").click(function (event) {
+                                $this.find(".dropdown_cont").toggle();
+                                event.stopPropagation();
+                            });
+                            $this.find(".dropdown_cont span").click(function (event) {
+                                var _this = $(this);
+                                $this.find(".dropdown_Text").html(_this.text());
+                                $this.find(".dropdown_cont").toggle();
+                                event.stopPropagation();
+                                if(_this.attr("prv")!=null)
+                                {
+                                    $this.find(".dropdown_Text").attr("prv", _this.attr("prv"));
+                                }
+                            });
+                            $this.find(".dropdown_cont span").hover(function (event) {
+                                $(this).addClass("dropdown_cur").siblings("span").removeClass("dropdown_cur");
+                                $this.find(".dropdown_cont span").children("a").removeClass("cur_gou")
+                                $(this).children("a").addClass("cur_gou");
+                                event.stopPropagation();
+                            });
+                        });
+                        $(document).click(function () {
+                            $(".dropdown_cont").hide();
+                            $(".tal_box").hide();
+                        });
+                    });
+    </script>
+                
+                <script type="text/javascript">
+        $().ready(function () {
+
+            $(".indexMain img").each(function (k, img) {
+                new JumpObj(img, 10);
+                $(img).hover(function () { this.parentNode.parentNode.className = "hover" });
+
+            });
+            $(".ilogin .llist ul li").each(function () {
+
+            })
+
+            $(".ilogin .linfo").mouseover(function () {
+                $(".ilogin .llist").slideDown(300);
+
+            })
+            $(".ilogin .llist").mouseleave(function () {
+                $(".ilogin .llist").slideUp(300);
+            })
+
+        });
+    </script>
+        </div>
+    </div>
+</body>
+</html>

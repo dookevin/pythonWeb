@@ -1,0 +1,586 @@
+﻿{% extends "Default/Shared/ContentMaster.html"%}
+
+<!--标题-->
+{% block title %}
+<title>磁盘卷管理 - MiniNas管理系统</title>
+{% endblock %}
+<!--css-->
+{% block css %}
+{% endblock %}
+<!--javascript-->
+{% block javascript %}
+{% endblock %}
+
+{% block body %}
+<div class="user_add" style="display: none;">
+    <div class="diskHelp" id="diskHelp">
+        <span class="diskHelpIcon"></span>帮助
+    </div>
+</div>
+<div class="road">
+    <span class="suninfo_str">系统管理 > 存储设置 > 磁盘卷管理</span>
+</div>
+<div class="rtgy-box">
+    <h3>磁盘卷</h3>
+    <div class="systemRt-cont3" id="systemRt-cont">
+        <div class="diskInformation-bar">
+            <div class="diskRaidName"></div>
+            <div class="diskInsert_state-cont">
+                <div class="diskCleanIcon" id="diskCleanIcon">清除磁盘卷(系统将重启！)</div>
+                <div class="diskInsert_state-box clear">
+                    <div class="diskInsert_stateLf"></div>
+                    <div class="diskInsert_stateCt" id="diskInsert">
+
+                    </div>
+                    <div class="diskInsert_stateRt"></div>
+                </div>
+            </div>
+        </div>
+        <div class="addDisk-bar">
+            <h3>添加磁盘卷</h3>
+            <div class="undisklist clear" id="undisklist">
+
+            </div>
+            <div class="disk-Raid clear" id="disk-Raid">
+                <div class="raid raid-cur" prv="0">
+                    <span>1</span><i class="raidTex">single</i>
+                </div>
+                <div class="raid" prv="1">
+                    <span>2</span><i class="raidTex">raid1</i>
+                </div>
+            </div>
+            <div class="set" style="display: none;">
+                <div class="diskName-bar group">
+                    <label class="suninfo_cont_str">磁盘卷名</label>
+                    <input type="text"class="w260" maxlength="30" value="wisnuc" id="add_cpqName">
+                    <span class="msg"><font>*</font>【中文、英文、数字、下划线、4-16个字符】</span>
+                </div>
+            </div>
+            <div class="diskConfirm pbt_50">
+                <button  class="diskConfirmBtn" id="diskConfirmBtn">创建磁盘卷</button> <button class="diskConfirmBtn" id="diskAppentBtn" style="display: none;">增加到磁盘卷</button>
+            </div>
+        </div>
+        <div class="undiskdiv">未检测到磁盘,请先插入磁盘!</div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block popup %}
+<div id="popupLayer_StatusView" class="popup-layer">
+    <div id="popupLayerBox_StatusView" class="popup-layer-box StatusView" style="overflow:hidden;">
+        <i id="closePopupLayer_StatusView" class="close-popupLayer none"></i>
+        <div style="text-align:center;">
+            <img src="/static/images/Default/public/loading.gif" style="vertical-align:middle; width:30px; height:30px;" />
+            <span id="viewText" style=" margin-left:10px;">数据处理中，请耐心等待，不要进行其它操作......</span>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block footerJavascript %}
+<script type="text/javascript">
+var havebad=0;    //是否存在坏掉的磁盘
+var mode="";      //磁盘卷模式 (single,raid1)
+isfraid =false;
+$(function(){
+    //点击帮助 磁盘引导
+    $("#diskHelp").click(function(){
+        window.parent.JumpInfo();
+    });
+    $('#systemRt-cont').niceScroll({
+        cursorcolor: "#999",
+        cursoropacitymax: 1,
+        touchbehavior: false,
+        cursorwidth: "5px",
+        cursorborder: "0",
+        cursorborderradius: "5px"
+    });
+    //磁盘hover
+    $("#diskInsert").on("mouseover", ".diskInsert", function (index, eleDom) {
+        var sn  = $(this).attr("prv");
+        var datas = {sn:sn};
+        //获取 磁盘信息
+        $.post("/default/system/getdiskdetail",datas, function(data) {
+
+            if(data.returncode =="100100000"){// alert(JSON.stringify(data))
+                var str ="";
+                var s = data.data;
+                str+='<ul>';
+                str+='<li><i class="cpName">'+s.name+'</i><span class="w3">磁盘名</span>：</li>';
+                str+='<li><i class="sbName">'+s.devname+'</i><span class="w3">设备名</span>：</li>';
+                str+='<li><i class="cpSpace">'+s.capacity+'</i><span>物理空间：</span></li>';
+                str+='<li><i class="cpSpeed">'+s.rotationrate+'</i><span>转　　速：</span></li>';
+                str+='<li><i class="cpInterface">'+s.bus+'</i><span>总线接口：</span></li>';
+                str+='<li><i class="cpSerialNum">'+s.sn+'</i><span class="w3">序列号</span>：</li>';
+                if(s.status=="1"){
+                    str+='<li><i class="cpState">正常</i><span>状　　态：</span></li>';
+                }else{
+                    str+='<li><i class="cpState">损坏</i><span>状　　态：</span></li>';
+                }
+                str+='</ul>';
+                $(this).find(".disk-information").append(str);
+
+                $(this).find(".disk-information").css('display', 'block');
+            }
+            else{
+                alert(data.message);
+            }
+        });
+
+    }).mouseout(function() {
+        $(this).find(".disk-information").css('display', 'none');
+    });
+
+
+    //获取添加磁盘卷后的磁盘列表
+   // GetDiskGroup();
+    //获取 可添加的磁盘列表
+    GetUnDiskList();
+
+    //设置  磁盘到磁盘卷
+    $(".raid").click(function(){
+        $(this).siblings(".raid").removeClass("raid-cur");
+        $(this).addClass("raid-cur");
+    });
+
+    //追加到磁盘卷
+    $("#diskAppentBtn").click(function(){
+        var disks = GetValue();
+        if (disks == null || disks == "") {
+            alert("请选择需要添加的磁盘");
+            return false;
+        }
+
+        var datas={disk:disks}
+        if (confirm("您确定要追加磁盘到磁盘卷吗?此操作会对磁盘格式化!")) {
+            $.ajax({
+                url: '/default/system/addraid',
+                type: 'post',
+                data: datas,
+                timeout: 15000,
+                beforeSend: function(XMLHttpRequest) {
+                    Popup.init('closePopupLayer_StatusView', 'popupLayer_StatusView', 'popupLayerBox_StatusView');
+                    Popup.popup();
+                },
+                success: function(data, textStatus) {
+                    // alert(JSON.stringify(data))
+                    if(data.returncode=="100100000" || data.returncode==100100000) {
+                        alert("磁盘添加成功!");
+                        // window.location = "diskcouponmanagement.html";
+                        //获取添加磁盘卷后的磁盘列表
+                        //GetDiskGroup();
+                        //获取 可添加的磁盘列表
+                        GetUnDiskList();
+
+                        $("#closePopupLayer_StatusView").click();
+                    }
+                    else if(data.returncode == "100102246"){
+                        alert(data.message)
+                        window.parent.location = "/";
+                    }
+                    else
+                    {
+                        alert(data.message);
+                    }
+                },
+                complete: function(XMLHttpRequest, textStatus) {
+                    $("#viewText").text("执行完成!!!");
+                    $("#closePopupLayer_StatusView").click();
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert("出错了!");
+                    //  alert("出错了.--txtStatus:" + textStatus + " xmlhttprequest:" + XMLHttpRequest.statusText + "  errorthrown:" + errorThrown);
+                    $("#closePopupLayer_StatusView").click();
+
+                }
+            });
+        }
+    })
+
+    $("#diskConfirmBtn").click(function(){
+//        var name = $("#add_cpqName").val();
+//        if(name.length<1)
+//        {
+//            alert("磁盘卷名不能为空!");
+//            return false;
+//        }
+//        var patternPoolName = /^[\u4e00-\u9fa50-9a-zA-Z_]{4,16}$/;    //中文、英文、数字、下划线、4-16个字符
+//        var flagPoolName = patternPoolName.test(name);
+//        if(!flagPoolName)
+//        {
+//            alert("输入的磁盘卷名格式有误，请重新输入！");
+//            return false;
+//        }
+        var rtype = $(".raid-cur").attr("prv");
+        var disks = GetValue();
+        if (disks == null || disks == "") {
+            alert("请选择需要添加的磁盘");
+            return false;
+        }
+        if (disks.split(',').length < 2 && rtype == "1") {
+            alert("创建Raid 1模式至少需要2块磁盘！");
+            return false;
+        }
+        var datas={rtype:rtype,disks:disks}
+        //alert(JSON.stringify(datas))
+        if (confirm("您确定要添加磁盘卷吗?此操作会对磁盘格式化!")) {
+            $.ajax({
+                url: '/default/system/createraid',
+                type: 'post',
+                data: datas,
+                timeout: 15000,
+                beforeSend: function(XMLHttpRequest) {
+                    Popup.init('closePopupLayer_StatusView', 'popupLayer_StatusView', 'popupLayerBox_StatusView');
+                    Popup.popup();
+                },
+                success: function(data, textStatus) {
+                    // alert(JSON.stringify(data))
+                    if(data.returncode=="100100000" || data.returncode==100100000) {
+                        alert("磁盘卷添加成功!");
+                        // window.location = "diskcouponmanagement.html";
+                        //获取添加磁盘卷后的磁盘列表
+                       // GetDiskGroup();
+                        //获取 可添加的磁盘列表
+                        GetUnDiskList();
+
+                        $("#closePopupLayer_StatusView").click();
+                    }
+                    else if(data.returncode == "100102246"){
+                        alert(data.message)
+                        window.parent.location = "/";
+                    }
+                    else
+                    {
+                        alert(data.message);
+                    }
+                },
+                complete: function(XMLHttpRequest, textStatus) {
+                    $("#viewText").text("执行完成!!!");
+                    $("#closePopupLayer_StatusView").click();
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert("出错了!");
+                    //  alert("出错了.--txtStatus:" + textStatus + " xmlhttprequest:" + XMLHttpRequest.statusText + "  errorthrown:" + errorThrown);
+                    $("#closePopupLayer_StatusView").click();
+
+                }
+            });
+        }
+    });
+    //删除 磁盘卷
+    $("#diskCleanIcon").click(function(){
+        var name = $(".raidname").text();
+
+        if (confirm("删除磁盘卷将重启设备,您确定要删除磁盘卷吗?")) {
+            $.ajax({
+                url: '/default/system/delraid',
+                type: 'post',
+                timeout: 15000,
+                beforeSend: function(XMLHttpRequest) {
+                    Popup.init('closePopupLayer_StatusView', 'popupLayer_StatusView', 'popupLayerBox_StatusView');
+                    Popup.popup();
+                },
+                success: function(data, textStatus) {
+
+                    if (data.returncode == "100100000") {
+                        alert("删除成功!");
+                        $("#closePopupLayer_StatusView").click();
+
+                        //获取添加磁盘卷后的磁盘列表
+                       // GetDiskGroup();
+                        //获取 可添加的磁盘列表
+                      //  GetUnDiskList();
+                        window.parent.location = "/";
+                    }
+                    else if(data.returncode == "100102246"){
+                        alert(data.message)
+                        window.parent.location = "/";
+                    }
+                    else {
+                        alert(data.message);
+                    }
+                },
+                complete: function(XMLHttpRequest, textStatus) {
+                    $("#viewText").text("执行完成!!!");
+                    $("#closePopupLayer_StatusView").click();
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    //  alert("出错了.--txtStatus:" + textStatus + " xmlhttprequest:" + XMLHttpRequest.statusText + "  errorthrown:" + errorThrown);
+                    $("#closePopupLayer_StatusView").click();
+                }
+            });
+        }
+    });
+
+});
+//获取未添加的磁盘列表
+function GetUnDiskList(){
+
+    $.post("/default/system/getrdinfo", function(data) {
+
+       //alert(JSON.stringify(data));
+        $("#diskAppentBtn").css("display","none");
+        $("#diskConfirmBtn").css("display","block");
+        $(".undiskdiv").css("display","none");
+
+        $("#undisklist div").remove();
+        //磁盘卷部分
+        $("#diskInsert span").remove();
+        $("#diskInsert .diskInsert").remove();
+
+        if(data.returncode == '100100000'){
+            var obj = data.data;
+            var total =0;
+            if(obj.volumeinfo.total!=null)
+                total =parseInt(obj.volumeinfo.total);
+            var disknum = obj.slotlist.length
+
+            var diskstr="";
+            var diskGroupstr="";
+            if(disknum>0){
+
+                if((disknum>total && total==0)||obj.volumeinfo.enable=="0") //都不在磁盘卷时
+                {
+
+                    $("#diskInsert").append("<span class=\"unspan\">您还未创建磁盘卷</span>");
+                    var  n=0;
+                    $.each(obj.slotlist, function (idx, item) {
+
+
+                        if((item.uuid==""||item.uuid=="undefined")&&(item.serialshort==""||item.serialshort=="undefined")){
+
+                            n++;
+                            diskstr+='<div class="addDisk-Choice">';
+                            diskstr+='<span class="diskPic"></span>';
+                            diskstr+='<div class="diskCheckbox">';
+                            diskstr+='<div class="checkbox">';
+
+                            diskstr+='</div>';
+                            diskstr+='<span class="diskId" >无磁盘</span>';
+                            diskstr+=' </div>';
+                            diskstr+=' </div>';
+                        }
+                        else{
+
+                            diskstr+='<div class="addDisk-Choice">';
+                            diskstr+='<span class="diskPic"></span>';
+                            diskstr+='<div class="diskCheckbox">';
+                            diskstr+='<div class="checkbox">';
+                            diskstr+='<input id="checkAl'+idx+'" value="1" type="checkbox" class="checkone" name="checkone" prv="'+item.slot +'">';
+                            diskstr+='<label for="checkAl'+idx+'"></label>';
+                            diskstr+='</div>';
+                            diskstr+='<span class="diskId" title="'+item.model+'">'+item.model+'</span>';
+                            diskstr+=' </div>';
+                            diskstr+=' </div>';
+                        }
+
+                    })
+                    if(n==2){
+                        $(".addDisk-bar").css("display","none");
+                        $(".undiskdiv").css("display","block");
+                    }
+                    else
+                        $(".addDisk-bar").css("display","block");
+                   // $("#undisklist div").remove();
+                    $("#undisklist").append(diskstr);
+
+                }
+                    else if(disknum==total && obj.volumeinfo.enable=="1" ) //全部进入了磁盘卷
+                {
+
+                    $(".addDisk-bar").css("display","none");
+                    if(obj.volumeinfo.enable=="1"){
+                        $.each(obj.slotlist, function (idx, item) {
+                            if(item.size==""){
+                                diskGroupstr+='<div class="diskInsert" prv="'+item.serialshort+'">';
+                                diskGroupstr+='<div class="diskInsert-cont">';
+                                diskGroupstr+='<span class="diskInsertState-pic ban-diskInsertState-pic"></span>';
+                                diskGroupstr+='<i class="diskInsertState-text">磁盘遭到破坏或已被拔出</i>';
+                                diskGroupstr+='</div>';
+                                diskGroupstr+='<div class="disk-information">';
+                                diskGroupstr+='</div>';
+                                diskGroupstr+='</div>';
+                            }
+                            else{
+                                diskGroupstr+='<div class="diskInsert" prv="'+item.serialshort+'">';
+                                diskGroupstr+='<div class="diskInsert-cont">';
+                                diskGroupstr+='<span class="diskInsertState-pic"></span>';
+                                diskGroupstr+='<i class="diskInsertState-text">正常</i>';
+                                diskGroupstr+='</div>';
+                                diskGroupstr+='<div class="disk-information">';
+                                diskGroupstr+='</div>';
+                                diskGroupstr+='</div>';
+                            }
+                        })
+                        // alert(1111)
+                        $("#diskInsert").append(diskGroupstr);
+                    }
+                }
+                    else if(disknum>total && total>0) //磁盘卷和磁盘槽都有时
+                {
+
+                    $.each(obj.slotlist, function (idx, item) {
+
+                        if(item.uuid==obj.volumeinfo.uuid)
+                        {
+
+                            if(item.size==""){
+                                diskGroupstr+='<div class="diskInsert" prv="'+item.serialshort+'">';
+                                diskGroupstr+='<div class="diskInsert-cont">';
+                                diskGroupstr+='<span class="diskInsertState-pic ban-diskInsertState-pic"></span>';
+                                diskGroupstr+='<i class="diskInsertState-text">磁盘遭到破坏或已被拔出</i>';
+                                diskGroupstr+='</div>';
+                                diskGroupstr+='<div class="disk-information">';
+                                diskGroupstr+='</div>';
+                                diskGroupstr+='</div>';
+                            }
+                            else{
+                                diskGroupstr+='<div class="diskInsert" prv="'+item.serialshort+'">';
+                                diskGroupstr+='<div class="diskInsert-cont">';
+                                diskGroupstr+='<span class="diskInsertState-pic"></span>';
+                                diskGroupstr+='<i class="diskInsertState-text">正常</i>';
+                                diskGroupstr+='</div>';
+                                diskGroupstr+='<div class="disk-information">';
+                                diskGroupstr+='</div>';
+                                diskGroupstr+='</div>';
+                            }
+                        }
+                        else{
+                            if(item.uuid==""||item.uuid=="undefined"){
+                                diskstr+='<div class="addDisk-Choice">';
+                                diskstr+='<span class="diskPic"></span>';
+                                diskstr+='<div class="diskCheckbox">';
+                                diskstr+='<div class="checkbox">';
+
+                                diskstr+='</div>';
+                                diskstr+='<span class="diskId" >无磁盘</span>';
+                                diskstr+=' </div>';
+                                diskstr+=' </div>';
+                            }
+                            else{
+                                diskstr+='<div class="addDisk-Choice">';
+                                diskstr+='<span class="diskPic"></span>';
+                                diskstr+='<div class="diskCheckbox">';
+                                diskstr+='<div class="checkbox">';
+                                diskstr+='<input id="checkAl'+idx+'" value="1" type="checkbox" class="checkone" name="checkone" prv="'+item.slot +'">';
+                                diskstr+='<label for="checkAl'+idx+'"></label>';
+                                diskstr+='</div>';
+                                diskstr+='<span class="diskId" title="'+item.model+'">'+item.model+'</span>';
+                                diskstr+=' </div>';
+                                diskstr+=' </div>';
+                            }
+
+                        }
+
+                    })
+
+                    //磁盘部分
+                    $(".addDisk-bar").css("display","block");
+                    // $("#undisklist div").remove();
+                    $("#undisklist").append(diskstr);
+
+                    //磁盘卷部分
+                    // $("#diskInsert span").remove();
+                    // $("#diskInsert .diskInsert").remove();
+                    $("#diskInsert").append(diskGroupstr);
+
+                    //按扭控制
+
+                    $("#diskAppentBtn").css("display","block");
+                    $("#diskConfirmBtn").css("display","none");
+                }
+            }
+            else
+            {
+                $(".addDisk-bar").css("display","none");
+            }
+        }
+        else
+        {
+            alert(data.message);
+        }
+    });
+
+}
+//获取添加磁盘卷后的磁盘列表
+function GetDiskGroup(){
+
+    $.ajax({
+        url: '/default/system/getrdinfo',
+        type: 'post',
+        timeout: 150000,
+        async: false,
+        beforeSend: function(XMLHttpRequest) {
+        },
+        success: function(data, textStatus) {
+            if(data.returncode == '100100000'){
+                $("#diskInsert span").remove();
+                $("#diskInsert .diskInsert").remove();
+                mode = data.mode;
+                var str="";
+                var raidname = data.data.raidname;
+                if(raidname.length>1){
+                    $(".diskRaidName").text("磁盘卷名："+raidname);
+                    $.each(data.data.disklist, function (idx, item) {
+                        str+='<div class="diskInsert" prv="'+item.sn+'">';
+                        str+='<div class="diskInsert-cont">';
+                        if(item.status=="1"){
+                            str+='<span class="diskInsertState-pic"></span>';
+                            str+='<i class="diskInsertState-text">正常</i>';
+                        }
+                        else{
+                            havebad=1;
+                            str+='<span class="diskInsertState-pic ban-diskInsertState-pic"></span>';
+                            str+='<i class="diskInsertState-text">磁盘遭到破坏或已被拔出</i>';
+                        }
+                        str+='</div>';
+                        str+='<div class="disk-information">';
+                        str+='</div>';
+                        str+='</div>';
+                    })
+
+                    // alert(1111)
+                    $("#diskInsert").append(str);
+                }
+                else
+                {
+                    $(".diskRaidName").html("");
+                    $("#diskInsert").append("<span class=\"unspan\">您还未创建磁盘卷</span>");
+                }
+            }
+            else{
+                alert(data.message);
+            }
+        },
+        complete: function(XMLHttpRequest, textStatus) {
+
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+
+        }
+    });
+
+
+
+
+    $.post("/default/system/getrdinfo", function(data) {
+
+
+    });
+}
+function GetValue() {
+    var str = "";
+    $("input[type='checkbox'][name='checkone']").each(function () {
+        if ($(this).is(":checked")) {
+            str +=$(this).attr("prv")+",";
+        }
+    })
+    if(str.length>0)
+        str = str.replace(/,$/, ""); //去掉最后一个逗号
+    return str;
+}
+</script>
+{% endblock %}
+

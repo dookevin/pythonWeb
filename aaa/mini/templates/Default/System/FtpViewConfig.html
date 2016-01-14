@@ -1,0 +1,343 @@
+﻿{% extends "Default/Shared/ContentMaster.html"%}
+
+<!--标题-->
+{% block title %}
+<title>新建用户组 - MiniNas管理系统</title>
+{% endblock %}
+<!--css-->
+{% block css %}
+{% endblock %}
+<!--javascript-->
+{% block javascript %}
+{% endblock %}
+
+{% block body %}
+<div class="road">
+    <span class="suninfo_str">系统管理 > 共享与权限 > FTP访问设置</span>
+</div>
+<div class="rtgy-box">
+    <h3>FTP访问设置</h3>
+    <div class="systemRt-cont" id="systemRt-cont">
+        <div class="contentLine">
+            <div class="pic">
+                <span class="rtset_img img2"></span>
+            </div>
+            <div class="checkbox lf-postion2">
+                <input id="checkAll" type="checkbox" class="checkAll" name="checkAll">
+                <label for="checkAll"></label>
+                <span class="msg" ns="WinSetting">启用档案传输(FTP)服务器功能</span>
+            </div>
+            <div class="sure_btn mtp_48"><a id="btnOpen">确定</a></div>
+        </div>
+        <div class="set pbt_50">
+            <h5><span class="icon-l"></span><span class="msg">基础设置</span></h5>
+            <div class="group clear postion_box">
+                <label class="suninfo_cont_str">认证方式</label>
+                <div class="option_list">
+                    <span class="dropdown_Text" id="txtUserLoginMode">本机用户</span>
+                    <a class="dropdownBtn"></a>
+                </div>
+                <span class="msg">只允许用户管理中的用户名访问。</span>
+                <div class="dropdown_cont">
+                    <span class="dropdown_mean"><a>匿名</a></span>
+                    <span class="dropdown_mean2 dropdown_cur"><a class="cur_gou">本机用户</a></span>
+                </div>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">TCP端口</label>
+                <input type="text" class="w260" value="21" id="txtPort" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" maxlength="5">
+                <span class="msg"> <font>*</font>缺省是21。【 1~65535 】</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">客户端数</label>
+                <input type="text" class="w260" value="5" id="txtMaxClients" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" maxlength="2">
+                <span class="msg"> <font>*</font>最大并发客户端数。【 1~50 】</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">每个IP的最大连接数</label>
+                <input type="text" class="w260" value="2" id="txtMaxConnectionsPerHost" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" maxlength="3">
+                <span class="msg br"> <font>*</font>最大并发客户端数同一IP地址的最大连接数( 0 = 不限制 )。</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">最大登录重试次数</label>
+                <input type="text" class="w260" value="1" id="txtMaxLoginAttempts" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" maxlength="2">
+                <span class="msg"> <font>*</font>最大密码重试次数。</span>
+            </div>
+            <div class="group clear">
+                <label class="suninfo_cont_str">超时</label>
+                <input type="text" class="w260" value="600" id="txtTimeoutIdle" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" maxlength="5">
+                <span class="msg"> <font>*</font>最大空闲时间，单位是秒。</span>
+            </div>
+            <div class="group clear" style="display: none;">
+                <label class="suninfo_cont_str">欢迎信息</label>
+                <textarea class="w260 sext_w260" id="txtDisplayLogin"></textarea>
+                <span class="msg msg_bottom"> <font>*</font>当用户刚连接上FTP所显示的信息。</span>
+            </div>
+            <div class="clear mtp_40 mlf_180" >
+                <!--<a class="save" id="btnSub" >保存</a>-->
+                <input class="save" id="btnSub" type="text" value="保存">
+            </div>
+
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block popup %}
+<div id="popupLayer_StatusView" class="popup-layer">
+    <div id="popupLayerBox_StatusView" class="popup-layer-box StatusView" style="overflow:hidden;">
+        <i id="closePopupLayer_StatusView" class="close-popupLayer none"></i>
+        <div style="text-align:center;">
+            <img src="/static/images/Default/public/loading.gif" style="vertical-align:middle; width:30px; height:30px;" />
+            <span id="viewText" style=" margin-left:10px;">数据处理中，请耐心等待，不要进行其它操作......</span>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block footerJavascript %}
+<script>
+$(function(){
+    $('#systemRt-cont').niceScroll({
+        cursorcolor: "#999",
+        cursoropacitymax: 1,
+        touchbehavior: false,
+        cursorwidth: "5px",
+        cursorborder: "0",
+        cursorborderradius: "5px"
+    });
+
+    $.ajax({
+        url: '/default/system/getftpview',
+        type: 'post',
+        timeout: 15000,
+        beforeSend: function (XMLHttpRequest) {
+            Popup.init('closePopupLayer_StatusView', 'popupLayer_StatusView', 'popupLayerBox_StatusView');
+            Popup.popup();
+        },
+        success: function (data) {
+            if(data.returncode=="100100000"){
+                var s = data.data;
+                var port = s.port;      //端口
+                var maxclients = s.maxclients;      //客户端数
+                var maxconnections = s.maxconnections;      //每个IP的最大连接数
+                var maxlogin = s.maxlogin;      //最大登录重试次数
+                var timeout = s.timeout;      //超时
+                var welmessage = s.welmessage;      //欢迎信息
+                var trigger = s.trigger; //开启状态
+                //认证方式
+                var usertype = s.usertype;
+                if (usertype == 0)
+                    $("#txtUserLoginMode").text("本机用户");
+                else
+                    $("#txtUserLoginMode").text("匿名");
+
+                $("#txtPort").val(port);
+                $("#txtMaxClients").val(maxclients);
+                $("#txtMaxConnectionsPerHost").val(maxconnections);
+                $("#txtMaxLoginAttempts").val(maxlogin);
+                $("#txtTimeoutIdle").val(timeout)
+                $("#txtDisplayLogin").val(welmessage);
+
+                //      trigger = 1选中复选框 Input可以输入，trigger = 0未选中复选框 Input禁止输入，
+                if(trigger==1)
+                {
+                    $("#checkAll").attr("checked","checked");  //选中复选框
+                }
+                else
+                {
+                    $(".group input").attr("disabled","disabled");
+                    $(".group input").css("color","#999");
+                    $("#txtUserLoginMode").css("color","#999");
+                    $("textarea").css("color","#999");
+                    $(".dropdownBtn").off();
+                    $(".save").addClass("disabled");
+                    $(".save").attr("disabled","disabled");
+                }
+            }
+            else if(data.returncode == "100102246"){
+                alert(data.message)
+                window.parent.location = "/";
+            }
+            else
+            {alert(data.message);}
+        },
+        complete: function (XMLHttpRequest, textStatus) {
+            $("#viewText").text("数据处理中，请耐心等待，不要进行其它操作.....");
+            $("#closePopupLayer_StatusView").click();
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+            $("#closePopupLayer_StatusView").click();
+        }
+    });
+    //保存btnSub 点击
+    $("#btnSub").click(function () {
+        var usertype = 1;
+        if ($("#txtUserLoginMode").text().trim() == "本机用户")
+            usertype = 0;
+
+        var port = $("#txtPort").val();
+        var maxclients = $("#txtMaxClients").val();
+        var maxconnections = $("#txtMaxConnectionsPerHost").val();
+        var maxlogin = $("#txtMaxLoginAttempts").val();
+        var timeout = $("#txtTimeoutIdle").val();
+        var welmessage = $("#txtDisplayLogin").val();
+        //验证
+        if(port.length<1)
+        {
+            alert("TCP端口不能为空！");
+            return false;
+        }
+        if(maxclients.length<1)
+        {
+            alert("客户端数不能为空！");
+            return false;
+        }
+        if(maxconnections.length<1)
+        {
+            alert("每个IP的最大连接数不能为空！");
+            return false;
+        }
+        if(maxlogin.length<1)
+        {
+            alert("最大登录重试次数不能为空！");
+            return false;
+        }
+        if(timeout.length<1)
+        {
+            alert("超时不能为空！");
+            return false;
+        }
+//        if(welmessage.length<1)
+//        {
+//            alert("欢迎信息不能为空！");
+//            return false;
+//        }
+        if(welmessage.length>100)
+        {
+            alert("欢迎信息不超过100个字符！");
+            return false;
+        }
+        var datas = {usertype:usertype,port:port,maxclients:maxclients,maxconnections:maxconnections,maxlogin:maxlogin,timeout:timeout,welmessage:welmessage};
+
+        $.ajax({
+            url: '/default/system/ftpviewedit',
+            type: 'post',
+            timeout: 15000,
+            data: datas,
+            beforeSend: function (XMLHttpRequest) {
+                Popup.init('closePopupLayer_StatusView', 'popupLayer_StatusView', 'popupLayerBox_StatusView');
+                Popup.popup();
+            },
+            success: function (data, textStatus) {
+                if (data.returncode == "100100000") {
+                    //  alert("更新成功");
+                    $("#viewText").text("更新成功!!!");
+                    window.location =window.location.href;
+                }
+                else if(data.returncode == "100102246"){
+                    alert(data.message)
+                    window.parent.location = "/";
+                }
+                else
+                {alert(data.message);}
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+                $("#viewText").text("数据处理中，请耐心等待，不要进行其它操作.....");
+                $("#closePopupLayer_StatusView").click();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                $("#closePopupLayer_StatusView").click();
+                window.location = "";
+            }
+        });
+    });
+    //确认btnOpen 点击
+    $("#btnOpen").click(function(){
+        var checked = $("#checkAll").is(":checked");  //复选框为选中状态
+        var trigger = 0;
+        if(checked) trigger = 1;
+        var datas={trigger:trigger};
+
+        $.ajax({
+            url:"/default/system/triggerftpview",
+            type: 'post',
+            timeout: 15000,
+            data: datas,
+            beforeSend: function (XMLHttpRequest) {
+                Popup.init('closePopupLayer_StatusView', 'popupLayer_StatusView', 'popupLayerBox_StatusView');
+                Popup.popup();
+            },
+            success: function (data, textStatus) {
+                if(data.returncode == "100100000"){
+                    alert("操作成功");
+                    if(trigger == 1){
+                        window.location = "/default/system/ftpviewconfig.html";
+                    }
+                    else{
+                        $(".group input").attr("disabled","disabled");
+                        $(".group input").css("color","#999");
+                        $("#txtUserLoginMode").css("color","#999");
+                        $("textarea").css("color","#999");
+                        $(".dropdownBtn").off();
+                        $(".save").addClass("disabled");
+                        $(".save").attr("disabled","disabled");
+                    }
+                }
+                else if(data.returncode == "100102246"){
+                    alert(data.message)
+                    window.parent.location = "/";
+                }
+                else
+                {alert(data.message);}
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+                $("#viewText").text("数据处理中，请耐心等待，不要进行其它操作.....");
+                $("#closePopupLayer_StatusView").click();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                $("#closePopupLayer_StatusView").click();
+                alert("操作出错，请联系管理员！");
+            }
+        });
+    });
+    // right 点击下拉菜单 jQuery
+    function meanChoice(){
+        $('.group').each(function (i) {
+            var $this = $(this);
+            $this.find(".dropdownBtn").click(function (event) {
+                $this.find(".dropdown_cont").toggle();
+                event.stopPropagation();
+            });
+            $this.find(".dropdown_cont span").click(function (event) {
+                var _this = $(this);
+                $this.find(".dropdown_Text").html(_this.text());
+                $this.find(".dropdown_cont").toggle();
+                event.stopPropagation();
+                if (_this.attr("prv") != null) {
+                    $this.find(".dropdown_Text").attr("prv", _this.attr("prv"));
+                }
+            });
+            $this.find(".dropdown_cont span").hover(function (event) {
+                $(this).addClass("dropdown_cur").siblings("span").removeClass("dropdown_cur");
+                $this.find(".dropdown_cont span").children("a").removeClass("cur_gou")
+                $(this).children("a").addClass("cur_gou");
+                event.stopPropagation();
+            });
+        });
+        //点击窗口任意地方 下拉菜单隐藏
+        $(document).click(function () {
+            $(".dropdown_cont").hide();
+            $(".tal_box").hide();
+        });
+    };
+    meanChoice();
+
+});
+</script>
+{% endblock %}

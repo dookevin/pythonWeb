@@ -1,0 +1,215 @@
+﻿@using PagedList.Mvc
+@{
+    ViewBag.Title = "BT下载";
+}
+
+@using (Html.BeginForm())
+{
+<div class="main-left fl">
+    <div class="lhead">
+        <div class="vhead vhead5"></div>
+        <a href="/Home/Index" class="indexUrl"></a>
+        <ul class="stationList">
+            <li class="li1">
+                <a href="@Url.Action("Index", "Photo")"><i></i><span>照片中心</span></a>
+            </li>
+            <li class="li2">
+                <a href="@Url.Action("Index", "Music")"><i></i><span>音频中心</span></a>
+            </li>
+            <li class="li3">
+                <a href="@Url.Action("Index", "Video")"><i></i><span>视频中心</span></a>
+            </li>
+            <li class="li4">
+                <a href="@Url.Action("Index", "Download")"><i></i><span>下载中心</span></a>
+            </li>
+            @*<li class="li5">
+                <a href="@Url.Action("Index", "BTDownload")"><i></i><span>BT中心</span></a>
+            </li>*@
+            <li class="li6">
+                <a href="@Url.Action("Index", "FileCenter")"><i></i><span>文件中心</span></a>
+            </li>
+            <li class="li7">
+                <a href="@Url.Action("Index", "System")"><i></i><span>系统管理</span></a>
+            </li>
+            <li class="li7">
+                <a href="@Url.Action("Index", "ThunderDownload")"><i></i><span>迅雷远程</span></a>
+            </li>
+        </ul>
+    </div>
+    <div class="left-panel lcontent">
+        <h5 class="suninfo_str">任务列表</h5>
+        <ul id="library_list" class="fun_list">
+            <li><i class="Task_icon"></i><span>所有任务</span></li>
+            <li><i class="Task_icon"></i><span>正在下载</span></li>
+            <li><i class="Task_icon"></i><span>正在等待</span></li>
+            <li><i class="Task_icon"></i><span>已完成</span></li>
+        </ul>
+    </div>  
+</div>
+<div class="main-right">
+    <div class="rt-content">
+        <div class="rhead clear">
+            <div class="fl clear">
+                <div class="rLists fl">
+                    <div class="menu-hd" id="album_act"><span>新建任务</span><i></i></div>
+                    <ul id="album_act_list">
+                        <li><a id="BT_task">BT任务</a></li>
+                        <li><a id="Flux_task">磁链任务</a></li>
+                    </ul>
+                </div>
+                <div class="rLists fl">
+                    <div class="menu-hd" id="photo_act"><span>选定任务</span><i></i></div>
+                    <ul id="photo_act_list">
+                        <li><i id ="Start">开始</i></li>
+                        <li><a id="Pause">暂停</a></li>
+                        <li><a id="remove">移除</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="hrhead clear">
+            <div class="fl"><span>下载列表</span><i>/</i><span id="sel_album_title" class="color_ye">所有任务</span></div>
+            <div class="rt"><span>共计 <span id="allnum" class="color_ye">6</span> 个文件 </span><span id="chkAll_thumbnail"></span> </div>
+        </div>
+        <div class="rtgy-box-center">
+            <div class="rtgy-cont">
+                <div id="content" class="scrollbar">
+                    <table class="table_list" width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <tr class="title">
+                                <td width="25">
+                                    <div class="checkbox">
+                                        <input id="checkAll" type="checkbox" class="checkAll" name="checkAll">
+                                        <label for="checkAll"></label>
+                                    </div>
+                                </td>
+                                <td width="30%">文件名</td>
+                                <td width="10%">状态</td>
+                                <td width="20%">大小</td>
+                                <td width="10%">进度</td>
+                                <td width="10%">剩余时间</td>
+                                <td width="20%">动作</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="checkbox">
+                                        <input id="check1" type="checkbox" name="checkOne">
+                                        <label for="check1"></label>
+                                    </div>
+                                </td>
+                                <td>Homo_sapiens.GRCh38.cdna.al...</td>
+                                <td>错误</td>
+                                <td>0 B</td>
+                                <td>0% </td>
+                                <td>- -</td>
+                                <td>
+                                    <a class="cleartask icon-pause" title="暂停"></a>
+                                    <a class="cleartask icon-play" title="播放"></a>
+                                    <a class="cleartask icon-delete" title="删除"></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="checkbox">
+                                        <input id="check2" type="checkbox" name="checkOne">
+                                        <label for="check2"></label>
+                                    </div>
+                                </td>
+                                <td>Homo_sapiens.GRCh38.cdna.al...</td>
+                                <td>错误</td>
+                                <td>0 B</td>
+                                <td>0% </td>
+                                <td>- -</td>
+                                <td>
+                                    <a class="cleartask icon-pause" title="暂停"></a>
+                                    <a class="cleartask icon-play" title="播放"></a>
+                                    <a class="cleartask icon-delete" title="删除"></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+@*新建BT任务*@
+<div id="popupLayer_BTsone" class="popup-layer">
+    <div id="popupLayerBox_BTsone" class="popup-layer-box uploadPhoto w400">
+        <i id="closePopupLayer_BTsone" class="close-Download">×</i>
+        <div class="downloadpup clear">
+            <h3 class="item_tit">新建BT任务:</h3>
+            <div class="BTsone">
+                <div class="Upload-lf">
+                    <a class="Upload-Btn">选择文件</a>
+                </div>
+                <p class="BTsone-text">请输入正确格式的磁力链接</p>
+            </div>
+            <div class="btnBox">
+                <a class="download" id="btnDownload">立即下载</a>
+                <a class="cancel" id="cancel">取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+@*新建磁链任务*@
+<div id="popupLayer_Flux_task" class="popup-layer">
+    <div id="popupLayerBox_Flux_task" class="popup-layer-box downloadHttp w400">
+        <i id="closePopupLayer_Flux_task" class="close-Download">×</i>
+        <div class="downloadpup clear">
+            <h3 class="item_tit">新建磁链任务:</h3>
+            <div class="link_text">
+                <div class="group clear">
+                    <span class="caption  fl">磁力链接：</span>
+                    <textarea class="txtUrl" id="txtUrl"></textarea>
+                </div>
+                <p class="msg">请输入正确格式的磁力链接</p>
+            </div>
+            <div class="btnBox">
+                <a class="download" id="btnDownload">立即下载</a>
+                <a class="cancel" id="cancel">取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*删除*@
+<div id="popupLayer_BT_tip" class="popup-layer">
+    <div id="popupLayerBox_BT_tip" class="popup-layer-box downloadHttp w400">
+        <i id="closePopupLayer_BT_tip" class="close-Download">×</i>
+        <div class="downloadpup clear">
+            <h3 class="item_tit">提示信息：</h3>
+            <div class="Warning clear">
+                <span class="Warn-icon  fl"></span>
+                <p class="Warn-text fl red-color">警告：您确定要删除选定任务吗？</p>
+            </div>
+            <div class="btnBox">
+                <a class="download" id="btnDownload">确定</a>
+                <a class="cancel" id="cancel">取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        //新建磁链任务
+        $("#Flux_task").click(function () {
+            Popup.init('closePopupLayer_Flux_task', 'popupLayer_Flux_task', 'popupLayerBox_Flux_task');
+            Popup.popup();
+        });
+        //新建BT任务
+        $("#BT_task").click(function () {
+            Popup.init('closePopupLayer_BTsone', 'popupLayer_BTsone', 'popupLayerBox_BTsone');
+            Popup.popup();
+        });
+        //删除
+        $(".icon-delete").click(function () {
+            Popup.init('closePopupLayer_BT_tip', 'popupLayer_BT_tip', 'popupLayerBox_BT_tip');
+            Popup.popup();
+        });
+    });
+</script>
+

@@ -1,0 +1,121 @@
+﻿{% extends "Default/Shared/ContentMaster.html"%}
+
+<!--标题-->
+{% block title %}
+<title>新建用户组 - MiniNas管理系统</title>
+{% endblock %}
+<!--css-->
+{% block css %}
+{% endblock %}
+<!--javascript-->
+{% block javascript %}
+{% endblock %}
+
+{% block body %}
+<div class="tabBox">
+    <h3>用户群组</h3>
+    <div class=" UserGroupBox mtp_10" id="UserGroupBox">
+        <table id="userGroup_list" width="100%" border="0" cellspacing="0" cellpadding="0" class="tab01">
+            <thead>
+            <tr class="tab_mean">
+                <td class="ck">
+                    <div class="checkbox">
+                        <input id="checkAll" type="checkbox" class="checkAll" name="checkAll">
+                        <label for="checkAll"></label>
+                    </div>
+                </td>
+                <td class="GroupName">名称</td>
+                <td class="Description">描述</td>
+            </tr>
+            <tr style="height:16px;"></tr>
+            </thead>
+            <tbody id="grouplist"></tbody>
+        </table>
+    </div>
+    <div class="sure_btn mtp_20">
+        <a id="btnAdd">设置群组</a>
+        <a id="btnRes">取消</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block popup %}
+
+{% endblock %}
+
+
+{% block footerJavascript %}
+<script>
+    $(function(){
+        var html = "";
+        var userName =getQueryString("UserName");
+        var datas = {username:userName};
+        $.post("/default/system/getuserug",datas,function(data){
+            var jsonData = data.data;
+            jsonData.sort(function(a,b){return b.groupid-a.groupid;});  //降序
+            $.each(jsonData, function (idx, item) {
+                html+="<tr>";
+                if(item.ingroup==0) //这里判断是否勾选
+                    html+="<td class=\"ck\"><div class=\"checkbox\"><input id=\"ck"+idx+"\" type=\"checkbox\" class=\"checkAll\" name=\"checkone\" prv=\""+item.groupid+"\"><label for=\"ck"+idx+"\"></label></div></td>";
+                else
+                    html+="<td class=\"ck\"><div class=\"checkbox\"><input id=\"ck"+idx+"\" type=\"checkbox\" class=\"checkAll\" name=\"checkone\" checked=\"checked\" prv=\""+item.groupid+"\"><label for=\"ck"+idx+"\"></label></div></td>";
+                html+="<td class=\"GroupName\">"+item.groupname+"</td>";
+                html+="<td class=\"Description\">"+item.describe+"</td>";
+                html +="</tr>";
+            })
+            $("#grouplist").html(html);
+        },"json");
+
+        //checkbox全选按扭事件
+        $(".checkAll").live("change", function () {
+            var checked;
+            checked = $(this).is(":checked");
+            $("input[type='checkbox'][name='checkOne']").prop("checked", checked);
+            $("input[type='checkbox'][name='checkAll']").prop("checked", checked);
+        });
+        //提交/编辑
+        $("#btnAdd").click(function(){
+            var check="",uncheck="";
+            $("input[name='checkone']:checkbox").each(function(){
+                if ("checked" == $(this).attr("checked")) {
+                    check += $(this).attr('prv')+',';
+                }
+                else
+                {
+                    uncheck += $(this).attr('prv')+',';
+                }
+            });
+            check =check.substring(0,check.length-1);
+            uncheck = uncheck.substring(0,uncheck.length-1);
+
+            var datas ={check:check,uncheck:uncheck,username:userName};
+            $.post("/default/system/edituserug",datas,function(data){
+                if(data.returncode=="100100000")
+                {
+                    alert("提交成功!");
+                    parent.parentClick();
+                }else if(data.returncode == "100102246"){
+                    alert(data.message)
+                    window.parent.location = "/";
+                }
+                else
+                {alert(data.message);}
+            });
+        })
+
+        $("#btnRes").click(function(){
+            parent.parentClick();
+        })
+        // 滚动条Js
+        $('#UserGroupBox').niceScroll({
+            cursorcolor: "#999",
+            cursoropacitymax: 1,
+            touchbehavior: false,
+            cursorwidth: "5px",
+            cursorborder: "0",
+            cursorborderradius: "5px"
+        });
+
+    })
+</script>
+{% endblock %}

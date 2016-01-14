@@ -1,0 +1,218 @@
+﻿{% extends "Default/Shared/ContentMaster.html"%}
+
+<!--标题-->
+{% block title %}
+<title>新建用户组 - MiniNas管理系统</title>
+{% endblock %}
+<!--css-->
+{% block css %}
+{% endblock %}
+<!--javascript-->
+{% block javascript %}
+{% endblock %}
+
+{% block body %}
+<div class="road">
+    <span class="suninfo_str">系统管理 > 系统设置 > 系统网络设置</span>
+</div>
+<div class="rtgy-box">
+    <h3>系统网络设置</h3>
+    <div class="tab_nav mtp_20">
+        <ul>
+            <li class="first_li cur"><a>TCP/IPv4</a></li>
+        </ul>
+    </div>
+    <div class="systemRt-cont2" id="systemRt-cont">
+        <div class="rightCol">
+            <div class="tab_contBox">
+                <div class="networkSet-Choice">
+                    <div class="checkBox">
+                        <input type="radio" name="setmode" value="local">
+                        <span class="suninfo_cont_str">自动获取IP</span>
+                    </div>
+                    <div class="checkBox" style="display: none;">
+                        <input type="radio" name="setmode" value="ntp">
+                        <span class="suninfo_cont_str">手动设置IP</span>
+                    </div>
+                </div>
+                <div class="tab_cont" style="display:block;">
+                    <div class="set pbt_50">
+                        <h6><span class="icon-l"></span><span class="msg">IP地址</span></h6>
+                        <div class="group clear">
+                            <label class="suninfo_cont_str" for="Address">IP地址</label>
+                            <input class="w260" data-val="true"  id="Address" name="Address" type="text" value="" />
+                            <span class="msg"> <font>*</font></span>
+                        </div>
+                        <div class="group clear">
+                            <label class="suninfo_cont_str" for="Netmask">子网掩码</label>
+                            <input class="w260" data-val="true"  id="Netmask" name="Netmask" type="text" value="" />
+                            <span class="msg"> <font>*</font></span>
+                        </div>
+                        <div class="group clear">
+                            <label class="suninfo_cont_str" for="Gateway">默认网关</label>
+                            <input class="w260" data-val="true"   id="Gateway" name="Gateway" type="text" value="" />
+                            <span class="msg"> <font>*</font></span>
+                        </div>
+                        <h6><span class="icon-l"></span><span class="msg">DNS 设置</span></h6>
+                        <div class="group clear">
+                            <label class="suninfo_cont_str" for="FirstServer">首选 DNS 服务器</label>
+                            <input class="w260" id="FirstServer" name="FirstServer" type="text" value="" />
+                            <span class="msg"></span>
+                        </div>
+                        <div class="group clear">
+                            <label class="suninfo_cont_str" for="OptionServer">备选 DNS 服务器</label>
+                            <input class="w260" id="OptionServer" name="OptionServer" type="text" value="" />
+                            <span class="msg"></span>
+                        </div>
+                        <div class="clear mtp_40 mlf_180" style="display:none;">
+                            <input type="submit" class="save btn" value="保存" id="btnSubIP4" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block popup %}
+
+{% endblock %}
+
+
+{% block footerJavascript %}
+<script>
+    $(function(){
+        $('#systemRt-cont').niceScroll({
+            cursorcolor: "#999",
+            cursoropacitymax: 1,
+            touchbehavior: false,
+            cursorwidth: "5px",
+            cursorborder: "0",
+            cursorborderradius: "5px"
+        });
+
+        $.post("/default/system/netget", function(data) {
+            if(data.returncode=="100100000")
+            {
+                var dataObj = data.data;
+                $("#Address").val(dataObj.ip);
+                $("#Netmask").val(dataObj.submask);
+                $("#Gateway").val(dataObj.gateway);
+                $("#FirstServer").val(dataObj.dns1);
+                $("#OptionServer").val(dataObj.dns2);
+
+                var type = dataObj.type; // 1  0
+                if(type == 0)
+                {
+                    $("input[value=local]").attr("checked","checked");
+                    $(".group input").attr("disabled" , "disabled");
+                }else
+                {
+                    $("input[value=ntp]").attr("checked","checked");
+                    $(".group input").removeAttr("checked");
+                }
+            }
+            else if(data.returncode == "100102246"){
+                alert(data.message)
+                window.parent.location = "/";
+            }
+            else
+            {alert(data.message);}
+        });
+
+        $("input:radio[name='setmode']").change(function () {
+            if($(this).val()=="local"  ) {
+
+                $("input[value=local]").attr("checked","checked");
+                $("input[value=ntp]").removeAttr("checked");
+                $(".group input").attr("disabled" , "disabled");
+            }else
+            {
+
+                $("input[value=ntp]").attr("checked","checked");
+                $("input[value=local]").removeAttr("checked");
+                $(".group input").removeAttr("disabled");
+            }
+        });
+
+
+        $("#btnSubIP4").click(function(){
+            var ip = $("#Address").val();
+            var Netmask = $("#Netmask").val();
+            var gateway = $("#Gateway").val();
+            var dns1 = $("#FirstServer").val();
+            var dns2 = $("#OptionServer").val();
+            var type =1;
+            if($("input[value=local]").attr("checked")=="checked"){
+                type = 0;
+            }
+            if(type==1){
+                if(ip.length<1){
+                    alert("IP地址不能为空！")
+                    return false;
+                }
+                var ip_re = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}$/;      //IP 子网掩码 默认网关  DNS 正则表达式
+                var IPbol= ip_re.test(ip);
+                if(!IPbol)
+                {
+                    alert("输入的IP地址格式有误，请重新输入！");
+                    return false;
+                }
+                if(Netmask.length<1){
+                    alert("子网掩码不能为空！")
+                    return false;
+                }
+                var Netmaskbol= ip_re.test(Netmask);
+                if(!Netmaskbol)
+                {
+                    alert("输入的子网掩码格式有误，请重新输入！");
+                    return false;
+                }
+                if(gateway.length<1){
+                    alert("默认网关不能为空！")
+                    return false;
+                }
+                var getewaybol= ip_re.test(gateway);
+                if(!getewaybol)
+                {
+                    alert("输入的默认网关格式有误，请重新输入！");
+                    return false;
+                }
+                var sxDNSbol= ip_re.test(dns1);
+                if(!dns1.length != 0){
+                    if(!sxDNSbol)
+                    {
+                        alert("输入的首选 DNS 服务器格式有误，请重新输入！");
+                        return false;
+                    }
+                }
+                var bxDNSbol= ip_re.test(dns2);
+                if(!dns2.length != 0){
+                    if(!bxDNSbol)
+                    {
+                        alert("输入的备选 DNS 服务器格式有误，请重新输入！");
+                        return false;
+                    }
+                }
+            }
+
+            var datas ={ip:ip,submask:Netmask,gateway:gateway,dns1:dns1,dns2:dns2,type:type};
+            $.post("/default/system/netset",datas, function(data) {
+
+                if(data.returncode=="100100000")
+                {
+                    alert("提交成功!");
+                    window.location = window.location.href ;
+                }else if(data.returncode == "100102246"){
+                    alert(data.message)
+                    window.parent.location = "/";
+                }
+                else
+                {alert(data.message);}
+            });
+        })
+
+    })
+</script>
+{% endblock %}

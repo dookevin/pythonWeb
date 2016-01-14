@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    {% block title %}
+    {% endblock %}
+    <link href="/static/css/public.css" rel="stylesheet" />
+    <link href="/static/css/Default/PluginCss.css" rel="stylesheet" />
+    <link href="/static/css/Default/system.css" rel="stylesheet" />
+    {% block css %}
+    {% endblock %}
+    <script src="/static/js/jquery-1.8.2.min.js"></script>
+    <script src="/static/js/public.js"></script>
+    <script src="/static/js/popup.mini.js"></script>
+    <script src="/static/js/scrollbar.js"></script>
+    <script src="/static/js/PluginJavascript.js"></script>
+    <script src="/static/js/layer/layer.js"></script>
+    {% block javascript %}
+    {% endblock %}
+    <script>
+        var  isfraid =true;
+    </script>
+</head>
+<body>
+{% block body %}
+{% endblock %}
+
+{% block popup %}
+{% endblock %}
+
+</body>
+</html>
+
+{% block footerJavascript %}
+{% endblock %}
+<script>
+    $(function(){
+        if(isfraid){
+            $.post("/default/system/ifraid",function(data){
+                if(data.returncode=="100100000")
+                {
+                    if(data.data.raid=="0")
+                    {
+                        alert("系统未检测到磁盘卷!不能进行操作!");
+                        window.parent.location = "/default/system/index?diskmanagement";
+                    }
+                }
+                else
+                {
+                    alert("磁盘卷检测失败!");
+                }
+
+            })
+        }
+    })
+</script>
